@@ -1,2 +1,0 @@
-# androidCourseProject
-# приветик
