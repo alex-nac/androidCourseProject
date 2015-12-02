@@ -12,9 +12,9 @@ public class SimpleBubble extends Bubble {
 
     public void setColor(int newColor) {}
 
-    public BubbleColor getColor() {
-        return color;
-    }
+//    public BubbleColor getColor() {
+//        return color;
+//    }
     public SimpleBubble() {
         this(BubbleColor.NONE);
     }
