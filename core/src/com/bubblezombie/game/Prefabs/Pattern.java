@@ -4,9 +4,6 @@ import com.bubblezombie.game.Util.Pair;
 
 import java.util.ArrayList;
 
-/**
- * Created by artem on 01.12.15.
- */
 public class Pattern {
     ArrayList<Integer> prefabTypes = new ArrayList<Integer>();
     ArrayList<Integer> prefabProbability = new ArrayList<Integer>();

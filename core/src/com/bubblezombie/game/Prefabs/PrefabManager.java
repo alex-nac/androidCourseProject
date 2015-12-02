@@ -1,15 +1,14 @@
 package com.bubblezombie.game.Prefabs;
 
 import com.bubblezombie.game.Bubbles.Bubble;
+import com.bubblezombie.game.Bubbles.BubbleColor;
+import com.bubblezombie.game.Bubbles.BubbleType;
 import com.bubblezombie.game.Bubbles.Zombie;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Pair;
 
 import java.util.ArrayList;
 
-/**
- * Created by artem on 02.12.15.
- */
 public class PrefabManager {
     private PrefabData prefabData;
     private PatternData patternData;
@@ -61,7 +60,7 @@ public class PrefabManager {
                 for (Pair<Integer, Integer> offS : prefab) {
                     Pair<Integer, Integer> pos = getDot(rowNum, colNum, offS);
                     if (at(pos.first, pos.second)) {
-//                        ((Zombie)mesh.get(pos.first).get(pos.second)).color = SimpleBubble.UBER_BLACK;
+                        ((Zombie)mesh.get(pos.first).get(pos.second)).color = BubbleColor.UBER_BLACK;
 //                        (_mesh[pos.first][pos.second] as Zombie).canOverlay = currPattern.canOverlay;
                     }
                 }

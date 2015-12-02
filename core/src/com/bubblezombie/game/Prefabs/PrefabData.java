@@ -5,9 +5,7 @@ import com.bubblezombie.game.Util.Pair;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-/**
- * Created by artem on 02.12.15.
- */
+
 public class PrefabData {
     //container class that keeps all the prefabs array organized
 

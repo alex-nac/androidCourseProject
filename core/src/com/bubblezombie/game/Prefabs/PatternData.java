@@ -5,10 +5,6 @@ import com.bubblezombie.game.Util.Generator;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by artem on 01.12.15.
- */
 public class PatternData {
     private ArrayList<Pattern> patterns = new ArrayList<Pattern>();
 
