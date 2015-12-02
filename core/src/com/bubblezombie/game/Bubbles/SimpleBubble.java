@@ -8,22 +8,21 @@ public class SimpleBubble extends Bubble {
     public static int COLORS_AMOUNT;
 
 
-    protected int color;
+    public BubbleColor color;
 
     public void setColor(int newColor) {}
 
-    public int getColor() {
+    public BubbleColor getColor() {
         return color;
     }
     public SimpleBubble() {
-        this(0);
+        this(BubbleColor.NONE);
     }
 
-    public SimpleBubble(int color) {
+    public SimpleBubble(BubbleColor color) {
         super(BubbleType.SIMPLE);
-
-        if (color == 0) {
-            this.color = (int)Math.floor(Math.random() * SimpleBubble.COLORS_AMOUNT) + 1;
+        if (color == BubbleColor.NONE) {
+            this.color = BubbleColor.values()[(int)Math.floor(Math.random() * SimpleBubble.COLORS_AMOUNT) + 1];
         } else {
             this.color = color;
         }
