@@ -1,5 +1,6 @@
 package com.bubblezombie.game.Bubbles;
 
+import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.Util.Generator;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class Sprayer extends Bubble {
         LEFT, UP, RIGHT, DOWN;
     }
 
-//    private var _timer:Timer;  //timer for steam shooting
+    private Timer timer;  //timer for steam shooting
     private double time;  //shooting delay-time
     private ArrayList<Direction> actDir = new ArrayList<Direction>(); //active directions
 
@@ -32,7 +33,7 @@ public class Sprayer extends Bubble {
         super(BubbleType.SPRAYER);
 
 //        some random delay to prevent synchronization
-//        timer = new Timer(Math.random() * time);
+//        timer = new Timer(Generator.randDouble(time));
 //        _timer.addEventListener(Timer.TRIGGED, onTimerComplete);
 //        _time = time;
 
