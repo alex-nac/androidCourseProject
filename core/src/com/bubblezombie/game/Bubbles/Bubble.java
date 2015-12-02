@@ -1,18 +1,20 @@
 package com.bubblezombie.game.Bubbles;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.bubblezombie.game.BubbleMesh;
 
 /**
  * Created by artem on 01.12.15.
  */
-public class Bubble {
+public class Bubble extends Actor {
     private static final int MAX_TIMES_WALL_TOUCHED = 2;   //after this the bubble exploding
     private static final int LIFE_TIME = 4;                //how long does this bubble live in seconds
 
     public static final int DIAMETR = 44;          		//diametr of the bubble
     public static final double FROZEN_TIME = 0.1;   	//time to give frozen to near bubbles
-    public static Number MESH_BUBBLE_DIAMETR;
+    public static double MESH_BUBBLE_DIAMETR;
 
 //    //CallBack Types for physics engine
 //    private static var _connectedBubbleCBType:CbType = new CbType();  //assigned when bubble is connected to the mesh
@@ -27,9 +29,10 @@ public class Bubble {
     /////////////
 
     protected BubbleMesh mesh;                  	//we save ref to the mesh when connect bubble
-//    protected var _effects:Sprite = new Sprite();    	//here we place all sprites that need to be on top of zombies
-    private Number scale;						 	//bubble's movieclip scale
+    protected Sprite effects = new Sprite();    	//here we place all sprites that need to be on top of zombies
+    private double scale;						 	//bubble's movieclip scale
 //    private var _view:MovieClip = new MovieClip();   	//bubble's view
+    private Sprite view;
 //    private var _body:Body = new Body();             	//bubble's body in physics world
     private BubbleType type;                           	//bubble's type
     private Vector2 meshPosition;
@@ -40,7 +43,8 @@ public class Bubble {
 
 
 //    private var _frozenMC:MovieClip = new ice_01_mc();	//ice movieclip
-    private boolean isFrozen = false;			    //if bubble is frozened or not
+    private boolean isFrozen = false;			    //if bubble is frozen or not
+
 //    private var _iceTween:GTween;
 
     //////////////////
@@ -55,18 +59,21 @@ public class Bubble {
     }
 //    public function get space():Space { return _body.space; }
     public Vector2 getPosition() {
-        return null;
+        return view.getBoundingRectangle().getCenter(new Vector2());
 //        return body.position.copy();
     }
     public BubbleMesh getMesh() {
         return mesh;
     }
     public Vector2 getMeshPosition() {
-        return null;
-//        return mesh.GetMeshPos(this);
+        return mesh.getMeshPos(this);
     }
-//    public function get view():MovieClip { return _view; }
-//    public function get effects():Sprite { return _effects; }
+    public Sprite getView() {
+        return view;
+    }
+    public Sprite getEffects(){
+        return effects;
+    }
 //    public function get x():Number { return _body.position.x; }
 //    public function get y():Number { return _body.position.y; }
     public Number getScale() {
@@ -75,16 +82,21 @@ public class Bubble {
     public boolean isFrozen() {
         return isFrozen;
     }
-//    public function get hasBody():Boolean { return _body != null; }
+    public boolean hasBody() {
+        // if bubble visible in the screen it has physic body
+        return this.isVisible();
+    }
     public boolean wasCallbackCalled() {
         return wasCallbackCalled;
     }
     public void setCallbackCalled(boolean value) {
         wasCallbackCalled = value;
     }
-    public void setScale(Number value) {
+    public void setScale(double value) {
         scale = value;
     }
+
+
 //    public function set space(space:Space):void { _body.space = space; }
 //    public function set isSensor(value:Boolean):void { _body.shapes.at(0).sensorEnabled = value; }
 //    public function set isBullet(value:Boolean):void { _body.isBullet = value; }
@@ -97,26 +109,26 @@ public class Bubble {
 //        _body.allowMovement = true;
 //        _body.velocity = vel;
 //    }
-//
-//    public function set x(value:Number):void {
+
+    public void setX(float value) {
 //        _body.position.x = value;
-//        _view.x = value;
-//        _effects.x = value;
-//    }
-//
-//    public function set y(value:Number):void {
+        view.setX(value);
+        view.setY(value);
+    }
+
+    public void setY(float value){
 //        _body.position.y = value;
-//        _view.y = value;
-//        _effects.y = value;
-//    }
-//
-//    public function set position(pos:Vec2):void {
-//        _body.position = pos;
-//        _view.x = pos.x;
-//        _view.y = pos.y;
-//        _effects.x = pos.x;
-//        _effects.y = pos.y;
-//    }
+        view.setY(value);
+        effects.setY(value);
+    }
+
+    public void setPosition(Vector2 pos) {
+//        body.position = pos;
+        view.setX(pos.x);
+        view.setY(pos.y);
+        effects.setX(pos.x);
+        effects.setY(pos.y);
+    }
 //
 //    public function set view(sprite:MovieClip):void {
 //        for (var i:int = 0; i < _view.numChildren; i++)
@@ -195,5 +207,6 @@ public class Bubble {
     public void delete(boolean withPlane) {
 
     }
+
 
 }

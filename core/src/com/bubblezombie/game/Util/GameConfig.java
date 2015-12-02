@@ -13,21 +13,21 @@ import java.util.ArrayList;
  * Configuration class for game
  */
 public class GameConfig {
-    public Number wonTime;
+    public double wonTime;
     public int useDebugView;
     public String BGclassName;
     public String tutorClassName;
-    public Number meshBubbleDiametr;
-    public Number planeButtonTime;
+    public double meshBubbleDiametr;
+    public double planeButtonTime;
 
     //mesh config
-    public Number waveVelocity;
+    public double waveVelocity;
     public int columnsNum;
     public int rowsShowed;
     public int rowsNum;
     public int uberZombieAmount;
-    public ArrayList<Pair> sprayers = new ArrayList<Pair>();
-    public Number frozenTime;
+    public ArrayList<Pair<Integer, Double>> sprayers = new ArrayList<Pair<Integer, Double>>();
+    public double frozenTime;
     public int offset;
 
     //walls config
@@ -56,8 +56,8 @@ public class GameConfig {
 
     //popups
     public ArrayList<String> popupsVector = new ArrayList<String>();
-    public Number popupSpawnPeriond;
-    public Number popupMaxTimeOffset;
-    public Number popupLifeTime;
-    public Number popupProbability;
+    public double popupSpawnPeriond;
+    public double popupMaxTimeOffset;
+    public double popupLifeTime;
+    public double popupProbability;
 }
