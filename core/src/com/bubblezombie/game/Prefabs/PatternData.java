@@ -23,6 +23,7 @@ public class PatternData {
         Pattern pattern = new Pattern();
         pattern.firstMaxIndex = firstMaxIndex;
         pattern.prefabTypes = new ArrayList<Integer>(GetArrayFromString(prefabTypes));
+        // TODO: probability is real number
         pattern.prefabProbability = new ArrayList<Integer>(GetArrayFromString(prefabProbability));
         pattern.count = count;
         pattern.minDistance = minDistance;
