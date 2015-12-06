@@ -3,6 +3,7 @@ package com.bubblezombie.game.Prefabs;
 import com.bubblezombie.game.Util.Generator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PatternData {
@@ -10,21 +11,27 @@ public class PatternData {
 
     public PatternData() {}
 
-    private List<Integer> getArrayFromString(String str) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
+    private List<Number> getArrayFromString(String str, Class instance) {
+        ArrayList<Number> res = new ArrayList<Number>();
         String[] splited = str.split("_+");
         for (String aSplited : splited) {
-            res.add(Integer.parseInt(aSplited));
+            if (Integer.class.isInstance(instance)) {
+                res.add(Integer.parseInt(aSplited));
+            } else if (Double.class.isInstance(instance)) {
+                res.add(Double.parseDouble(aSplited));
+            }
         }
         return res;
     }
 
-    public void addPattern(int firstMaxIndex, String prefabTypes, String prefabProbability, int count, int minDistance, boolean canOverlay) {
+    public void addPattern(int firstMaxIndex, String prefabTypes, String prefabProbability,
+                           int count, int minDistance, boolean canOverlay) {
         Pattern pattern = new Pattern();
         pattern.firstMaxIndex = firstMaxIndex;
-        pattern.setPrefabTypes(new ArrayList<Integer>(getArrayFromString(prefabTypes)));
-        // TODO: probability is real number
-        pattern.setPrefabProbability(new ArrayList<Integer>(getArrayFromString(prefabProbability)));
+        pattern.setPrefabTypes(new ArrayList<Integer>(
+                Arrays.asList((Integer[]) getArrayFromString(prefabTypes, Integer.TYPE).toArray())));
+        pattern.setPrefabProbability(new ArrayList<Double>(
+                Arrays.asList((Double[]) getArrayFromString(prefabProbability, Double.TYPE).toArray())));
         pattern.count = count;
         pattern.minDistance = minDistance;
         pattern.canOverlay = canOverlay;

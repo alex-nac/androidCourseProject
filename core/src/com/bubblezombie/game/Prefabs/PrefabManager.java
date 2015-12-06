@@ -36,7 +36,7 @@ public class PrefabManager {
 
         //applying pattern to the row until we get out of bounds or get out of max prefabs count
         while (colNum < _mesh.get(0).size() && prefabCount < currPattern.count) {
-            Pair<Integer, Integer> typeAndProb = currPattern.GetNextPrefabTypeAndProb();
+            Pair<Integer, Double> typeAndProb = currPattern.getNextPrefabTypeAndProb();
             if (Math.random() > typeAndProb.second) {
                 //set next col
                 colNum += currPattern.minDistance;
