@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
@@ -22,7 +23,9 @@ public class BaseUIScreen extends BaseScreen {
     // TODO: may be protected interface?? ex: protected GetBackBtn() { if (!_isBackBtn) throw Exception("No such btn") }
     protected Button moreGamesBtn, backBtn, achievmentsBtn, restartBtn,
             resetBtn, skipLevelBtn, nextLvlBtn, lvlMapBtn;
-    protected
+
+    // area in the middle of the screen when we should put all stuff
+    protected WidgetGroup actionArea;
 
     BaseUIScreen(Game game, boolean isMoreGamesBtn, boolean isBackBtn, boolean isAchievmentsBtn, boolean isRestartBtn,
                  boolean isResetBtn, boolean isSkipLevelBtn, boolean isNextLvlBtn, boolean isLvlMapBtn) {
@@ -41,6 +44,9 @@ public class BaseUIScreen extends BaseScreen {
     public void show() {
         Image BGsprite = new Image(new Texture(Gdx.files.internal("background/menu.png")));
         stage.addActor(BGsprite);
+
+        actionArea = new WidgetGroup();
+        stage.addActor(actionArea);
 
         // TODO: remember - we should have only one background for button
 
@@ -61,6 +67,17 @@ public class BaseUIScreen extends BaseScreen {
 
         // level map button
         if (_isLvlMapBtn) {
+            tbs = new TextButton.TextButtonStyle();
+            tbs.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("background/UI_buttons/but_menu.png"))));
+            Button lvlMapBtn = new Button(tbs);
+            lvlMapBtn.setPosition(103.0f, 7.0f);
+            lvlMapBtn.setHeight(63.0f);
+            lvlMapBtn.setWidth(63.0f);
+            stage.addActor(lvlMapBtn);
+        }
+
+        //back button
+        if (_isBackBtn) {
             tbs = new TextButton.TextButtonStyle();
             tbs.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("background/UI_buttons/but_menu.png"))));
             Button lvlMapBtn = new Button(tbs);

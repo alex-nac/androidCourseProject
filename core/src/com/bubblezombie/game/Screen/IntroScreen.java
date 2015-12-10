@@ -15,7 +15,7 @@ import com.bubblezombie.game.BubbleZombieGame;
  *  Intro state class, the game intro is shown after the PLAY button is pressed
  */
 
-public class IntroScreen extends BaseScreen {
+public class IntroScreen extends BaseUIScreen {
 
     IntroScreen(Game game) {
         super(game);
