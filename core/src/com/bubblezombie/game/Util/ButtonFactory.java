@@ -15,6 +15,8 @@ public class ButtonFactory {
         TextButton.TextButtonStyle tbs = new TextButton.TextButtonStyle();
         tbs.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(backgroundPath))));
         TextButton textButton = new TextButton(buttonText, tbs);
+        textButton.setHeight(height);
+        textButton.setWidth(width);
         if (isShaded) {
 
         }
@@ -26,6 +28,8 @@ public class ButtonFactory {
         ImageButton.ImageButtonStyle ibs = new ImageButton.ImageButtonStyle();
         ibs.imageUp =  new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(buttonImagePath))));
         ImageButton imageButton = new ImageButton(ibs);
+        imageButton.setHeight(height);
+        imageButton.setWidth(width);
         imageButton.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(backgroundPath)))));
         if (isShaded) {
 
