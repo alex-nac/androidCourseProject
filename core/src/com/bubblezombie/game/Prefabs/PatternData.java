@@ -11,17 +11,23 @@ public class PatternData {
 
     public PatternData() {}
 
-    private List<Number> getArrayFromString(String str, Class instance) {
-        ArrayList<Number> res = new ArrayList<Number>();
+    private Number[] getArrayFromString(String str, boolean prob) {
         String[] splited = str.split("_+");
-        for (String aSplited : splited) {
-            if (Integer.class.isInstance(instance)) {
-                res.add(Integer.parseInt(aSplited));
-            } else if (Double.class.isInstance(instance)) {
-                res.add(Double.parseDouble(aSplited));
+        Number[] parsed = null;
+        // TODO: это говнокод и копипаста
+        if (!prob) {
+            parsed = new Integer[splited.length];
+        } else {
+            parsed = new Double[splited.length];
+        }
+        for (int i = 0; i < splited.length; ++i) {
+            if (!prob) {
+                parsed[i] = Integer.parseInt(splited[i]);
+            } else {
+                parsed[i] = Double.parseDouble(splited[i]);
             }
         }
-        return res;
+        return parsed;
     }
 
     public void addPattern(int firstMaxIndex, String prefabTypes, String prefabProbability,
@@ -29,9 +35,9 @@ public class PatternData {
         Pattern pattern = new Pattern();
         pattern.firstMaxIndex = firstMaxIndex;
         pattern.setPrefabTypes(new ArrayList<Integer>(
-                Arrays.asList((Integer[]) getArrayFromString(prefabTypes, Integer.TYPE).toArray())));
+                Arrays.asList((Integer[]) getArrayFromString(prefabTypes, false))));
         pattern.setPrefabProbability(new ArrayList<Double>(
-                Arrays.asList((Double[]) getArrayFromString(prefabProbability, Double.TYPE).toArray())));
+                Arrays.asList((Double[]) getArrayFromString(prefabProbability, true))));
         pattern.count = count;
         pattern.minDistance = minDistance;
         pattern.canOverlay = canOverlay;
