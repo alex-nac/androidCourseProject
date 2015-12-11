@@ -12,11 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.Util.ButtonFactory;
 
-
-/**
- * Created by artem on 12.11.15.
- */
 public class MainMenuScreen extends BaseScreen {
     private static final String TAG = "MainMenuScreen";
 

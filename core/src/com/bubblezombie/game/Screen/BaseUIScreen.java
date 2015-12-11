@@ -3,6 +3,7 @@ package com.bubblezombie.game.Screen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -67,10 +68,12 @@ public class BaseUIScreen extends BaseScreen {
         // buttons:
 
         TextButton.TextButtonStyle tbs;
+        BitmapFont _europeExtBold = new BitmapFont(Gdx.files.internal("fonts/sample_font.fnt"));
 
         // more games button
         if (_isMoreGamesBtn) {
-            Button moreGamesBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png", "MORE GAMES", _isMoreGamesBtnShaded, 45.0f, 45.0f);
+            Button moreGamesBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
+                    "MORE GAMES", _europeExtBold, 1.0f, _isMoreGamesBtnShaded, 45.0f, 45.0f);
             moreGamesBtn.setPosition(17.0f, 415.0f);
             stage.addActor(moreGamesBtn);
         }
@@ -93,7 +96,8 @@ public class BaseUIScreen extends BaseScreen {
 
         // achievments button
         if (_isAchievmentsBtn) {
-            Button achBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png", "ACH", _isAchievmentsBtnShaded, 63.0f, 63.0f);
+            Button achBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
+                    "ACH", _europeExtBold, 1.0f, _isAchievmentsBtnShaded, 63.0f, 63.0f);
             achBtn.setPosition(288.5f, 7.0f);
             stage.addActor(achBtn);
         }
@@ -125,7 +129,7 @@ public class BaseUIScreen extends BaseScreen {
         // reset button
         if (_isResetBtn) {
             Button resetBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
-                    "RESET", _isResetBtnShaded, 63.0f, 63.0f);
+                    "RESET", _europeExtBold, 1.0f, _isResetBtnShaded, 63.0f, 63.0f);
             resetBtn.setPosition(469.0f, 7.0f);
             stage.addActor(resetBtn);
         }
