@@ -36,7 +36,7 @@ public class MainMenuScreen extends BaseScreen {
         super.show();
 
         // music
-        _backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/!ost/menu.mp3"));
+        _backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/ost/menu.mp3"));
         _backgroundMusic.setLooping(true);
         //_backgroundMusic.play();
 
