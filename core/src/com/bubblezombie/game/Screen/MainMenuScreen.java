@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bubblezombie.game.BubbleZombieGame;
@@ -18,7 +18,7 @@ public class MainMenuScreen extends BaseScreen {
     private static final String TAG = "MainMenuScreen";
 
     private Image _mainMenuBGD;
-    private TextButton _newGameBtn;
+    private Button _newGameBtn;
 
     private BitmapFont _europeExtBold;
 
@@ -45,11 +45,7 @@ public class MainMenuScreen extends BaseScreen {
         _mainMenuBGD = new Image(new Texture(Gdx.files.internal("background/mainMenuBGD.png")));
 
         // buttons
-        TextButton.TextButtonStyle tbs = new TextButton.TextButtonStyle();
-        tbs.font = _europeExtBold;
-        tbs.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("background/but_main_play.png"))));
-
-        _newGameBtn = new TextButton("PLAY", tbs);
+        _newGameBtn = ButtonFactory.getTextButton("background/but_main_play.png", "PLAY", _europeExtBold, 3.0f, false, 0.0f, 0.0f);
         _newGameBtn.setPosition((BubbleZombieGame.width - _newGameBtn.getWidth()) / 2,
                 (BubbleZombieGame.height - _newGameBtn.getHeight()) / 2);
         _newGameBtn.addListener(new ClickListener() {

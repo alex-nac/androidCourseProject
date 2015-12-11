@@ -73,7 +73,7 @@ public class BaseUIScreen extends BaseScreen {
         // more games button
         if (_isMoreGamesBtn) {
             Button moreGamesBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
-                    "MORE GAMES", _europeExtBold, 1.0f, _isMoreGamesBtnShaded, 45.0f, 45.0f);
+                    "MORE\nGAMES", _europeExtBold, 0.5f, _isMoreGamesBtnShaded, 45.0f, 45.0f);
             moreGamesBtn.setPosition(17.0f, 415.0f);
             stage.addActor(moreGamesBtn);
         }

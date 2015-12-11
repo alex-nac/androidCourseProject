@@ -22,8 +22,9 @@ public class ButtonFactory {
         tbs.font.getData().setScale(fontScale);
 
         TextButton textButton = new TextButton(buttonText, tbs);
-        textButton.setHeight(height);
-        textButton.setWidth(width);
+
+        if (height != 0.0f) textButton.setHeight(height);
+        if (width != 0.0f) textButton.setWidth(width);
 
         if (isShaded) {
             textButton.addActor(new Image(new Texture(Gdx.files.internal("background/UI_buttons/btn_shade.png"))));
