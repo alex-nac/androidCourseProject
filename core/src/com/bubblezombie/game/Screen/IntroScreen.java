@@ -15,6 +15,7 @@ public class IntroScreen extends BaseUIScreen {
 
     IntroScreen(Game game) {
         super(game);
+        _isResetBtn = true;
     }
 
     @Override
