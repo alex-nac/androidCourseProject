@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.bubblezombie.game.Util.ButtonFactory;
 
 /**
  * Created by Alex on 7/12/15.
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * ctor take booleans as a parameters in order to determine
  * which buttons we should display
  */
+
 public class BaseUIScreen extends BaseScreen {
     private boolean _isMoreGamesBtn, _isBackBtn, _isAchievmentsBtn, _isRestartBtn,
             _isResetBtn, _isSkipLevelBtn, _isNextLvlBtn, _isLvlMapBtn;
@@ -56,23 +58,16 @@ public class BaseUIScreen extends BaseScreen {
 
         // more games button
         if (_isMoreGamesBtn) {
-            tbs = new TextButton.TextButtonStyle();
-            tbs.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("background/UI_buttons/but_mg_level_map.png"))));
-            Button moreGamesBtn = new Button(tbs);
+            Button moreGamesBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png", "MORE GAMES", false, 45.0f, 45.0f);
             moreGamesBtn.setPosition(17.0f, 415.0f);
-            moreGamesBtn.setHeight(45.0f);
-            moreGamesBtn.setWidth(45.0f);
             stage.addActor(moreGamesBtn);
         }
 
         // level map button
         if (_isLvlMapBtn) {
-            tbs = new TextButton.TextButtonStyle();
-            tbs.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("background/UI_buttons/but_menu.png"))));
-            Button lvlMapBtn = new Button(tbs);
+            Button lvlMapBtn = ButtonFactory.getImageButton("background/UI_buttons/btn_background.png",
+                    "background/UI_buttons/btn_menu.png", false, 63.0f, 63.0f);
             lvlMapBtn.setPosition(103.0f, 7.0f);
-            lvlMapBtn.setHeight(63.0f);
-            lvlMapBtn.setWidth(63.0f);
             stage.addActor(lvlMapBtn);
         }
 
