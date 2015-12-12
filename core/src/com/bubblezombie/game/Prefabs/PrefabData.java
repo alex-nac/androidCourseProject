@@ -10,16 +10,18 @@ public class PrefabData {
     //container class that keeps all the prefabs array organized
 
         //container for all arrays
-        private ArrayList<ArrayList<Pair<Integer, Integer>>> figures = new ArrayList<ArrayList<Pair<Integer, Integer>>>();
+        private ArrayList<ArrayList<Pair<Integer, Integer>>> _figures = new ArrayList<ArrayList<Pair<Integer, Integer>>>();
 
         public  PrefabData() {}
 
         //adding new array from array of coords strings like "-1_2"
-        public void AddArrFromCoordArr(ArrayList<String> coords) throws PrefabException {
+        public void addArrFromCoordArr(ArrayList<String> coords) throws PrefabException {
+
+            // this is regex pattern class
             Pattern pattern = Pattern.compile("(\\-?\\d+)_(\\-?\\d+)");
             Matcher matcher;
             ArrayList<Pair<Integer, Integer>> coordsVec = new ArrayList<Pair<Integer, Integer>>();
-            for  (String str : coords) {
+            for (String str : coords) {
                 matcher = pattern.matcher(str);
                 if (!matcher.find()) {
                     throw new PrefabException("Wrong prefab format");
@@ -28,12 +30,12 @@ public class PrefabData {
                 int y = Integer.parseInt(matcher.group(2));
                 coordsVec.add(new Pair<Integer, Integer>(x, y));
             }
-            figures.add(coordsVec);
+            _figures.add(coordsVec);
         }
 
         //getting array
-        public ArrayList<Pair<Integer, Integer>> GetPrefab(int index) {
-            return figures.get(index);
+        public ArrayList<Pair<Integer, Integer>> getPrefab(int index) {
+            return _figures.get(index);
         }
 
 }

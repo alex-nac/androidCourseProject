@@ -14,9 +14,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created by artem on 02.12.15.
- */
 public class MeshPattern {
     private ArrayList<ArrayList<Bubble>> pattern= new ArrayList<ArrayList<Bubble>>();
     private PrefabManager prefabManager;
@@ -26,7 +23,7 @@ public class MeshPattern {
     private double waveVel;
     private int uberZombieAmount;
     private boolean isLastRowOffseted;
-    private ArrayList<Pair<Integer, Double>> sprayers;
+    private ArrayList<Pair<Integer, Integer>> sprayers;
     private double frozenTime;
 
     public int getColumsNum() {
