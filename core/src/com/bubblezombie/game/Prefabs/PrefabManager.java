@@ -2,7 +2,6 @@ package com.bubblezombie.game.Prefabs;
 
 import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Bubbles.BubbleColor;
-import com.bubblezombie.game.Bubbles.BubbleType;
 import com.bubblezombie.game.Bubbles.Zombie;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Pair;
@@ -10,25 +9,25 @@ import com.bubblezombie.game.Util.Pair;
 import java.util.ArrayList;
 
 public class PrefabManager {
-    private PrefabData prefabData;
-    private PatternData patternData;
-    private ArrayList<ArrayList<Bubble>> mesh;
+    private PrefabData _prefabData;
+    private PatternData _patternData;
+    private ArrayList<ArrayList<Bubble>> _mesh;
 
-    private boolean isFirstRowOffseted;
+    private boolean _isFirstRowOffseted;
 
     public PrefabManager(GameConfig cfg) {
-        this.prefabData = cfg.prefabData;
-        this.patternData = cfg.patternData;
+        this._prefabData = cfg.prefabData;
+        this._patternData = cfg.patternData;
     }
 
     public void init(boolean islastRowOffseted, ArrayList<ArrayList<Bubble>> mesh) {
-        this.mesh = mesh;
+        this._mesh = mesh;
 
-        isFirstRowOffseted = mesh.size() % 2 == 1 ? islastRowOffseted : !islastRowOffseted;
+        _isFirstRowOffseted = mesh.size() % 2 == 1 ? islastRowOffseted : !islastRowOffseted;
     }
 
     public void applyPattern(int rowNum) {
-        Pattern currPattern = patternData.GetRandomPattern();
+        Pattern currPattern = _patternData.getRandomPattern();
         if (currPattern == null) {
             return;
         }
@@ -36,15 +35,15 @@ public class PrefabManager {
         int prefabCount = 0;
 
         //applying pattern to the row until we get out of bounds or get out of max prefabs count
-        while (colNum < mesh.get(0).size() && prefabCount < currPattern.count) {
-            Pair<Integer, Integer> typeAndProb = currPattern.GetNextPrefabTypeAndProb();
+        while (colNum < _mesh.get(0).size() && prefabCount < currPattern.count) {
+            Pair<Integer, Double> typeAndProb = currPattern.getNextPrefabTypeAndProb();
             if (Math.random() > typeAndProb.second) {
                 //set next col
                 colNum += currPattern.minDistance;
                 continue;
             }
 
-            ArrayList<Pair<Integer, Integer>> prefab = prefabData.GetPrefab(typeAndProb.first);
+            ArrayList<Pair<Integer, Integer>> prefab = _prefabData.getPrefab(typeAndProb.first);
 
             //checking if prefab can be applied
             boolean canBeApplied = true;
@@ -60,8 +59,8 @@ public class PrefabManager {
                 for (Pair<Integer, Integer> offS : prefab) {
                     Pair<Integer, Integer> pos = getDot(rowNum, colNum, offS);
                     if (at(pos.first, pos.second)) {
-                        ((Zombie)mesh.get(pos.first).get(pos.second)).color = BubbleColor.UBER_BLACK;
-//                        (_mesh[pos.first][pos.second] as Zombie).canOverlay = currPattern.canOverlay;
+                        ((Zombie)_mesh.get(pos.first).get(pos.second)).color = BubbleColor.UBER_BLACK;
+                        ((Zombie)_mesh.get(pos.first).get(pos.second)).canOverlay = currPattern.canOverlay;
                     }
                 }
             }
@@ -78,18 +77,18 @@ public class PrefabManager {
      * @return true, if bubble exist or not
      */
     private boolean at(int row, int col) {
-        return row >= 0 && row < this.mesh.size() && col >= 0 && col < this.mesh.get(0).size();
+        return row >= 0 && row < this._mesh.size() && col >= 0 && col < this._mesh.get(0).size();
     }
 
     /**
      * Getting appropriate dot with offset
-     * @param row
-     * @param col
+     * @param row needed row
+     * @param col needed column
      * @param offset
      * @return
      */
     private Pair<Integer, Integer> getDot(int row, int col, Pair<Integer, Integer> offset) {
-        boolean isCurrRowOffseted = row % 2 == 0 ? isFirstRowOffseted : !isFirstRowOffseted;
+        boolean isCurrRowOffseted = row % 2 == 0 ? _isFirstRowOffseted : !_isFirstRowOffseted;
 
         int delta = 0;
         //if we have changed row's offset
@@ -109,7 +108,7 @@ public class PrefabManager {
      * @return
      */
     private boolean isOverlayable(Pair<Integer, Integer> pos) {
-        return !at(pos.first, pos.second) || ((Zombie) mesh.get(pos.first).get(pos.second)).canOverlay;
+        return !at(pos.first, pos.second) || ((Zombie) _mesh.get(pos.first).get(pos.second)).canOverlay;
     }
 
 }

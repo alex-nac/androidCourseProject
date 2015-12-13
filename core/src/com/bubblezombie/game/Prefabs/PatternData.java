@@ -3,41 +3,54 @@ package com.bubblezombie.game.Prefabs;
 import com.bubblezombie.game.Util.Generator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PatternData {
-    private ArrayList<Pattern> patterns = new ArrayList<Pattern>();
+    private ArrayList<Pattern> _patterns = new ArrayList<Pattern>();
 
     public PatternData() {}
 
-    private List<Integer> GetArrayFromString(String str) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
+    private Number[] getArrayFromString(String str, boolean prob) {
         String[] splited = str.split("_+");
-        for (String aSplited : splited) {
-            res.add(Integer.parseInt(aSplited));
+        Number[] parsed = null;
+        // TODO: это говнокод и копипаста
+        if (!prob) {
+            parsed = new Integer[splited.length];
+        } else {
+            parsed = new Double[splited.length];
         }
-        return res;
+        for (int i = 0; i < splited.length; ++i) {
+            if (!prob) {
+                parsed[i] = Integer.parseInt(splited[i]);
+            } else {
+                parsed[i] = Double.parseDouble(splited[i]);
+            }
+        }
+        return parsed;
     }
 
-    public void AddPattern(int firstMaxIndex, String prefabTypes, String prefabProbability, int count, int minDistance, boolean canOverlay) {
+    public void addPattern(int firstMaxIndex, String prefabTypes, String prefabProbability,
+                           int count, int minDistance, boolean canOverlay) {
         Pattern pattern = new Pattern();
         pattern.firstMaxIndex = firstMaxIndex;
-        pattern.prefabTypes = new ArrayList<Integer>(GetArrayFromString(prefabTypes));
-        // TODO: probability is real number
-        pattern.prefabProbability = new ArrayList<Integer>(GetArrayFromString(prefabProbability));
+        pattern.setPrefabTypes(new ArrayList<Integer>(
+                Arrays.asList((Integer[]) getArrayFromString(prefabTypes, false))));
+        pattern.setPrefabProbability(new ArrayList<Double>(
+                Arrays.asList((Double[]) getArrayFromString(prefabProbability, true))));
         pattern.count = count;
         pattern.minDistance = minDistance;
         pattern.canOverlay = canOverlay;
 
-        patterns.add(pattern);
+        _patterns.add(pattern);
     }
 
-    public Pattern GetRandomPattern() {
-        if (patterns.size() == 0) {
+    public Pattern getRandomPattern() {
+        if (_patterns.size() == 0) {
             return null;
         }
-        int ind = Generator.rand(patterns.size());
-        return patterns.get(ind);
+        int ind = Generator.rand(_patterns.size());
+        return _patterns.get(ind);
     }
 
 }
