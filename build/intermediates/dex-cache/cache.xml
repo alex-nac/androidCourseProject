@@ -5,43 +5,8 @@
         jar="/home/artem/study/android/androidCourseProject/core/build/libs/core-1.0.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="3465016421193b2f826934b54eeffa60fa77af51">
+        sha1="92fa112ba7a8b5285afe78f57b3d24fc35265a8e">
         <dex dex="/home/artem/study/android/androidCourseProject/android/build/intermediates/pre-dexed/debug/core-1.0-301bf6d6b68a7f081173e50e59a561b79e430854.jar" />
-    </item>
-    <item
-        jar="/home/artem/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-controllers/1.7.1/74f9953d61110e1b80a01a6bd6dcd057cdfe0a91/gdx-controllers-1.7.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="74f9953d61110e1b80a01a6bd6dcd057cdfe0a91">
-        <dex dex="/home/artem/study/android/androidCourseProject/android/build/intermediates/pre-dexed/debug/gdx-controllers-1.7.1-c03ff2f8fff150b9014368414cd9d1d9352e655d.jar" />
-    </item>
-    <item
-        jar="/home/artem/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-controllers-android/1.7.1/28d5514b1b968a056e37239d1bceb1800a453f3e/gdx-controllers-android-1.7.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="28d5514b1b968a056e37239d1bceb1800a453f3e">
-        <dex dex="/home/artem/study/android/androidCourseProject/android/build/intermediates/pre-dexed/debug/gdx-controllers-android-1.7.1-edb1ab1dda45baa0a4bb57a28311295aedb57ac7.jar" />
-    </item>
-    <item
-        jar="/home/artem/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-android/1.7.1/454871d4783564f17959bf9247660e7f56ecc4ab/gdx-backend-android-1.7.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="454871d4783564f17959bf9247660e7f56ecc4ab">
-        <dex dex="/home/artem/study/android/androidCourseProject/android/build/intermediates/pre-dexed/debug/gdx-backend-android-1.7.1-0004548f3d1fd6602bbc42385e94fedd4b1b065c.jar" />
-    </item>
-    <item
-        jar="/home/artem/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.7.1/2179cc613447c297623a4a6d2ba6692c3aaff804/gdx-1.7.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="2179cc613447c297623a4a6d2ba6692c3aaff804">
-        <dex dex="/home/artem/study/android/androidCourseProject/android/build/intermediates/pre-dexed/debug/gdx-1.7.1-72a707640cda375e75124eab7309db44df7b6165.jar" />
-    </item>
-    <item
-        jar="/home/artem/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.7.1/fd23897393900f8f888222795e3229eff600fb3d/gdx-box2d-1.7.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="fd23897393900f8f888222795e3229eff600fb3d">
-        <dex dex="/home/artem/study/android/androidCourseProject/android/build/intermediates/pre-dexed/debug/gdx-box2d-1.7.1-61943eee6f539171b9f719f51cf3534264f7db97.jar" />
     </item>
 
 </items>

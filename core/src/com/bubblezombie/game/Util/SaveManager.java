@@ -1,37 +1,19 @@
 package com.bubblezombie.game.Util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 public class SaveManager {
-    private static TreeMap<String, Object> _sharedData;
-    private static String _fileName;
+    private static HashMap<String, Object> _sharedData;
+    private static Preferences preferences;
     public SaveManager() {}
 
     public static void initialize(String path) {
-        _fileName = path;
-        try {
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(_fileName));
-            _sharedData =  (TreeMap<String, Object>)ois.readObject();
-        } catch (FileNotFoundException e) {
-            // if file doesn't exists - create it
-            _sharedData = new TreeMap<String, Object>();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            checkSharedData();
-        }
+        preferences = Gdx.app.getPreferences(path);
+        _sharedData = (HashMap<String, Object>) preferences.get();
+        checkSharedData();
     }
     public static <T> T getSharedData(String key) {
         T res = null;
@@ -53,11 +35,7 @@ public class SaveManager {
     }
     public static void saveSharedData() {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(_fileName));
-            oos.writeObject(_sharedData);
-        } catch (IOException e) {
-            Gdx.app.log(_fileName, " - couldn't open this file for writting (or something else)");
-            e.printStackTrace();
+            preferences.put(_sharedData).flush();
         } catch (NullPointerException e) {
             Gdx.app.log("data", " wasn't initialized");
             e.printStackTrace();
