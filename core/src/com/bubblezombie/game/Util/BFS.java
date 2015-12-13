@@ -78,40 +78,40 @@ public class BFS {
      * and returning the bubbles that isn't connected to the root
      * @return ArrayList of unrooted bubbles
      */
-        public static ArrayList<Bubble> getUnrootedBubbles() {
-            ArrayList<Bubble> bubbles = new ArrayList<Bubble>();     //bubbles for combo
-            ArrayList<ArrayList<Boolean>> boolMesh = getBoolMesh();  //used edges
+    public static ArrayList<Bubble> getUnrootedBubbles() {
+        ArrayList<Bubble> bubbles = new ArrayList<Bubble>();     //bubbles for combo
+        ArrayList<ArrayList<Boolean>> boolMesh = getBoolMesh();  //used edges
 
-            for (int j = 0; j < _mesh.getColumnsNum(); j++) {
-                if (_mesh.at(0, j) == null || boolMesh.get(0).get(j)) {
-                    continue;
-                }
+        for (int j = 0; j < _mesh.getColumnsNum(); j++) {
+            if (_mesh.at(0, j) == null || boolMesh.get(0).get(j)) {
+                continue;
+            }
 
-                ArrayList<Vector2> queue = new ArrayList<Vector2>();
-                queue.add(new Vector2(0, j));
-                boolMesh.get(0).set(j, true);
+            ArrayList<Vector2> queue = new ArrayList<Vector2>();
+            queue.add(new Vector2(0, j));
+            boolMesh.get(0).set(j, true);
 
-                while(queue.size() != 0) {
-                    Vector2 v = queue.remove(0);
-                    for (Bubble bubble : _mesh.getBubblesAround(_mesh.at((int)v.x, (int)v.y))) {
-                        Vector2 point = bubble.getMeshPosition();
-                        if (!boolMesh.get((int)point.x).get((int)point.y)) {
-                            queue.add(point);
-                            boolMesh.get((int)point.x).set((int)point.y, true);
-                        }
+            while(queue.size() != 0) {
+                Vector2 v = queue.remove(0);
+                for (Bubble bubble : _mesh.getBubblesAround(_mesh.at((int)v.x, (int)v.y))) {
+                    Vector2 point = bubble.getMeshPosition();
+                    if (!boolMesh.get((int)point.x).get((int)point.y)) {
+                        queue.add(point);
+                        boolMesh.get((int)point.x).set((int)point.y, true);
                     }
                 }
             }
-
-            for (int i = 0 ; i < boolMesh.size(); i++) {
-                for (int j = 0; j < boolMesh.get(i).size(); j++) {
-                    if (!boolMesh.get(i).get(j) && _mesh.at(i, j) != null) {
-                        bubbles.add(_mesh.at(i, j));
-                    }
-                }
-            }
-            return bubbles;
         }
+
+        for (int i = 0 ; i < boolMesh.size(); i++) {
+            for (int j = 0; j < boolMesh.get(i).size(); j++) {
+                if (!boolMesh.get(i).get(j) && _mesh.at(i, j) != null) {
+                    bubbles.add(_mesh.at(i, j));
+                }
+            }
+        }
+        return bubbles;
+    }
 
     /**
      * @return empty mesh that show us if we were on an edge or not

@@ -13,6 +13,11 @@ public class FontFactory implements Disposable {
         _generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
     }
 
+    /**
+     * @param type font style determined in FontType enum
+     * @param size size of the font to be returned in pixels
+     * @return a raster generated font from a vector-font
+     */
     public BitmapFont getFont(FontType type, int size) {
         FreeTypeFontParameter param = type.getParam();
         param.size = size;

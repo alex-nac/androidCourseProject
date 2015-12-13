@@ -1,7 +1,9 @@
 package com.bubblezombie.game.Util;
 
 /**
- * Created by artem on 01.12.15.
+ * just a simple generic pair
+ * @param <First>
+ * @param <Second>
  */
 public class Pair<First, Second> {
     public First first;

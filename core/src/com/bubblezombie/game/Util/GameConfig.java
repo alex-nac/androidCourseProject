@@ -63,6 +63,11 @@ public class GameConfig {
     public int popupLifeTime;
     public double popupProbability;
 
+    /**
+     * constructor reads all level parameters, and seeds to generate mesh
+     * @param data file to be parsed
+     * @throws IOException
+     */
     public GameConfig(FileHandle data) throws IOException {
         // TODO: if xml file doesn't contain at least one of these fields - crashes (but shouldn't)
         XmlReader reader = new XmlReader();
