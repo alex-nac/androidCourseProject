@@ -20,7 +20,7 @@ public class ButtonFactory {
         tbs.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(backgroundPath))));
         tbs.font = font;
         tbs.font.getData().setScale(fontScale);
-
+        tbs.font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextButton textButton = new TextButton(buttonText, tbs);
 
         if (height != 0.0f) textButton.setHeight(height);
