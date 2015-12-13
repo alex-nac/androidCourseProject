@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Util.ButtonFactory;
+import com.bubblezombie.game.Util.FontFactory;
 
 public class MainMenuScreen extends BaseScreen {
     private static final String TAG = "MainMenuScreen";
@@ -31,7 +32,6 @@ public class MainMenuScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-
         // music
         _backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/ost/menu.mp3"));
         _backgroundMusic.setLooping(true);
@@ -39,13 +39,14 @@ public class MainMenuScreen extends BaseScreen {
 
         // TODO: vector fonts
         // fonts
-        _europeExtBold = new BitmapFont(Gdx.files.internal("fonts/sample_font.fnt"));
+        _europeExtBold = BubbleZombieGame.factory.getFont(FontFactory.FontType.DEFAULT, 40);
+        //new BitmapFont(Gdx.files.internal("fonts/sample_font.fnt"));
 
         // images
         _mainMenuBGD = new Image(new Texture(Gdx.files.internal("background/mainMenuBGD.png")));
 
         // buttons
-        _newGameBtn = ButtonFactory.getTextButton("background/but_main_play.png", "PLAY", _europeExtBold, 3.0f, false, 0.0f, 0.0f);
+        _newGameBtn = ButtonFactory.getTextButton("background/but_main_play.png", "PLAY", _europeExtBold, 1.0f, false, 0.0f, 0.0f);
         _newGameBtn.setPosition((BubbleZombieGame.width - _newGameBtn.getWidth()) / 2,
                 (BubbleZombieGame.height - _newGameBtn.getHeight()) / 2);
         _newGameBtn.addListener(new ClickListener() {
