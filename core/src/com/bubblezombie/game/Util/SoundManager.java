@@ -2,8 +2,9 @@ package com.bubblezombie.game.Util;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.Disposable;
 
-public class SoundManager {
+public class SoundManager implements Disposable {
 
     public SoundManager() {
 
@@ -32,4 +33,8 @@ public class SoundManager {
         return true;
     }
 
+    @Override
+    public void dispose() {
+
+    }
 }

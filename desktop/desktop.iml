@@ -34,6 +34,7 @@
     <orderEntry type="library" exported="" name="gdx-controllers-desktop-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-controllers-platform-1.7.1-natives-desktop" level="project" />
     <orderEntry type="library" exported="" name="gdx-tools-1.7.1" level="project" />
+    <orderEntry type="library" exported="" name="gdx-freetype-platform-1.7.1-natives-desktop" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-controllers-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-2.9.2" level="project" />
