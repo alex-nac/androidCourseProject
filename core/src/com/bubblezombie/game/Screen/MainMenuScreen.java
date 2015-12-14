@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Util.ButtonFactory;
 import com.bubblezombie.game.Util.FontFactory;
+import com.bubblezombie.game.Util.FontFactory.FontType;
 
 public class MainMenuScreen extends BaseScreen {
     private static final String TAG = "MainMenuScreen";
@@ -39,8 +40,7 @@ public class MainMenuScreen extends BaseScreen {
 
         // TODO: vector fonts
         // fonts
-        _europeExtBold = BubbleZombieGame.factory.getFont(FontFactory.FontType.DEFAULT, 40);
-        //new BitmapFont(Gdx.files.internal("fonts/sample_font.fnt"));
+        _europeExtBold = FontFactory.getEuropeExt(FontType.BUTTON, 40);
 
         // images
         _mainMenuBGD = new Image(new Texture(Gdx.files.internal("background/mainMenuBGD.png")));
