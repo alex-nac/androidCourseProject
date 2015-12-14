@@ -12,6 +12,7 @@ import com.bubblezombie.game.BubbleZombieGame;
  */
 
 public class IntroScreen extends BaseUIScreen {
+    private static final String TAG = "IntroScreen";
 
     IntroScreen(Game game) {
         super(game);
@@ -30,7 +31,7 @@ public class IntroScreen extends BaseUIScreen {
                 (BubbleZombieGame.height - introContent.getHeight()) / 2);
         stage.addActor(introContent);
 
-
+        Gdx.app.log(TAG, "showed");
     }
 
     @Override

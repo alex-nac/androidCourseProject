@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bubblezombie.game.Util.ButtonFactory;
+import com.bubblezombie.game.Util.FontFactory;
 
 /**
  * Created by Alex on 7/12/15.
@@ -49,6 +50,8 @@ public class BaseUIScreen extends BaseScreen {
     // area in the middle of the screen when we should put all stuff
     protected WidgetGroup actionArea;
 
+    private BitmapFont _europeExtBoldSize10;
+
     BaseUIScreen(Game game) {
         super(game);
     }
@@ -69,11 +72,12 @@ public class BaseUIScreen extends BaseScreen {
 
         TextButton.TextButtonStyle tbs;
         BitmapFont _europeExtBold = new BitmapFont(Gdx.files.internal("fonts/sample_font.fnt"));
+        _europeExtBoldSize10 = FontFactory.getEuropeExt(FontFactory.FontType.BUTTON, 15);
 
         // more games button
         if (_isMoreGamesBtn) {
             Button moreGamesBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
-                    "MORE\nGAMES", _europeExtBold, 0.5f, _isMoreGamesBtnShaded, 45.0f, 45.0f);
+                    "MORE\nGAMES", _europeExtBoldSize10, 0.5f, _isMoreGamesBtnShaded, 45.0f, 45.0f);
             moreGamesBtn.setPosition(17.0f, 415.0f);
             stage.addActor(moreGamesBtn);
         }
