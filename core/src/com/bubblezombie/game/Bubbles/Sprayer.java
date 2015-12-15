@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by artem on 02.12.15.
  */
-/*
+   /*
 	* Sprayer class forces zombie around to become uzer-zombie
 	* It have 4 guns, guns numerated [0..3] starting from left gun
 	* Amount of active guns are set in constructor, we randomly

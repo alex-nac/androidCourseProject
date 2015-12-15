@@ -1,6 +1,9 @@
 package com.bubblezombie.game.Screen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Util.SaveManager;
 
 /**
@@ -97,5 +100,36 @@ public class LevelSelectScreen extends BaseUIScreen {
 
     LevelSelectScreen(Game game) {
         super(game);
+        _isMoreGamesBtn = true;
+        _isLvlMapBtn = true;
+        _isAchievmentsBtn = true;
+        _isResetBtn = true;
+    }
+
+    @Override
+    public void show() {
+        super.show();
+
+        SaveManager.setSharedData("level1_opened", true);
+
+        //open all levels if we have this cheat
+        if (ALL_LEVELS_OPENED)
+            for (int k = 2; k <= LEVELS_AMOUNT; k++)
+                SaveManager.setSharedData("level" + k + "_opened", true);
+
+        Image levelmapContent = new Image(new Texture("background/screens/levelmap_content.png"));
+        levelmapContent.setPosition((BubbleZombieGame.width - levelmapContent.getWidth()) / 2,
+                (BubbleZombieGame.height - levelmapContent.getHeight()) / 2);
+        stage.addActor(levelmapContent);
+    }
+
+    @Override
+    public void dispose() {
+        moreGamesBtn.clearListeners();
+        lvlMapBtn.clearListeners();
+        achievmentsBtn.clearListeners();
+        resetBtn.clearListeners();
+
+        super.dispose();
     }
 }
