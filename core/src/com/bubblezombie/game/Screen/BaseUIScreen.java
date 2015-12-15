@@ -77,7 +77,7 @@ public class BaseUIScreen extends BaseScreen {
         // more games button
         if (_isMoreGamesBtn) {
             moreGamesBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
-                    "MORE\nGAMES", _europeExtBoldSize10, 0.5f, _isMoreGamesBtnShaded, 45.0f, 45.0f);
+                    "MORE\nGAMES", _europeExtBoldSize10, _isMoreGamesBtnShaded, 45.0f, 45.0f);
             moreGamesBtn.setPosition(17.0f, 415.0f);
             stage.addActor(moreGamesBtn);
         }
@@ -101,7 +101,7 @@ public class BaseUIScreen extends BaseScreen {
         // achievments button
         if (_isAchievmentsBtn) {
             achievmentsBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
-                    "ACH", _europeExtBold, 1.0f, _isAchievmentsBtnShaded, 63.0f, 63.0f);
+                    "ACH", _europeExtBold, _isAchievmentsBtnShaded, 63.0f, 63.0f);
             achievmentsBtn.setPosition(288.5f, 7.0f);
             stage.addActor(achievmentsBtn);
         }
@@ -133,7 +133,7 @@ public class BaseUIScreen extends BaseScreen {
         // reset button
         if (_isResetBtn) {
             resetBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
-                    "RESET", _europeExtBold, 1.0f, _isResetBtnShaded, 63.0f, 63.0f);
+                    "RESET", _europeExtBold, _isResetBtnShaded, 63.0f, 63.0f);
             resetBtn.setPosition(469.0f, 7.0f);
             stage.addActor(resetBtn);
         }

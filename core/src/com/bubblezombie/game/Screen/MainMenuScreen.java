@@ -44,7 +44,7 @@ public class MainMenuScreen extends BaseScreen {
         _mainMenuBGD = new Image(new Texture(Gdx.files.internal("background/screens/mainMenuBGD.png")));
 
         // buttons
-        _newGameBtn = ButtonFactory.getTextButton("background/screens/but_main_play.png", "PLAY", _europeExtBold, 1.0f, false, 0.0f, 0.0f);
+        _newGameBtn = ButtonFactory.getTextButton("background/screens/but_main_play.png", "PLAY", _europeExtBold, false, 0.0f, 0.0f);
         _newGameBtn.setPosition((BubbleZombieGame.width - _newGameBtn.getWidth()) / 2,
                 (BubbleZombieGame.height - _newGameBtn.getHeight()) / 2);
         _newGameBtn.addListener(new ClickListener() {

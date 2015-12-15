@@ -1,9 +1,18 @@
 package com.bubblezombie.game.Screen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.Util.ButtonFactory;
+import com.bubblezombie.game.Util.FontFactory;
 import com.bubblezombie.game.Util.SaveManager;
 
 /**
@@ -15,9 +24,9 @@ public class LevelSelectScreen extends BaseUIScreen {
     //used for game designer
     private static final Boolean ALL_LEVELS_OPENED = true;
 
-    private static final int STARTX = 160;
-    private static final int STARTY = 148;
-    private static final float SCALE = 0.8f;
+    private static final int STARTX = 145;
+    private static final int STARTY = 165;
+    private static final int LEVEL_BUTTON_SIZE = 36;
     private static final int X_SPACE = 80;
     private static final int Y_SPACE = 46;
 
@@ -98,6 +107,9 @@ public class LevelSelectScreen extends BaseUIScreen {
 
 
 
+    private BitmapFont _europeExtBoldSize15;
+    private TextField _totalScore, _bestScore;
+
     LevelSelectScreen(Game game) {
         super(game);
         _isMoreGamesBtn = true;
@@ -119,8 +131,73 @@ public class LevelSelectScreen extends BaseUIScreen {
 
         Image levelmapContent = new Image(new Texture("background/screens/levelmap_content.png"));
         levelmapContent.setPosition((BubbleZombieGame.width - levelmapContent.getWidth()) / 2,
-                (BubbleZombieGame.height - levelmapContent.getHeight()) / 2);
-        stage.addActor(levelmapContent);
+                (BubbleZombieGame.height - levelmapContent.getHeight()) / 2 + 25);
+        actionArea.addActor(levelmapContent);
+
+        _europeExtBoldSize15 = FontFactory.getEuropeExt(FontFactory.FontType.BUTTON, 15);
+
+
+        // create level buttons
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++) {
+                int levelNum = i * 5 + j + 1;
+                String key = "level" + levelNum + "_opened";
+                Button levelbtn;
+
+                //if we can play this level
+                if (SaveManager.getSharedData(key)) {
+                    levelbtn = ButtonFactory.getTextButton("background/screens/but_level_border.png",
+                            Integer.toString(levelNum), _europeExtBoldSize15, false, LEVEL_BUTTON_SIZE, LEVEL_BUTTON_SIZE);
+
+                    // listeners
+                    levelbtn.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            Gdx.app.log("next screen button", "starting level select screen...");
+                            game.setScreen(new LevelSelectScreen(game));
+                        }
+                    });
+
+                    //levelbtn.addEventListener(MouseEvent.ROLL_OVER, ShowBestScoresCB);
+                    //levelbtn.addEventListener(MouseEvent.ROLL_OUT, ShowBestScoresCB);
+
+                    // TODO: if player skipped the level mark it
+                    if (Boolean.TRUE.equals(SaveManager.getSharedData("level" + levelNum + "_skipped")) && !GetLevelPassed(levelNum)) {
+                        //levelbtn.white_border.visible = true;
+                                /*
+                                var colorTransform:ColorTransform = levelbtn.transform.colorTransform;
+
+                                colorTransform.redMultiplier *= 0.8;
+                                colorTransform.greenMultiplier *= 0.8;
+                                colorTransform.blueMultiplier *= 0.8;
+
+
+                                levelbtn.transform.colorTransform = colorTransform;
+                                */
+                    }
+
+                }
+                else {
+                    levelbtn = ButtonFactory.getImageButton("background/screens/but_level_border.png",
+                            "background/screens/but_level_lock.png", false, LEVEL_BUTTON_SIZE, LEVEL_BUTTON_SIZE);
+                }
+
+                levelbtn.setPosition(STARTX + j * X_SPACE, BubbleZombieGame.height - (STARTY + i * Y_SPACE));
+                actionArea.addActor(levelbtn);
+        }
+
+        // create text fields
+        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
+        textFieldStyle.font = _europeExtBoldSize15;
+        textFieldStyle.fontColor = Color.YELLOW;
+
+        _bestScore = new TextField("123", textFieldStyle);
+        _bestScore.setPosition(130, 100);
+        actionArea.addActor(_bestScore);
+
+        _totalScore = new TextField("TOTAL: 765", textFieldStyle);
+        _totalScore.setPosition(395, 100);
+        actionArea.addActor(_totalScore);
     }
 
     @Override
