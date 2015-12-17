@@ -2,10 +2,8 @@ package com.bubblezombie.game.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,15 +14,15 @@ import com.bubblezombie.game.BubbleZombieGame;
 /**
  * Created by artem on 01.12.15.
  */
-public class GameScreen implements Screen {
+public class GameScreen extends BaseScreen {
     Screen menu;
 
     Stage stage;
     SpriteBatch batch;
     OrthographicCamera camera;
     Texture text;
-    GameScreen(Screen s) {
-        this.menu = s;
+    GameScreen(BubbleZombieGame game) {
+        super(game);
     }
 
     @Override

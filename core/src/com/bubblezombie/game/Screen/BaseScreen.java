@@ -1,6 +1,5 @@
 package com.bubblezombie.game.Screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,11 +12,11 @@ import com.bubblezombie.game.BubbleZombieGame;
  * Created by Alex on 05/12/15.
  */
 public class BaseScreen implements Screen {
-    protected Game game;
+    protected BubbleZombieGame game;
     protected Stage stage;
     private Viewport _viewport;
 
-    public BaseScreen(Game game) { this.game = game; }
+    public BaseScreen(BubbleZombieGame game) { this.game = game; }
 
     @Override
     public void show() {
@@ -52,6 +51,7 @@ public class BaseScreen implements Screen {
 
     @Override
     public void dispose() {
+        game.assetManager.clear();
         stage.dispose();
     }
 }

@@ -1,4 +1,4 @@
-package com.bubblezombie.game.Util;
+package com.bubblezombie.game.Util.Managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -39,6 +39,9 @@ public class SaveManager {
         } catch (NullPointerException e) {
             Gdx.app.log("data", " wasn't initialized");
             e.printStackTrace();
+        }
+        if (res == null) {
+            res = (T) Boolean.FALSE;
         }
         return res;
     }

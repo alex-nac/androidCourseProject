@@ -1,16 +1,15 @@
 package com.bubblezombie.game.Screen;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.bubblezombie.game.Util.ButtonFactory;
+import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.Util.Factory.ButtonFactory;
+import com.bubblezombie.game.Util.Factory.FontFactory;
 
 /**
  * Created by Alex on 7/12/15.
@@ -49,87 +48,118 @@ public class BaseUIScreen extends BaseScreen {
     // area in the middle of the screen when we should put all stuff
     protected WidgetGroup actionArea;
 
-    BaseUIScreen(Game game) {
+    private BitmapFont _europeExtBoldSize10;
+
+    private static final String RES_MENU = "background/screens/menu.png";
+    private static final String RES_SCREEN_GLASS = "background/screens/UI_screen_glass.png";
+    private static final String RES_BTN_BACKGROUND = "background/UI_buttons/btn_background.png";
+    private static final String RES_BTN_MENU = "background/UI_buttons/btn_menu.png";
+    private static final String RES_BTN_ARROW_LEFT = "background/UI_buttons/btn_arrow_left.png";
+    private static final String RES_BTN_ARROW_RESTART = "background/UI_buttons/btn_arrow_restart.png";
+    private static final String RES_BTN_ARROW_RIGHT = "background/UI_buttons/btn_arrow_right.png";
+    private static final String RES_BTN_ARROW_DOUBLE = "background/UI_buttons/btn_double_arrow.png";
+
+    BaseUIScreen(BubbleZombieGame game) {
         super(game);
     }
 
     @Override
     public void show() {
         super.show();
+
+        game.assetManager.load(RES_MENU, Texture.class);
+        game.assetManager.load(RES_SCREEN_GLASS, Texture.class);
+        game.assetManager.load(RES_BTN_MENU, Texture.class);
+        game.assetManager.load(RES_BTN_BACKGROUND, Texture.class);
+        game.assetManager.load(RES_BTN_ARROW_LEFT, Texture.class);
+        game.assetManager.load(RES_BTN_ARROW_RESTART, Texture.class);
+        game.assetManager.load(RES_BTN_ARROW_RIGHT, Texture.class);
+        game.assetManager.load(RES_BTN_ARROW_DOUBLE, Texture.class);
+
+        game.assetManager.finishLoading();
+
+
         
-        Image BGsprite = new Image(new Texture(Gdx.files.internal("background/menu.png")));
+        Image BGsprite = new Image(game.assetManager.get(RES_MENU, Texture.class));
         stage.addActor(BGsprite);
 
         actionArea = new WidgetGroup();
         stage.addActor(actionArea);
+
+        Image glass = new Image(game.assetManager.get(RES_SCREEN_GLASS, Texture.class));
+        glass.setPosition((BubbleZombieGame.width - glass.getWidth()) / 2 + 3,
+                (BubbleZombieGame.height - glass.getHeight()) / 2 + 12);
+        glass.setTouchable(Touchable.disabled);
+        stage.addActor(glass);
 
         // TODO: remember - we should have only one background for button
 
         // buttons:
 
         TextButton.TextButtonStyle tbs;
-        BitmapFont _europeExtBold = new BitmapFont(Gdx.files.internal("fonts/sample_font.fnt"));
+
+        _europeExtBoldSize10 = FontFactory.getEuropeExt(FontFactory.FontType.BUTTON, 15);
 
         // more games button
         if (_isMoreGamesBtn) {
-            Button moreGamesBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
-                    "MORE\nGAMES", _europeExtBold, 0.5f, _isMoreGamesBtnShaded, 45.0f, 45.0f);
+            moreGamesBtn = ButtonFactory.getTextButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
+                    "MORE\nGAMES", _europeExtBoldSize10, _isMoreGamesBtnShaded, 45.0f, 45.0f);
             moreGamesBtn.setPosition(17.0f, 415.0f);
             stage.addActor(moreGamesBtn);
         }
 
         // level map button
         if (_isLvlMapBtn) {
-            Button lvlMapBtn = ButtonFactory.getImageButton("background/UI_buttons/btn_background.png",
-                    "background/UI_buttons/btn_menu.png", _isLvlMapBtnShaded, 63.0f, 63.0f);
+            lvlMapBtn = ButtonFactory.getImageButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
+                    game.assetManager.get(RES_BTN_MENU, Texture.class), _isLvlMapBtnShaded, 63.0f, 63.0f);
             lvlMapBtn.setPosition(103.0f, 7.0f);
             stage.addActor(lvlMapBtn);
         }
 
         // back button
         if (_isBackBtn) {
-            Button backBtn = ButtonFactory.getImageButton("background/UI_buttons/btn_background.png",
-                    "background/UI_buttons/btn_arrow_left.png", _isBackBtnShaded, 63.0f, 63.0f);
+            backBtn = ButtonFactory.getImageButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
+                    game.assetManager.get(RES_BTN_ARROW_LEFT, Texture.class), _isBackBtnShaded, 63.0f, 63.0f);
             backBtn.setPosition(103.0f, 7.0f);
             stage.addActor(backBtn);
         }
 
         // achievments button
         if (_isAchievmentsBtn) {
-            Button achBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
-                    "ACH", _europeExtBold, 1.0f, _isAchievmentsBtnShaded, 63.0f, 63.0f);
-            achBtn.setPosition(288.5f, 7.0f);
-            stage.addActor(achBtn);
+            achievmentsBtn = ButtonFactory.getTextButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
+                    "ACH", _europeExtBoldSize10, _isAchievmentsBtnShaded, 63.0f, 63.0f);
+            achievmentsBtn.setPosition(288.5f, 7.0f);
+            stage.addActor(achievmentsBtn);
         }
 
         // restart button
-        if (_isBackBtn) {
-            Button restartBtn = ButtonFactory.getImageButton("background/UI_buttons/btn_background.png",
-                    "background/UI_buttons/btn_arrow_restart.png", _isRestartBtnShaded, 63.0f, 63.0f);
+        if (_isRestartBtn) {
+            restartBtn = ButtonFactory.getImageButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
+                    game.assetManager.get(RES_BTN_ARROW_RESTART, Texture.class), _isRestartBtnShaded, 63.0f, 63.0f);
             restartBtn.setPosition(288.5f, 7.0f);
             stage.addActor(restartBtn);
         }
 
         // next level button
         if (_isNextLvlBtn) {
-            Button nextLevelBtn = ButtonFactory.getImageButton("background/UI_buttons/btn_background.png",
-                    "background/UI_buttons/btn_arrow_right.png", _isNextLvlBtnShaded, 63.0f, 63.0f);
-            nextLevelBtn.setPosition(469.0f, 7.0f);
-            stage.addActor(nextLevelBtn);
+            nextLvlBtn = ButtonFactory.getImageButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
+                    game.assetManager.get(RES_BTN_ARROW_RIGHT, Texture.class), _isNextLvlBtnShaded, 63.0f, 63.0f);
+            nextLvlBtn.setPosition(469.0f, 7.0f);
+            stage.addActor(nextLvlBtn);
         }
 
         // skip level button
         if (_isSkipLvlBtn) {
-            Button skipLevelBtn = ButtonFactory.getImageButton("background/UI_buttons/btn_background.png",
-                    "background/UI_buttons/btn_arrow_double.png", _isSkipLvlBtnShaded, 63.0f, 63.0f);
+            skipLevelBtn = ButtonFactory.getImageButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
+                    game.assetManager.get(RES_BTN_ARROW_DOUBLE, Texture.class), _isSkipLvlBtnShaded, 63.0f, 63.0f);
             skipLevelBtn.setPosition(469.0f, 7.0f);
             stage.addActor(skipLevelBtn);
         }
 
         // reset button
         if (_isResetBtn) {
-            Button resetBtn = ButtonFactory.getTextButton("background/UI_buttons/btn_background.png",
-                    "RESET", _europeExtBold, 1.0f, _isResetBtnShaded, 63.0f, 63.0f);
+            resetBtn = ButtonFactory.getTextButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
+                    "RESET", _europeExtBoldSize10, _isResetBtnShaded, 63.0f, 63.0f);
             resetBtn.setPosition(469.0f, 7.0f);
             stage.addActor(resetBtn);
         }
@@ -147,4 +177,10 @@ public class BaseUIScreen extends BaseScreen {
         */
     }
 
+    @Override
+    public void dispose() {
+        _europeExtBoldSize10.dispose();
+
+        super.dispose();
+    }
 }
