@@ -49,8 +49,8 @@ public class ButtonFactory {
                                         boolean isShaded, float height, float width) {
         ImageButton.ImageButtonStyle ibs = new ImageButton.ImageButtonStyle();
 
-        ibs.imageUp =  new TextureRegionDrawable(new TextureRegion(backgroundTex));
-        ibs.up = new TextureRegionDrawable(new TextureRegion(buttonImageTex));
+        ibs.imageUp =  new TextureRegionDrawable(new TextureRegion(buttonImageTex));
+        ibs.up = new TextureRegionDrawable(new TextureRegion(backgroundTex));
         ImageButton imageButton = new ImageButton(ibs);
         imageButton.setHeight(height);
         imageButton.setWidth(width);
