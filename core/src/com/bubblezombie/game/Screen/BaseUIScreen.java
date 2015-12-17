@@ -4,16 +4,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bubblezombie.game.BubbleZombieGame;
-import com.bubblezombie.game.Util.ButtonFactory;
-import com.bubblezombie.game.Util.FontFactory;
+import com.bubblezombie.game.Util.Factory.ButtonFactory;
+import com.bubblezombie.game.Util.Factory.FontFactory;
 
 /**
  * Created by Alex on 7/12/15.

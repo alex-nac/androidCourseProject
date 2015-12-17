@@ -1,4 +1,4 @@
-package com.bubblezombie.game.Util;
+package com.bubblezombie.game.Util.Factory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

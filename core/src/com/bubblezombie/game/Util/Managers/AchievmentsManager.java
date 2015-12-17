@@ -1,7 +1,7 @@
-package com.bubblezombie.game;
+package com.bubblezombie.game.Util.Managers;
 
 import com.bubblezombie.game.Screen.LevelSelectScreen;
-import com.bubblezombie.game.Util.SaveManager;
+import com.bubblezombie.game.Util.Managers.SaveManager;
 
 /**
  * Created by Alex on 17/12/15.

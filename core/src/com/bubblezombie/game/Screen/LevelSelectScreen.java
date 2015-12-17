@@ -11,9 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bubblezombie.game.BubbleZombieGame;
-import com.bubblezombie.game.Util.ButtonFactory;
-import com.bubblezombie.game.Util.FontFactory;
-import com.bubblezombie.game.Util.SaveManager;
+import com.bubblezombie.game.Util.Factory.ButtonFactory;
+import com.bubblezombie.game.Util.Factory.FontFactory;
+import com.bubblezombie.game.Util.Managers.SaveManager;
 
 /**
  * Created by Alex on 12/12/15.

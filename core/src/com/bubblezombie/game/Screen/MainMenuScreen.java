@@ -10,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bubblezombie.game.BubbleZombieGame;
-import com.bubblezombie.game.Util.ButtonFactory;
-import com.bubblezombie.game.Util.FontFactory;
-import com.bubblezombie.game.Util.FontFactory.FontType;
+import com.bubblezombie.game.Util.Factory.ButtonFactory;
+import com.bubblezombie.game.Util.Factory.FontFactory;
+import com.bubblezombie.game.Util.Factory.FontFactory.FontType;
 
 public class MainMenuScreen extends BaseScreen {
     private static final String TAG = "MainMenuScreen";

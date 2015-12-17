@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.bubblezombie.game.AchievmentsManager;
+import com.bubblezombie.game.Util.Managers.AchievmentsManager;
 import com.bubblezombie.game.BubbleZombieGame;
-import com.bubblezombie.game.Util.ButtonFactory;
+import com.bubblezombie.game.Util.Factory.ButtonFactory;
 
 /**
  * Created by Alex on 17/12/15.
