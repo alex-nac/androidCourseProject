@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Util.Factory.ButtonFactory;
 import com.bubblezombie.game.Util.Factory.FontFactory;
 
@@ -52,6 +53,10 @@ public class BaseUIScreen extends BaseScreen {
 
     private BitmapFont _europeExtBoldSize10;
 
+    private String _BGmenu = "background/screens/menu.png";
+    private String _BGglass = "background/screens/UI_screen_glass.png";
+    private String _rawFont = "fonts/sample_font.fnt";
+
     BaseUIScreen(Game game) {
         super(game);
     }
@@ -59,14 +64,22 @@ public class BaseUIScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
+
+        BubbleZombieGame.assetManager.load(_BGmenu, Texture.class);
+        BubbleZombieGame.assetManager.load(_BGglass, Texture.class);
+        BubbleZombieGame.assetManager.load(_rawFont, BitmapFont.class);
+
+        BubbleZombieGame.assetManager.finishLoading();
+
+
         
-        Image BGsprite = new Image(new Texture(Gdx.files.internal("background/screens/menu.png")));
+        Image BGsprite = new Image(BubbleZombieGame.assetManager.get(_BGmenu, Texture.class));
         stage.addActor(BGsprite);
 
         actionArea = new WidgetGroup();
         stage.addActor(actionArea);
 
-        Image glass = new Image(new Texture(Gdx.files.internal("background/screens/UI_screen_glass.png")));
+        Image glass = new Image(BubbleZombieGame.assetManager.get(_BGglass, Texture.class));
         glass.setPosition((BubbleZombieGame.width - glass.getWidth()) / 2 + 3,
                 (BubbleZombieGame.height - glass.getHeight()) / 2 + 12);
         glass.setTouchable(Touchable.disabled);
@@ -77,7 +90,8 @@ public class BaseUIScreen extends BaseScreen {
         // buttons:
 
         TextButton.TextButtonStyle tbs;
-        BitmapFont _europeExtBold = new BitmapFont(Gdx.files.internal("fonts/sample_font.fnt"));
+        BitmapFont _europeExtBold = BubbleZombieGame.assetManager.get(_rawFont, BitmapFont.class);
+
         _europeExtBoldSize10 = FontFactory.getEuropeExt(FontFactory.FontType.BUTTON, 15);
 
         // more games button
@@ -157,4 +171,8 @@ public class BaseUIScreen extends BaseScreen {
         */
     }
 
+    @Override
+    public void hide() {
+        _europeExtBoldSize10.dispose();
+    }
 }

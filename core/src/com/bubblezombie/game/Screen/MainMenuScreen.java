@@ -2,6 +2,7 @@ package com.bubblezombie.game.Screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Util.Factory.ButtonFactory;
 import com.bubblezombie.game.Util.Factory.FontFactory;
 import com.bubblezombie.game.Util.Factory.FontFactory.FontType;
@@ -32,7 +34,13 @@ public class MainMenuScreen extends BaseScreen {
     public void show() {
         super.show();
         // music
-        _backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/ost/menu.mp3"));
+
+        BubbleZombieGame.assetManager.load("sounds/ost/menu.mp3", Music.class);
+        BubbleZombieGame.assetManager.load("background/screens/mainMenuBGD.png", Texture.class);
+
+        BubbleZombieGame.assetManager.finishLoading();
+
+        _backgroundMusic = BubbleZombieGame.assetManager.get("sounds/ost/menu.mp3", Music.class);
         _backgroundMusic.setLooping(true);
         //_backgroundMusic.play();
 
@@ -41,7 +49,7 @@ public class MainMenuScreen extends BaseScreen {
         _europeExtBold = FontFactory.getEuropeExt(FontType.BUTTON, 40);
 
         // images
-        _mainMenuBGD = new Image(new Texture(Gdx.files.internal("background/screens/mainMenuBGD.png")));
+        _mainMenuBGD = new Image(BubbleZombieGame.assetManager.get("background/screens/mainMenuBGD.png", Texture.class));
 
         // buttons
         _newGameBtn = ButtonFactory.getTextButton("background/screens/but_main_play.png", "PLAY", _europeExtBold, false, 0.0f, 0.0f);
@@ -79,10 +87,18 @@ public class MainMenuScreen extends BaseScreen {
     }
 
     @Override
-    public void dispose() {
-        _newGameBtn.clearListeners();
+    public void hide() {
+        Gdx.app.log(TAG, "hides");
+//        BubbleZombieGame.assetManager.clear();
         _europeExtBold.dispose();
-        _backgroundMusic.dispose();
+    }
+
+    @Override
+    public void dispose() {
+        BubbleZombieGame.assetManager.clear();
+//        _newGameBtn.clearListeners();
+//        _europeExtBold.dispose();
+//        _backgroundMusic.dispose();
         super.dispose();
     }
 }

@@ -41,7 +41,7 @@ public class SaveManager {
             e.printStackTrace();
         }
         if (res == null) {
-            return (T) Boolean.FALSE;
+            res = (T) Boolean.FALSE;
         }
         return res;
     }

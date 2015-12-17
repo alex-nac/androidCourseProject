@@ -27,9 +27,11 @@ public class IntroScreen extends BaseUIScreen {
     @Override
     public void show() {
         super.show();
+        BubbleZombieGame.assetManager.load("background/screens/intro_content.png", Texture.class);
 
+        BubbleZombieGame.assetManager.finishLoading();
         // TODO: real font, not just image
-        Image introContent = new Image(new Texture(Gdx.files.internal("background/screens/intro_content.png")));
+        Image introContent = new Image(BubbleZombieGame.assetManager.get("background/screens/intro_content.png", Texture.class));
         introContent.setPosition((BubbleZombieGame.width - introContent.getWidth()) / 2,
                 (BubbleZombieGame.height - introContent.getHeight()) / 2);
         actionArea.addActor(introContent);
@@ -52,6 +54,12 @@ public class IntroScreen extends BaseUIScreen {
         });
 
         Gdx.app.log(TAG, "showed");
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+        BubbleZombieGame.assetManager.clear();
     }
 
     @Override
