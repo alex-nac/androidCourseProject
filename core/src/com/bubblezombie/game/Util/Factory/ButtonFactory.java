@@ -48,8 +48,8 @@ public class ButtonFactory {
         BubbleZombieGame.assetManager.load(buttonImagePath, Texture.class);
         BubbleZombieGame.assetManager.finishLoadingAsset(backgroundPath);
         BubbleZombieGame.assetManager.finishLoadingAsset(buttonImagePath);
-        ibs.imageUp =  new TextureRegionDrawable(new TextureRegion(BubbleZombieGame.assetManager.get(backgroundPath, Texture.class)));
-        ibs.up = new TextureRegionDrawable(new TextureRegion(BubbleZombieGame.assetManager.get(buttonImagePath, Texture.class)));
+        ibs.imageUp =  new TextureRegionDrawable(new TextureRegion(BubbleZombieGame.assetManager.get(buttonImagePath, Texture.class)));
+        ibs.up = new TextureRegionDrawable(new TextureRegion(BubbleZombieGame.assetManager.get(backgroundPath, Texture.class)));
         ImageButton imageButton = new ImageButton(ibs);
         imageButton.setHeight(height);
         imageButton.setWidth(width);
