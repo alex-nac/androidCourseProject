@@ -32,7 +32,7 @@ public class IntroScreen extends BaseUIScreen {
         Image introContent = new Image(new Texture(Gdx.files.internal("background/screens/intro_content.png")));
         introContent.setPosition((BubbleZombieGame.width - introContent.getWidth()) / 2,
                 (BubbleZombieGame.height - introContent.getHeight()) / 2);
-        stage.addActor(introContent);
+        actionArea.addActor(introContent);
 
         nextLvlBtn.addListener(new ClickListener() {
             @Override

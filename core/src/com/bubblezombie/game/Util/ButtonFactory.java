@@ -26,7 +26,9 @@ public class ButtonFactory {
         if (width != 0.0f) textButton.setWidth(width);
 
         if (isShaded) {
-            textButton.addActor(new Image(new Texture(Gdx.files.internal("background/UI_buttons/btn_shade.png"))));
+            Image shade = new Image(new Texture(Gdx.files.internal("background/UI_buttons/btn_shade.png")));
+            shade.setPosition(7.0f, 7.0f);
+            textButton.addActor(shade);
         }
 
         return textButton;

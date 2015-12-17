@@ -20,6 +20,7 @@ import com.bubblezombie.game.Util.SaveManager;
  * Screen appears after intro screen where we choose which level to play
  */
 public class LevelSelectScreen extends BaseUIScreen {
+    private static final String TAG = "LevelSelectScreen";
 
     //used for game designer
     private static final Boolean ALL_LEVELS_OPENED = true;
@@ -30,7 +31,7 @@ public class LevelSelectScreen extends BaseUIScreen {
     private static final int X_SPACE = 80;
     private static final int Y_SPACE = 46;
 
-    private static final int LEVELS_AMOUNT = 25;
+    public static final int LEVELS_AMOUNT = 25;
 
     //////////////////////
     ///STATIC_FUNCTIONS///
@@ -42,7 +43,7 @@ public class LevelSelectScreen extends BaseUIScreen {
         String key = "level" + number + "_scores";
 
         //we are interested in best scores
-        if ((Integer)SaveManager.getSharedData(key) < scores)
+        if ((Integer) SaveManager.getSharedData(key) < scores)
             SaveManager.setSharedData(key, scores);
 
         SaveManager.saveSharedData();
@@ -79,8 +80,8 @@ public class LevelSelectScreen extends BaseUIScreen {
     public static int GetLevelFailsAmount(int number) {
         String key = "level" + number + "_failed";
         int numberOfLoses = 0;
-        if(SaveManager.getSharedData(key))
-            numberOfLoses = (Integer)SaveManager.getSharedData(key);
+        if (SaveManager.getSharedData(key))
+            numberOfLoses = (Integer) SaveManager.getSharedData(key);
 
         return numberOfLoses;
     }
@@ -88,7 +89,7 @@ public class LevelSelectScreen extends BaseUIScreen {
     //checking if we have passed this level
     public static Boolean GetLevelPassed(int number) {
         String key = "level" + number + "_scores";
-        return (Boolean)SaveManager.getSharedData(key);
+        return (Boolean) SaveManager.getSharedData(key);
     }
 
 
@@ -98,13 +99,11 @@ public class LevelSelectScreen extends BaseUIScreen {
         for (int lvlNum = 1; lvlNum <= LEVELS_AMOUNT; lvlNum++) {
             String key = "level" + lvlNum + "_scores";
             if (SaveManager.getSharedData(key))
-                totalScores += (Integer)SaveManager.getSharedData(key);
+                totalScores += (Integer) SaveManager.getSharedData(key);
         }
 
         return totalScores;
     }
-
-
 
 
     private BitmapFont _europeExtBoldSize15;
@@ -134,12 +133,34 @@ public class LevelSelectScreen extends BaseUIScreen {
                 (BubbleZombieGame.height - levelmapContent.getHeight()) / 2 + 25);
         actionArea.addActor(levelmapContent);
 
+        lvlMapBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("level map button", "starting main menu screen...");
+                game.setScreen(new MainMenuScreen(game));
+            }
+        });
+
+        achievmentsBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("achievments button", "starting achievments screen...");
+                game.setScreen(new AchScreen(game));
+            }
+        });
+
         _europeExtBoldSize15 = FontFactory.getEuropeExt(FontFactory.FontType.BUTTON, 15);
 
 
         // create level buttons
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 5; j++) {
+        for (
+                int i = 0;
+                i < 5; i++)
+            for (
+                    int j = 0;
+                    j < 5; j++)
+
+            {
                 int levelNum = i * 5 + j + 1;
                 String key = "level" + levelNum + "_opened";
                 Button levelbtn;
@@ -158,6 +179,7 @@ public class LevelSelectScreen extends BaseUIScreen {
                         }
                     });
 
+                    // TODO: best level skores
                     //levelbtn.addEventListener(MouseEvent.ROLL_OVER, ShowBestScoresCB);
                     //levelbtn.addEventListener(MouseEvent.ROLL_OUT, ShowBestScoresCB);
 
@@ -176,28 +198,35 @@ public class LevelSelectScreen extends BaseUIScreen {
                                 */
                     }
 
-                }
-                else {
+                } else {
                     levelbtn = ButtonFactory.getImageButton("background/screens/but_level_border.png",
                             "background/screens/but_level_lock.png", false, LEVEL_BUTTON_SIZE, LEVEL_BUTTON_SIZE);
                 }
 
                 levelbtn.setPosition(STARTX + j * X_SPACE, BubbleZombieGame.height - (STARTY + i * Y_SPACE));
                 actionArea.addActor(levelbtn);
-        }
+            }
 
         // create text fields
         TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
         textFieldStyle.font = _europeExtBoldSize15;
         textFieldStyle.fontColor = Color.YELLOW;
 
-        _bestScore = new TextField("123", textFieldStyle);
+        _bestScore = new
+
+                TextField("123", textFieldStyle);
+
         _bestScore.setPosition(130, 100);
         actionArea.addActor(_bestScore);
 
-        _totalScore = new TextField("TOTAL: 765", textFieldStyle);
+        _totalScore = new
+
+                TextField("TOTAL: 765", textFieldStyle);
+
         _totalScore.setPosition(395, 100);
         actionArea.addActor(_totalScore);
+
+        Gdx.app.log(TAG, "showed");
     }
 
     @Override

@@ -5,11 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Util.ButtonFactory;
 import com.bubblezombie.game.Util.FontFactory;
 
@@ -66,6 +68,12 @@ public class BaseUIScreen extends BaseScreen {
         actionArea = new WidgetGroup();
         stage.addActor(actionArea);
 
+        Image glass = new Image(new Texture(Gdx.files.internal("background/screens/UI_screen_glass.png")));
+        glass.setPosition((BubbleZombieGame.width - glass.getWidth()) / 2 + 3,
+                (BubbleZombieGame.height - glass.getHeight()) / 2 + 12);
+        glass.setTouchable(Touchable.disabled);
+        stage.addActor(glass);
+
         // TODO: remember - we should have only one background for button
 
         // buttons:
@@ -107,7 +115,7 @@ public class BaseUIScreen extends BaseScreen {
         }
 
         // restart button
-        if (_isBackBtn) {
+        if (_isRestartBtn) {
             restartBtn = ButtonFactory.getImageButton("background/UI_buttons/btn_background.png",
                     "background/UI_buttons/btn_arrow_restart.png", _isRestartBtnShaded, 63.0f, 63.0f);
             restartBtn.setPosition(288.5f, 7.0f);
