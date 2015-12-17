@@ -1,8 +1,6 @@
 package com.bubblezombie.game.Screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,13 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bubblezombie.game.BubbleZombieGame;
-import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Util.Factory.ButtonFactory;
 import com.bubblezombie.game.Util.Factory.FontFactory;
 import com.bubblezombie.game.Util.Factory.FontFactory.FontType;
 
 public class MainMenuScreen extends BaseScreen {
     private static final String TAG = "MainMenuScreen";
+    private static final String RES_MAINMENUBGD = "background/screens/mainMenuBGD.png";
+    private static final String RES_BUT_MAIN_PLAY = "background/screens/but_main_play.png";
+    private static final String RES_MUSIC_MENU = "sounds/ost/menu.mp3";
 
     private Image _mainMenuBGD;
     private Button _newGameBtn;
@@ -26,21 +26,22 @@ public class MainMenuScreen extends BaseScreen {
 
     private Music _backgroundMusic;
     
-    public MainMenuScreen(Game game) {
+    public MainMenuScreen(BubbleZombieGame game) {
         super(game);
     }
 
     @Override
     public void show() {
         super.show();
+
+        game.assetManager.load(RES_MAINMENUBGD, Texture.class);
+        game.assetManager.load(RES_BUT_MAIN_PLAY, Texture.class);
+        game.assetManager.load(RES_MUSIC_MENU, Music.class);
+
+        game.assetManager.finishLoading();
+
         // music
-
-        BubbleZombieGame.assetManager.load("sounds/ost/menu.mp3", Music.class);
-        BubbleZombieGame.assetManager.load("background/screens/mainMenuBGD.png", Texture.class);
-
-        BubbleZombieGame.assetManager.finishLoading();
-
-        _backgroundMusic = BubbleZombieGame.assetManager.get("sounds/ost/menu.mp3", Music.class);
+        _backgroundMusic = game.assetManager.get(RES_MUSIC_MENU, Music.class);
         _backgroundMusic.setLooping(true);
         //_backgroundMusic.play();
 
@@ -49,16 +50,17 @@ public class MainMenuScreen extends BaseScreen {
         _europeExtBold = FontFactory.getEuropeExt(FontType.BUTTON, 40);
 
         // images
-        _mainMenuBGD = new Image(BubbleZombieGame.assetManager.get("background/screens/mainMenuBGD.png", Texture.class));
+        _mainMenuBGD = new Image(game.assetManager.get(RES_MAINMENUBGD, Texture.class));
 
         // buttons
-        _newGameBtn = ButtonFactory.getTextButton("background/screens/but_main_play.png", "PLAY", _europeExtBold, false, 0.0f, 0.0f);
+        _newGameBtn = ButtonFactory.getTextButton(game.assetManager.get(RES_BUT_MAIN_PLAY, Texture.class), "PLAY", _europeExtBold, false, 0.0f, 0.0f);
         _newGameBtn.setPosition((BubbleZombieGame.width - _newGameBtn.getWidth()) / 2,
                 (BubbleZombieGame.height - _newGameBtn.getHeight()) / 2);
         _newGameBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("play button", "starting intro screen...");
+                dispose();
                 game.setScreen(new IntroScreen(game));
             }
         });
@@ -87,18 +89,10 @@ public class MainMenuScreen extends BaseScreen {
     }
 
     @Override
-    public void hide() {
-        Gdx.app.log(TAG, "hides");
-//        BubbleZombieGame.assetManager.clear();
-        _europeExtBold.dispose();
-    }
-
-    @Override
     public void dispose() {
-        BubbleZombieGame.assetManager.clear();
-//        _newGameBtn.clearListeners();
-//        _europeExtBold.dispose();
-//        _backgroundMusic.dispose();
+        _newGameBtn.clearListeners();
+        _europeExtBold.dispose();
+
         super.dispose();
     }
 }

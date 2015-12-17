@@ -1,6 +1,5 @@
 package com.bubblezombie.game.Screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,6 +31,10 @@ public class LevelSelectScreen extends BaseUIScreen {
     private static final int Y_SPACE = 46;
 
     public static final int LEVELS_AMOUNT = 25;
+
+    private static final String RES_LEVELMAP_CONTENT = "background/screens/levelmap_content.png";
+    private static final String RES_LEVEL_BORDER = "background/screens/but_level_border.png";
+    private static final String RES_LEVEL_LOCK = "background/screens/but_level_lock.png";
 
     //////////////////////
     ///STATIC_FUNCTIONS///
@@ -92,7 +95,6 @@ public class LevelSelectScreen extends BaseUIScreen {
         return (Boolean) SaveManager.getSharedData(key);
     }
 
-
     //getting total amount of scores for all the levels
     public static int GetTotalScores() {
         int totalScores = 0;
@@ -106,10 +108,11 @@ public class LevelSelectScreen extends BaseUIScreen {
     }
 
 
+
     private BitmapFont _europeExtBoldSize15;
     private TextField _totalScore, _bestScore;
 
-    LevelSelectScreen(Game game) {
+    LevelSelectScreen(BubbleZombieGame game) {
         super(game);
         _isMoreGamesBtn = true;
         _isLvlMapBtn = true;
@@ -121,6 +124,12 @@ public class LevelSelectScreen extends BaseUIScreen {
     public void show() {
         super.show();
 
+        game.assetManager.load(RES_LEVELMAP_CONTENT, Texture.class);
+        game.assetManager.load(RES_LEVEL_BORDER, Texture.class);
+        game.assetManager.load(RES_LEVEL_LOCK, Texture.class);
+
+        game.assetManager.finishLoading();
+
         SaveManager.setSharedData("level1_opened", true);
 
         //open all levels if we have this cheat
@@ -128,7 +137,7 @@ public class LevelSelectScreen extends BaseUIScreen {
             for (int k = 2; k <= LEVELS_AMOUNT; k++)
                 SaveManager.setSharedData("level" + k + "_opened", true);
 
-        Image levelmapContent = new Image(new Texture("background/screens/levelmap_content.png"));
+        Image levelmapContent = new Image(game.assetManager.get(RES_LEVELMAP_CONTENT, Texture.class));
         levelmapContent.setPosition((BubbleZombieGame.width - levelmapContent.getWidth()) / 2,
                 (BubbleZombieGame.height - levelmapContent.getHeight()) / 2 + 25);
         actionArea.addActor(levelmapContent);
@@ -137,6 +146,7 @@ public class LevelSelectScreen extends BaseUIScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("level map button", "starting main menu screen...");
+                dispose();
                 game.setScreen(new MainMenuScreen(game));
             }
         });
@@ -145,6 +155,7 @@ public class LevelSelectScreen extends BaseUIScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("achievments button", "starting achievments screen...");
+                dispose();
                 game.setScreen(new AchScreen(game));
             }
         });
@@ -167,7 +178,7 @@ public class LevelSelectScreen extends BaseUIScreen {
 
                 //if we can play this level
                 if (SaveManager.getSharedData(key)) {
-                    levelbtn = ButtonFactory.getTextButton("background/screens/but_level_border.png",
+                    levelbtn = ButtonFactory.getTextButton(game.assetManager.get(RES_LEVEL_BORDER, Texture.class),
                             Integer.toString(levelNum), _europeExtBoldSize15, false, LEVEL_BUTTON_SIZE, LEVEL_BUTTON_SIZE);
 
                     // listeners
@@ -175,6 +186,7 @@ public class LevelSelectScreen extends BaseUIScreen {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
                             Gdx.app.log("next screen button", "starting level select screen...");
+                            dispose();
                             game.setScreen(new LevelSelectScreen(game));
                         }
                     });
@@ -199,8 +211,8 @@ public class LevelSelectScreen extends BaseUIScreen {
                     }
 
                 } else {
-                    levelbtn = ButtonFactory.getImageButton("background/screens/but_level_border.png",
-                            "background/screens/but_level_lock.png", false, LEVEL_BUTTON_SIZE, LEVEL_BUTTON_SIZE);
+                    levelbtn = ButtonFactory.getImageButton(game.assetManager.get(RES_LEVEL_BORDER, Texture.class),
+                            game.assetManager.get(RES_LEVEL_LOCK, Texture.class), false, LEVEL_BUTTON_SIZE, LEVEL_BUTTON_SIZE);
                 }
 
                 levelbtn.setPosition(STARTX + j * X_SPACE, BubbleZombieGame.height - (STARTY + i * Y_SPACE));
