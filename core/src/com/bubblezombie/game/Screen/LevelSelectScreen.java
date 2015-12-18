@@ -22,7 +22,7 @@ public class LevelSelectScreen extends BaseUIScreen {
     private static final String TAG = "LevelSelectScreen";
 
     //used for game designer
-    private static final Boolean ALL_LEVELS_OPENED = true;
+    public static final Boolean ALL_LEVELS_OPENED = true;
 
     private static final int STARTX = 145;
     private static final int STARTY = 165;
@@ -108,7 +108,6 @@ public class LevelSelectScreen extends BaseUIScreen {
     }
 
 
-
     private BitmapFont _europeExtBoldSize15;
     private TextField _totalScore, _bestScore;
 
@@ -160,18 +159,21 @@ public class LevelSelectScreen extends BaseUIScreen {
             }
         });
 
+        resetBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("reset button", "starting reset screen");
+                dispose();
+                game.setScreen(new ResetScreen(game));
+            }
+        });
+
         _europeExtBoldSize15 = FontFactory.getEuropeExt(FontFactory.FontType.BUTTON, 15);
 
 
         // create level buttons
-        for (
-                int i = 0;
-                i < 5; i++)
-            for (
-                    int j = 0;
-                    j < 5; j++)
-
-            {
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++) {
                 int levelNum = i * 5 + j + 1;
                 String key = "level" + levelNum + "_opened";
                 Button levelbtn;
@@ -224,17 +226,11 @@ public class LevelSelectScreen extends BaseUIScreen {
         textFieldStyle.font = _europeExtBoldSize15;
         textFieldStyle.fontColor = Color.YELLOW;
 
-        _bestScore = new
-
-                TextField("123", textFieldStyle);
-
+        _bestScore = new TextField("123", textFieldStyle);
         _bestScore.setPosition(130, 100);
         actionArea.addActor(_bestScore);
 
-        _totalScore = new
-
-                TextField("TOTAL: 765", textFieldStyle);
-
+        _totalScore = new TextField("TOTAL: 765", textFieldStyle);
         _totalScore.setPosition(395, 100);
         actionArea.addActor(_totalScore);
 
