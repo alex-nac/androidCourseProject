@@ -2,7 +2,7 @@
 	<!-- общее -->
 	<won_time>35</won_time>	
 	<colors>5</colors>	
-	<background_class_name>level_city_05_mc</background_class_name>
+	<background_class_name>level_city_05</background_class_name>
 	<frozen_time>4</frozen_time>  <!-- время заморозки в секундах (Number) -->
 	<use_debug_view>0</use_debug_view>
 	<plane_button_time>18</plane_button_time> <!-- время перезарядки кнопки -->

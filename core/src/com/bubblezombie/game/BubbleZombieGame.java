@@ -10,11 +10,15 @@ import com.bubblezombie.game.Screen.MainMenuScreen;
 import com.bubblezombie.game.Screen.TestScreen;
 import com.bubblezombie.game.Util.Factory.ButtonFactory;
 import com.bubblezombie.game.Util.Factory.FontFactory;
+import com.bubblezombie.game.Util.LevelContainer;
 import com.bubblezombie.game.Util.Managers.SaveManager;
 
 public class BubbleZombieGame extends Game {
 	public static final int width = 640;
 	public static final int height = 480;
+
+	public static LevelContainer LVLC = new LevelContainer();
+
 	public AssetManager assetManager;
 	
 	@Override

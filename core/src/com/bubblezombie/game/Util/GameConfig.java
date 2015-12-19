@@ -16,7 +16,7 @@ import java.util.logging.FileHandler;
 public class GameConfig {
 
     public int wonTime;
-    public int useDebugView;
+    public Boolean useDebugView;
     public String BGclassName;
     public String tutorClassName;
     public int meshBubbleDiametr;
@@ -76,7 +76,7 @@ public class GameConfig {
         BGclassName = parsed.get("background_class_name");
         tutorClassName = parsed.get("tutorial");
         frozenTime = parsed.getInt("frozen_time");
-        useDebugView = parsed.getInt("use_debug_view");
+        useDebugView = parsed.getBoolean("use_debug_view");
         meshBubbleDiametr = parsed.getInt("mesh_bubble_diameter");
         planeButtonTime = parsed.getInt("plane_button_time");
         // TODO: Airplane

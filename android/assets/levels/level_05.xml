@@ -2,12 +2,12 @@
 	<!-- общее -->
 	<won_time>30</won_time>	
 	<colors>4</colors>	
-	<background_class_name>level_city_04_mc</background_class_name>
+	<background_class_name>level_city_04</background_class_name>
 	<frozen_time>4</frozen_time>  <!-- время заморозки в секундах (Number) -->
 	<use_debug_view>0</use_debug_view>
 	<plane_button_time>18</plane_button_time> <!-- время перезарядки кнопки -->
 
-	<tutorial>tutorial_04_mc</tutorial>
+	<tutorial>tutorial_04</tutorial>
 	
 	<!-- описание сетки -->
 	<wave_velocity>7</wave_velocity>
