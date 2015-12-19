@@ -11,15 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class Scene2dSprite extends Group {
     private SpriteDrawable _spriteDrawable;
-    private Vector2 _AnchorPoint;
-    private float rotation;
 
-    public Scene2dSprite() {
-        _AnchorPoint = new Vector2(0f, 0f);
-    }
+    public Scene2dSprite() {}
 
     public Scene2dSprite(Texture drawable) {
-        _AnchorPoint = new Vector2(0f, 0f);
         _spriteDrawable = new SpriteDrawable(new Sprite(drawable));
     }
 
@@ -29,24 +24,22 @@ public class Scene2dSprite extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Matrix4 m1 = batch.getTransformMatrix();
-        Matrix4 m2 = m1.setTranslation(_AnchorPoint.x, _AnchorPoint.y, 0f);
-        Matrix4 m3 = m2.rotate(new Vector3(0f, 0f, 1f), rotation);
-        this.applyTransform(batch, m3);
-        super.draw(batch, parentAlpha);
-        if (_spriteDrawable == null) {
-            return;
+        if (_spriteDrawable != null) {
+            float oldAlpha = _spriteDrawable.getSprite().getColor().a;
+            _spriteDrawable.getSprite().setAlpha(_spriteDrawable.getSprite().getColor().a * parentAlpha);
+            Sprite spr = _spriteDrawable.getSprite();
+            this.setWidth(spr.getWidth());
+            this.setHeight(spr.getHeight());
+            _spriteDrawable.draw(batch, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(), this.getWidth(), this.getHeight(),
+                    this.getScaleX(), this.getScaleY(), this.getRotation());
+            _spriteDrawable.getSprite().setAlpha(oldAlpha);
+
         }
-        float oldAlpha = _spriteDrawable.getSprite().getColor().a;
-        _spriteDrawable.getSprite().setAlpha(_spriteDrawable.getSprite().getColor().a * parentAlpha);
-        Sprite spr = _spriteDrawable.getSprite();
-        _spriteDrawable.draw(batch, spr.getX(), spr.getY(), spr.getOriginX(), spr.getOriginY(), spr.getWidth(), spr.getHeight(),
-                spr.getScaleX(), spr.getScaleY(), spr.getRotation());
-        _spriteDrawable.getSprite().setAlpha(oldAlpha);
+        super.draw(batch, parentAlpha);
     }
 
     public void rotate(float degrees) {
-        rotation = degrees;
+        this.setRotation(degrees);
     }
 
     public void rotate(double radians) {
@@ -58,7 +51,9 @@ public class Scene2dSprite extends Group {
     }
 
     public void setAnchorPoint(float x, float y) {
-        _AnchorPoint = new Vector2(x, y);
+        this.setOrigin(x, y);
+
+
     }
 
     public Vector2 getAnchorPoint() {

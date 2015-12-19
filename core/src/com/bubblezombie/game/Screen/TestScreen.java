@@ -5,15 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bubblezombie.game.BubbleZombieGame;
@@ -24,10 +18,11 @@ import com.bubblezombie.game.Util.Scene2dSprite;
  */
 public class TestScreen implements Screen {
 
+    Group grid = new Group();
     Scene2dSprite test = new Scene2dSprite();
     Scene2dSprite s = new Scene2dSprite();
     Image b;
-    int i = 0;
+    int i = 1;
     protected Game game;
     protected Stage stage;
     private Viewport _viewport;
@@ -43,9 +38,11 @@ public class TestScreen implements Screen {
         _viewport = new FitViewport(BubbleZombieGame.width, BubbleZombieGame.height);
         stage = new Stage(_viewport);
         s.setDrawable(new Texture(Gdx.files.internal("background/screens/mute.png")));
-        test.setTransform(false);
-        test.rotate(40f);
-        s.setAnchorPoint(100f, 100f);
+        test.setDrawable(new Texture(Gdx.files.internal("background/screens/UI_screen_glass.png")));
+        test.setPosition(100f, 100f);
+        test.setAnchorPoint(200f, 100f);
+        s.setPosition(50f ,50f);
+        s.setAnchorPoint(40f, 40f);
         test.addActor(s);
         Gdx.input.setInputProcessor(stage);
         stage.addActor(test);
@@ -56,6 +53,7 @@ public class TestScreen implements Screen {
         Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         test.rotate((float)i);
+        s.rotate((float)-i);
         i = (i + 1) % 360;
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         stage.draw();
