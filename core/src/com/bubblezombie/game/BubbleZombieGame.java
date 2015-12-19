@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.bubblezombie.game.Screen.MainMenuScreen;
+import com.bubblezombie.game.Screen.TestScreen;
 import com.bubblezombie.game.Util.Factory.FontFactory;
 import com.bubblezombie.game.Util.Managers.SaveManager;
 
@@ -22,6 +23,7 @@ public class BubbleZombieGame extends Game {
 		assetManager = new AssetManager(new InternalFileHandleResolver());
 		SaveManager.initialize("data.save");
 		FontFactory.initialize("fonts/EuropeExt_Bold.ttf", "fonts/EuropeExt_Bold.ttf");
-		setScreen(new MainMenuScreen(this));
+//		setScreen(new MainMenuScreen(this));
+		setScreen(new TestScreen(this));
 	}
 }
