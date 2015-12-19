@@ -1,80 +1,67 @@
 package com.bubblezombie.game.Screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
+
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.Util.GameConfig;
 
 /**
  * Created by artem on 01.12.15.
  */
 public class GameScreen extends BaseScreen {
-    Screen menu;
+    private static final String TAG = "GameScreen";
 
-    Stage stage;
-    SpriteBatch batch;
-    OrthographicCamera camera;
-    Texture text;
-    GameScreen(BubbleZombieGame game) {
+    // update loop delta time in ms
+    private static final float DT = 1000/30;
+
+    // game states
+    private enum GameState { LOSE, WON, UNDEF };
+
+    // whether the player losed the game
+    private GameState currWonState = GameState.UNDEF;
+
+    private Boolean _useDebugView;
+
+    // sprite containers
+    private Group _game = new Group();
+    //private var _pause:pop_pause_mc = new pop_pause_mc();
+    private Group _UI = new Group();
+
+    // game objects
+    private int _lvlNum;
+
+    //buttons
+    private ImageButton _planeBtn;
+
+    /**
+     * @param levelNum - which level is we now playing?
+     */
+    GameScreen(BubbleZombieGame game, int levelNum) {
         super(game);
+
+        _lvlNum = levelNum;
     }
 
     @Override
     public void show() {
-        batch = new SpriteBatch();
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, BubbleZombieGame.width, BubbleZombieGame.height);
-        stage = new Stage(new ScalingViewport(Scaling.stretch, BubbleZombieGame.width, BubbleZombieGame.height));
-        stage.clear();
-        Gdx.input.setInputProcessor(stage);
-        text = new Texture(Gdx.files.internal("textures/header.png"));
+        super.show();
+
+        stage.addActor(_game);
+        stage.addActor(_UI);
+
+//        GameConfig cfg = new GameConfig(BubbleZombieGame.LVLC.GetLevel(_lvlNum));
+//        _useDebugView = Boolean(cfg.useDebugView);
     }
 
     @Override
     public void render(float delta) {
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act();
-
-        camera.update();
-
-        batch.setProjectionMatrix(camera.combined);
-
-        batch.begin();
-        batch.draw(text,70, 200);
-        batch.end();
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
+        super.render(delta);
 
     }
 
     @Override
     public void dispose() {
-
+        super.dispose();
     }
 }
