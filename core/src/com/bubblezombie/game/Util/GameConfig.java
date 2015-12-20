@@ -223,7 +223,7 @@ public class GameConfig {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
-            Gdx.app.log(TAG, name + "not found");
+            Gdx.app.log(TAG, name + " not found");
             if (getter.getReturnType().isPrimitive()) {
                 result = (T) DefaultValues.getDefaultValueForClass(getter.getReturnType());
             }
