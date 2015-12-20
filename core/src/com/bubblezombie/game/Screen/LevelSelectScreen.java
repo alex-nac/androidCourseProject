@@ -189,6 +189,7 @@ public class LevelSelectScreen extends BaseUIScreen {
                         public void clicked(InputEvent event, float x, float y) {
                             Gdx.app.log("next screen button", "starting level select screen...");
                             dispose();
+                            // TODO: все время запускается 1й уровень?
                             game.setScreen(new GameScreen(game, 1));
                         }
                     });

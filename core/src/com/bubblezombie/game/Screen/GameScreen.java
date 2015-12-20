@@ -8,14 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.SerializationException;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Util.GameConfig;
 
 import java.io.IOException;
 
-/**
- * Created by artem on 01.12.15.
- */
+
 public class GameScreen extends BaseScreen {
     private static final String TAG = "GameScreen";
 
@@ -68,10 +67,13 @@ public class GameScreen extends BaseScreen {
             cfg = new GameConfig(BubbleZombieGame.LVLC.GetLevel(_lvlNum));
         } catch (IOException e) {
             e.printStackTrace();
-            Gdx.app.log("GameScreen", "Error parsing level data");
+            Gdx.app.log(TAG, "Error parsing level data");
+        } catch (SerializationException e) {
+            e.printStackTrace();
+            Gdx.app.log(TAG, "wrong xml format");
         }
 
-        RES_BG = cfg.BGclassName;
+//        RES_BG = cfg.BGclassName;
 
         game.assetManager.load(RES_BG, Texture.class);
         game.assetManager.load(RES_SWAT, Texture.class);

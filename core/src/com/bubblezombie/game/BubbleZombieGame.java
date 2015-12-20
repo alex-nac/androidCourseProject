@@ -10,6 +10,7 @@ import com.bubblezombie.game.Screen.MainMenuScreen;
 import com.bubblezombie.game.Screen.TestScreen;
 import com.bubblezombie.game.Util.Factory.ButtonFactory;
 import com.bubblezombie.game.Util.Factory.FontFactory;
+import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.LevelContainer;
 import com.bubblezombie.game.Util.Managers.SaveManager;
 
@@ -25,6 +26,8 @@ public class BubbleZombieGame extends Game {
 	public void create () {
 		assetManager = new AssetManager(new InternalFileHandleResolver());
 		SaveManager.initialize("data.save");
+		GameConfig.initialize();
+		LevelContainer.initialize();
 		FontFactory.initialize("fonts/EuropeExt_Bold.ttf", "fonts/EuropeExt_Bold.ttf");
 		ButtonFactory.initialize(this);
 		setScreen(new MainMenuScreen(this));

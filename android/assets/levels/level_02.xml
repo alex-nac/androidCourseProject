@@ -1,4 +1,4 @@
-﻿<level>
+<level>
 	<!-- общее -->
 	<won_time>25</won_time>	
 	<colors>3</colors>	
@@ -73,5 +73,4 @@
 	<Pop_up>GO GO GO!</Pop_up>
 	<Pop_up>Ouch!</Pop_up>
   </Pop_ups>
-  
 </level>
