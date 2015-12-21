@@ -48,7 +48,7 @@ public class GameScreen extends BaseScreen {
     private Group _game = new Group();
     private Image _pause;
     private Group _UI = new Group();
-
+    float i = 0f;
     // game object
     private World _space = new World(new Vector2(0, 0), true);
     //private var _debug:Debug;
@@ -143,7 +143,6 @@ public class GameScreen extends BaseScreen {
         _game.addActor(_gun.getView());
         //stage.addEventListener(MouseEvent.MOUSE_DOWN, Shoot);
 
-
         ////////
         ///UI///
         ////////
@@ -191,6 +190,7 @@ public class GameScreen extends BaseScreen {
 
         float _angle = (float)Math.atan2(Gdx.input.getY() - _gun.getView().getY() + 34, Gdx.input.getX() - _gun.getView().getX() - 13);
         _gun.setGunRotation(_angle);
+
     }
 
     @Override
