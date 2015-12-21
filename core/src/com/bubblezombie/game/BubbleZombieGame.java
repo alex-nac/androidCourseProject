@@ -2,6 +2,7 @@ package com.bubblezombie.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +25,7 @@ public class BubbleZombieGame extends Game {
 	
 	@Override
 	public void create () {
+		Gdx.input.setCatchBackKey(true);
 		assetManager = new AssetManager(new InternalFileHandleResolver());
 		SaveManager.initialize("data.save");
 		GameConfig.initialize();

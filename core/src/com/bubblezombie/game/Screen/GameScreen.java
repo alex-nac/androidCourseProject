@@ -2,9 +2,11 @@ package com.bubblezombie.game.Screen;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -122,6 +124,18 @@ public class GameScreen extends BaseScreen {
         ////////
         ///UI///
         ////////
+
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.BACK) {
+//                    dispose();
+                    game.setScreen(new LevelSelectScreen(game));
+                }
+                return false;
+//                return super.keyDown(event, keycode);
+            }
+        });
 
     }
 
