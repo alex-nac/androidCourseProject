@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bubblezombie.game.BubbleZombieGame;
@@ -176,7 +178,7 @@ public class LevelSelectScreen extends BaseUIScreen {
             for (int j = 0; j < 5; j++) {
                 int levelNum = i * 5 + j + 1;
                 String key = "level" + levelNum + "_opened";
-                Button levelbtn;
+                final Button levelbtn;
 
                 //if we can play this level
                 if (SaveManager.getSharedData(key)) {
@@ -189,8 +191,8 @@ public class LevelSelectScreen extends BaseUIScreen {
                         public void clicked(InputEvent event, float x, float y) {
                             Gdx.app.log("next screen button", "starting level select screen...");
                             dispose();
-                            // TODO: все время запускается 1й уровень?
-                            game.setScreen(new GameScreen(game, 1));
+                            int lvlNum = Integer.parseInt(((TextButton)event.getListenerActor()).getText().toString());
+                            game.setScreen(new GameScreen(game, lvlNum));
                         }
                     });
 

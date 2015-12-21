@@ -3,13 +3,17 @@ package com.bubblezombie.game.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SerializationException;
+import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.Gun;
 import com.bubblezombie.game.Util.GameConfig;
 
 import java.io.IOException;
@@ -24,7 +28,7 @@ public class GameScreen extends BaseScreen {
     private static final String RES_POP_PAUSE = "game/UI_game/pop_pause.png";
 
     // general consts
-    private static final int SWAT_CAR_X_OFFSET = BubbleZombieGame.width - 75;
+    private static final int SWAT_CAR_X_OFFSET = BubbleZombieGame.width / 2 - 75;
     private static final int SWAT_CAR_Y_OFFSET = -13;
 
     // update loop delta time in ms
@@ -43,8 +47,20 @@ public class GameScreen extends BaseScreen {
     private Image _pause;
     private Group _UI = new Group();
 
-    // game objects
+    // game object
+    private World _space = new World(new Vector2(0, 0), true);
+    //private var _debug:Debug;
+    private BubbleMesh _mesh;
+    private Gun _gun;
+    //private var _wonTimer:Timer
+    //private var _score:Score;
     private int _lvlNum;
+    //private var _slidingPanel:SlidingPanel;
+    //private var _indicator:Indicator;
+    //private var _waveIndicator:WaveIndicator;
+    //private var _airplaneTimeLeftIndicator:AirplaneTimeLeftIndicator;
+    //private var _airplane:Airplane;
+    //private var _masterPopup:MasterPopup;
 
     //buttons
     private ImageButton _planeBtn;
@@ -73,7 +89,7 @@ public class GameScreen extends BaseScreen {
             Gdx.app.log(TAG, "wrong xml format");
         }
 
-//        RES_BG = cfg.BGclassName;
+        RES_BG = "background/level_backgrounds/" + cfg.BGclassName + ".png";
 
         game.assetManager.load(RES_BG, Texture.class);
         game.assetManager.load(RES_SWAT, Texture.class);
@@ -118,6 +134,13 @@ public class GameScreen extends BaseScreen {
         swatCar.setPosition(SWAT_CAR_X_OFFSET, SWAT_CAR_Y_OFFSET);
         _game.addActor(swatCar);
 
+        _gun = new Gun(cfg, _space, _lvlNum >= 21, _mesh);
+        //_gun.addEventListener(GunEvent.SHOOT, _indicator.SetNextSprite);
+        //_gun.addEventListener(GunEvent.SHOOT, aimPointer.onNewBullet);
+        //_gun.addEventListener(GunEvent.MOVED, aimPointer.onGunMoved);
+        _game.addActor(_gun.getView());
+        //stage.addEventListener(MouseEvent.MOUSE_DOWN, Shoot);
+
 
         ////////
         ///UI///
@@ -152,6 +175,8 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
+        float _angle = (float)Math.atan2(Gdx.input.getY() - _gun.getView().getY() + 34, Gdx.input.getX() - _gun.getView().getX() - 13);
+        _gun.setGunRotation(_angle);
     }
 
     @Override
