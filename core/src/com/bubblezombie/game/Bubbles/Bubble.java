@@ -2,13 +2,15 @@ package com.bubblezombie.game.Bubbles;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.bubblezombie.game.BubbleMesh;
+import com.bubblezombie.game.Util.Scene2dSprite;
 
 /**
  * Created by artem on 01.12.15.
  */
-public class Bubble extends Actor {
+public class Bubble {
     private static final int MAX_TIMES_WALL_TOUCHED = 2;   //after this the bubble exploding
     private static final int LIFE_TIME = 4;                //how long does this bubble live in seconds
 
@@ -28,12 +30,12 @@ public class Bubble extends Actor {
     //VARIABLES//
     /////////////
 
-    protected BubbleMesh mesh;                  	//we save ref to the mesh when connect bubble
-    protected Sprite effects = new Sprite();    	//here we place all sprites that need to be on top of zombies
-    private double scale;						 	//bubble's movieclip scale
+    protected BubbleMesh mesh;                      	//we save ref to the mesh when connect bubble
+    protected Sprite effects = new Sprite();        	//here we place all sprites that need to be on top of zombies
+    private double scale;				    		 	//bubble's movieclip scale
 //    private var _view:MovieClip = new MovieClip();   	//bubble's view
-    private Sprite view;
-//    private var _body:Body = new Body();             	//bubble's body in physics world
+    private Scene2dSprite view;
+    private Body _body;                              	//bubble's body in physics world
     private BubbleType type;                           	//bubble's type
     private Vector2 meshPosition;
     private boolean isConnected = false;
@@ -58,17 +60,14 @@ public class Bubble extends Actor {
         return type;
     }
 //    public function get space():Space { return _body.space; }
-    public Vector2 getPosition() {
-        return view.getBoundingRectangle().getCenter(new Vector2());
-//        return body.position.copy();
-    }
+    public Vector2 getPosition() { return _body.getPosition().cpy(); }
     public BubbleMesh getMesh() {
         return mesh;
     }
     public Vector2 getMeshPosition() {
         return mesh.getMeshPos(this);
     }
-    public Sprite getView() {
+    public Scene2dSprite getView() {
         return view;
     }
     public Sprite getEffects(){
@@ -82,10 +81,7 @@ public class Bubble extends Actor {
     public boolean isFrozen() {
         return isFrozen;
     }
-    public boolean hasBody() {
-        // if bubble visible in the screen it has physic body
-        return this.isVisible();
-    }
+    public boolean hasBody() { return _body != null; }
     public boolean wasCallbackCalled() {
         return wasCallbackCalled;
     }

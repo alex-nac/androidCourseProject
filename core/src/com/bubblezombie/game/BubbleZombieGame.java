@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Screen.MainMenuScreen;
 import com.bubblezombie.game.Screen.TestScreen;
 import com.bubblezombie.game.Util.Factory.ButtonFactory;
@@ -20,6 +21,7 @@ public class BubbleZombieGame extends Game {
 	public static final int height = 480;
 
 	public static LevelContainer LVLC = new LevelContainer();
+	public static final BubbleZombieGame INSTANCE = new BubbleZombieGame();
 
 	public AssetManager assetManager;
 	

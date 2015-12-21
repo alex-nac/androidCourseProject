@@ -22,6 +22,8 @@ public class Scene2dSprite extends Group {
         _spriteDrawable = new SpriteDrawable(new Sprite(drawable));
     }
 
+    public void setAlpha(float a) { _spriteDrawable.getSprite().setAlpha(a); }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (_spriteDrawable != null) {
