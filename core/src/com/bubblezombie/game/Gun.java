@@ -111,7 +111,8 @@ public class Gun {
 
     // rotate gun
     public void setGunRotation(float degrees) {
-        _gun.setRotation(_angle);
+        _gun.setRotation(degrees);
+
         //_gunBody.setTransform(0, 0, _angle);
         //dispatchEvent(new GunEvent(GunEvent.MOVED, null, _angle * 180 / Math.PI));
     }
