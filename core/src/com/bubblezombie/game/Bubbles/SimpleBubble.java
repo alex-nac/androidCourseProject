@@ -8,13 +8,12 @@ public class SimpleBubble extends Bubble {
     public static int COLORS_AMOUNT;
 
 
-    public BubbleColor color;
+    public BubbleColor _color;
 
-    public void setColor(int newColor) {}
+    public void setColor(BubbleColor newColor) {}
 
-//    public BubbleColor getColor() {
-//        return color;
-//    }
+    public BubbleColor getColor() { return _color; }
+
     public SimpleBubble() {
         this(BubbleColor.NONE);
     }
@@ -22,14 +21,14 @@ public class SimpleBubble extends Bubble {
     public SimpleBubble(BubbleColor color) {
         super(BubbleType.SIMPLE);
         if (color == BubbleColor.NONE) {
-            this.color = BubbleColor.values()[(int)Math.floor(Math.random() * SimpleBubble.COLORS_AMOUNT) + 1];
+            _color = BubbleColor.values()[(int)Math.floor(Math.random() * SimpleBubble.COLORS_AMOUNT) + 1];
         } else {
-            this.color = color;
+            _color = color;
         }
     }
     @Override
-    public void delete(boolean withPlane ) {
-        super.delete();
+    public void Delete(boolean withPlane) {
+        super.Delete();
     }
 
 }

@@ -7,6 +7,6 @@ import com.bubblezombie.game.BubbleZombieGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new BubbleZombieGame(), config);
+		new LwjglApplication(BubbleZombieGame.INSTANCE, config);
 	}
 }

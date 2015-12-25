@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -26,6 +28,7 @@ public class TestScreen implements Screen {
     protected Game game;
     protected Stage stage;
     private Viewport _viewport;
+    private boolean f;
 
     public TestScreen(Game game) {
         this.game = game;
@@ -52,8 +55,17 @@ public class TestScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        test.rotate((float)i);
-        s.rotate((float)-i);
+        if (f) {
+            test.rotate((float) i);
+            s.rotate((float) -i);
+        }
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+
+                return super.keyDown(event, keycode);
+            }
+        });
         i = (i + 1) % 360;
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         stage.draw();

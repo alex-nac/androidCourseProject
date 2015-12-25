@@ -3,6 +3,7 @@ package com.bubblezombie.game;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.bubblezombie.game.Bubbles.Bubble;
+import com.bubblezombie.game.Bubbles.BubbleColor;
 
 import java.util.ArrayList;
 
@@ -71,6 +72,8 @@ public class BubbleMesh extends Actor {
 
         return vec;
     }
+
+    public int GetRemainingBubblesByColor(BubbleColor color) { return 0; }
 
     public ArrayList<Bubble> getBubblesAround(Bubble bubble) {
         return getBubblesAround(bubble, false);
