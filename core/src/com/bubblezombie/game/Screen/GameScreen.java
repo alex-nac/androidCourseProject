@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.SerializationException;
 import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Gun;
+import com.bubblezombie.game.Util.BFS;
 import com.bubblezombie.game.Util.GameConfig;
 
 import java.io.IOException;
@@ -135,6 +136,17 @@ public class GameScreen extends BaseScreen {
         Image swatCar = new Image(game.assetManager.get(RES_SWAT, Texture.class));
         swatCar.setPosition(SWAT_CAR_X_OFFSET, SWAT_CAR_Y_OFFSET);
         _game.addActor(swatCar);
+
+        // mesh
+        _mesh = new BubbleMesh(_space, cfg);
+        //_mesh.addEventListener(ComboEvent.COMBO, ComboHandler); //score updating
+        //_mesh.addEventListener(BubbleMesh.LAST_WAVE, StartWonTimer);
+        //_mesh.addEventListener(BubbleMesh.CAR_EXPLOSION, ExplodeCar);
+        //_mesh.addEventListener(BubbleMesh.ALL_EMENIES_KILLED, MasterAchHandler);
+        //_mesh.addEventListener(BubbleMesh.NEW_ROW, _waveIndicator.NewRow);
+        _game.addActor(_mesh.getView());
+
+        BFS.setMesh(_mesh);
 
         _gun = new Gun(cfg, _space, _lvlNum >= 21, _mesh);
         //_gun.addEventListener(GunEvent.SHOOT, _indicator.SetNextSprite);

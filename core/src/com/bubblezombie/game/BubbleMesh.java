@@ -1,9 +1,14 @@
 package com.bubblezombie.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Bubbles.BubbleColor;
+import com.bubblezombie.game.Util.GameConfig;
 
 import java.util.ArrayList;
 
@@ -11,20 +16,46 @@ import java.util.ArrayList;
  * Created by artem on 02.12.15.
  */
 public class BubbleMesh extends Actor {
+
+    /////////////
+    //VARIABLES//
+    /////////////
+
     private ArrayList<ArrayList<Bubble>> _mesh;
     private MeshPattern _meshPattern;
     private int _rowsNum;
-    private ArrayList<Boolean> _offset;
+    private int _wavesNum = 0;
+    private int _enemiesNum = 0;  //sprayers + zombies
+    private ArrayList<Boolean> _offset = new ArrayList<Boolean>(); //is row offseted or not
+    private World _space;
+    private Body _meshOriginBody;
+    //private var _waveTimer:Timer;
+    //private var _pauseMeshTimer:Timer;              //timer that preventing mesh from adding next row when it is frozen
+    private Group _view = new Group();
+    private Group _bubbleLayer = new Group(); //layer where all bubbles exist
+    private Group _bubbleEffectsLayer = new Group(); //layer where bubble-specified effects exist (the axe)
+    private Group _generalEffectsLayer = new Group(); //layer where general effects exist
+    private Group _textEffectsLayer = new Group();
+    //private _popupManager:PopupManager;
+    private Boolean _wasMeshStopped = false;
 
-    public Vector2 getMeshPos(Bubble bub) {
-        return null;
-    }
-    public int getColumnsNum() {
-        return _meshPattern.getColumsNum();
-    }
-    public int getRowsNum() {
-        return _rowsNum;
-    }
+    //////////////////
+    //GETTES/SETTERS//
+    //////////////////
+
+    public int getColumnsNum() { return _meshPattern.getColumsNum(); }
+    public int getRowsNum() { return _rowsNum; }
+    public Group getView() { return _view; }
+
+    /////////////
+    //FUNCTIONS//
+    /////////////
+
+    // creating
+    public BubbleMesh(World space, GameConfig cfg) { }
+
+    public Vector2 getMeshPos(Bubble bub) { return null; }
+
     //checking if there is bubble in (i, j) position
     public Bubble at(int i, int j) {
         if (i < 0 || j < 0 || i > _mesh.size() - 1 || j > _mesh.get(i).size() - 1)
