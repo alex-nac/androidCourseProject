@@ -3,7 +3,7 @@ package com.bubblezombie.game.Bubbles;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.physics.box2d.World;
 import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.Util.Scene2dSprite;
 
@@ -31,13 +31,14 @@ public class Bubble {
     /////////////
 
     protected BubbleMesh mesh;                      	//we save ref to the mesh when connect bubble
-    protected Sprite effects = new Sprite();        	//here we place all sprites that need to be on top of zombies
+    protected Scene2dSprite effects = new Scene2dSprite();        	//here we place all sprites that need to be on top of zombies
     private double scale;				    		 	//bubble's movieclip scale
 //    private var _view:MovieClip = new MovieClip();   	//bubble's view
     private Scene2dSprite view;
     private Body _body;                              	//bubble's body in physics world
     private BubbleType type;                           	//bubble's type
     private Vector2 meshPosition;
+    private boolean _isDead;
     private boolean isConnected = false;
     private boolean wasCallbackCalled = false;     //have we called the BubbleHDR function for ths bubble
 //    private var _lifeTimer:Timer;
@@ -53,6 +54,7 @@ public class Bubble {
     //GETTES/SETTERS//
     //////////////////
 
+    public boolean isDead() { return _isDead; }
     public boolean isConnected() {
         return isConnected;
     }
@@ -70,7 +72,7 @@ public class Bubble {
     public Scene2dSprite getView() {
         return view;
     }
-    public Sprite getEffects(){
+    public Scene2dSprite getEffects(){
         return effects;
     }
 //    public function get x():Number { return _body.position.x; }
@@ -93,18 +95,17 @@ public class Bubble {
     }
 
 
-//    public function set space(space:Space):void { _body.space = space; }
+    public void setSpace(World space) { /*_body = space.createBody();*/ }
 //    public function set isSensor(value:Boolean):void { _body.shapes.at(0).sensorEnabled = value; }
-//    public function set isBullet(value:Boolean):void { _body.isBullet = value; }
+    public void setIsBullet(Boolean value) { _body.setBullet(value); }
 //    public function set isConnected(value:Boolean):void {
 //        _isConnected = value;
 //        if (!_isConnected) _body.cbTypes.remove(Bubble.ConnectedBubbleCBType);
 //    }
 //
-//    public function set velocity(vel:Vec2):void {
-//        _body.allowMovement = true;
-//        _body.velocity = vel;
-//    }
+    public void setVelocity(Vector2 vel) {
+        _body.setLinearVelocity(vel);
+    }
 
     public void setX(float value) {
 //        _body.position.x = value;
@@ -197,11 +198,18 @@ public class Bubble {
 //            (Main.GSM.GetCurrentState() as GameState).removeEventListener(State.RESUME, onGameStateChanged);
 //        });
     }
-    public void delete() {
-        this.delete(false);
-    }
-    public void delete(boolean withPlane) {
 
+    public void StartLifeTimer() {
+        //_lifeTimer = new Timer(LIFE_TIME * 1000, 1);
+        //_lifeTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onLifeEnd);
+        //_lifeTimer.start();
+    }
+
+    public void Delete() {
+        this.Delete(false);
+    }
+    public void Delete(boolean withPlane) {
+        _isDead = true;
     }
 
 

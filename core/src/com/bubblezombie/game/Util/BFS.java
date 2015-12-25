@@ -39,23 +39,23 @@ public class BFS {
             //first edge
             queue.add(meshPos);
             boolMesh.get((int)meshPos.x).set((int)meshPos.y, true);
-            BubbleColor color = ((SimpleBubble)_mesh.at(meshPos.x, meshPos.y)).color;
+            BubbleColor color = ((SimpleBubble)_mesh.at(meshPos.x, meshPos.y)).getColor();
             //bfs
             while(queue.size() != 0) {
                 Vector2 v = queue.remove(0);
                 Bubble bbl = _mesh.at(v.x, v.y);
-                if (!withZombie && ((SimpleBubble)bbl).color == BubbleColor.UBER_BLACK) {
+                if (!withZombie && ((SimpleBubble)bbl).getColor() == BubbleColor.UBER_BLACK) {
                     continue; //if it is zombie and we don't want zombie go to the next
                 }
                 bubbles.add(_mesh.at(v.x, v.y));
-                if (((SimpleBubble)bbl).color == BubbleColor.UBER_BLACK) {
+                if (((SimpleBubble)bbl).getColor() == BubbleColor.UBER_BLACK) {
                     continue; //if it is zombie then we stop wave
                 }
                 for (Bubble bubble : _mesh.getBubblesAround(_mesh.at(v.x, v.y))) {
                     if (!(bubble instanceof SimpleBubble)) continue;
                     Vector2 point = bubble.getMeshPosition();
-                    if (!boolMesh.get((int)point.x).get((int)point.y) && ( ((SimpleBubble)_mesh.at(point.x, point.y)).color == color
-                            || ((SimpleBubble)_mesh.at(point.x, point.y)).color == BubbleColor.UBER_BLACK)) {
+                    if (!boolMesh.get((int)point.x).get((int)point.y) && ( ((SimpleBubble)_mesh.at(point.x, point.y)).getColor() == color
+                            || ((SimpleBubble)_mesh.at(point.x, point.y)).getColor() == BubbleColor.UBER_BLACK)) {
                         queue.add(point);
                         boolMesh.get((int)point.x).set((int)point.y,true);
                     }

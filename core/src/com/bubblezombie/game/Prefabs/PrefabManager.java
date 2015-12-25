@@ -59,7 +59,7 @@ public class PrefabManager {
                 for (Pair<Integer, Integer> offS : prefab) {
                     Pair<Integer, Integer> pos = getDot(rowNum, colNum, offS);
                     if (at(pos.first, pos.second)) {
-                        ((Zombie)_mesh.get(pos.first).get(pos.second)).color = BubbleColor.UBER_BLACK;
+                        ((Zombie)_mesh.get(pos.first).get(pos.second)).setColor(BubbleColor.UBER_BLACK);
                         ((Zombie)_mesh.get(pos.first).get(pos.second)).canOverlay = currPattern.canOverlay;
                     }
                 }

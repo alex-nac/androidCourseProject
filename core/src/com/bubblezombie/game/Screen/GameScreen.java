@@ -188,11 +188,9 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
-        float _angle = (float)Math.atan2(Gdx.input.getY() - _gun.getView().getY() + 34, Gdx.input.getX() - _gun.getView().getX() - 13);
+        Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+        float _angle = (float)Math.atan2(loc.y + 34, loc.x - 13);
         _gun.setGunRotation(_angle * 180 / (float)Math.PI);
-//        _gun.setGunRotation(10f);
-
-
     }
 
     @Override
