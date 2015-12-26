@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -21,6 +23,7 @@ public class MainMenuScreen extends BaseScreen {
 
     private Image _mainMenuBGD;
     private Button _newGameBtn;
+    private Button _vkShareBtn;
 
     private BitmapFont _europeExtBold;
 
@@ -33,7 +36,6 @@ public class MainMenuScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-
         game.assetManager.load(RES_MAINMENUBGD, Texture.class);
         game.assetManager.load(RES_BUT_MAIN_PLAY, Texture.class);
         game.assetManager.load(RES_MUSIC_MENU, Music.class);
@@ -65,6 +67,25 @@ public class MainMenuScreen extends BaseScreen {
             }
         });
 
+        _vkShareBtn = ButtonFactory.getTextButton(
+                game.assetManager.get(RES_BUT_MAIN_PLAY, Texture.class),/* Texture*/
+                "VK", /*Text*/
+                _europeExtBold, /*font*/
+                false, /*isShaded*/
+                0.0f, /*height (0 <=> default)*/
+                0.0f /*width (0 <=> default)*/);
+        _vkShareBtn.setPosition((BubbleZombieGame.width - _newGameBtn.getWidth()) / 2, 0.0f);
+        _vkShareBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("vk button", "starting vk interface");
+                if (game.VkSharingSender == null) {
+                    Gdx.app.log("vk button", "not implemented on this platform");
+                } else {
+                    game.VkSharingSender.postScore(100);
+                }
+            }
+        });
 
         /*
         muteButton = new Button(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("background/mute.png")))));
@@ -84,6 +105,7 @@ public class MainMenuScreen extends BaseScreen {
 
         stage.addActor(_mainMenuBGD);
         stage.addActor(_newGameBtn);
+        stage.addActor(_vkShareBtn);
 
         Gdx.app.log(TAG, "showed");
     }
