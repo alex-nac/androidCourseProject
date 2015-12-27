@@ -8,9 +8,9 @@ import com.bubblezombie.game.Bubbles.SimpleBubble;
 
 import java.util.ArrayList;
 
-/* Class helps us with bsf in bubble mesh
+/* Class helps us with bsf in bubble _mesh
 * it can find if the bubble connected with
-* mesh root or find all the bubbles with the same
+* _mesh root or find all the bubbles with the same
 * type around current
 */
 public class BFS {
@@ -114,7 +114,7 @@ public class BFS {
     }
 
     /**
-     * @return empty mesh that show us if we were on an edge or not
+     * @return empty _mesh that show us if we were on an edge or not
      */
         private static ArrayList<ArrayList<Boolean>> getBoolMesh() {
             ArrayList<ArrayList<Boolean>> boolMesh = new ArrayList<ArrayList<Boolean>>(_mesh.getRowsNum());

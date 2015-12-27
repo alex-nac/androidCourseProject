@@ -137,7 +137,7 @@ public class GameScreen extends BaseScreen {
         swatCar.setPosition(SWAT_CAR_X_OFFSET, SWAT_CAR_Y_OFFSET);
         _game.addActor(swatCar);
 
-        // mesh
+        // _mesh
         _mesh = new BubbleMesh(_space, cfg);
         //_mesh.addEventListener(ComboEvent.COMBO, ComboHandler); //score updating
         //_mesh.addEventListener(BubbleMesh.LAST_WAVE, StartWonTimer);
@@ -188,7 +188,7 @@ public class GameScreen extends BaseScreen {
         var loseSensorCBT:CbType = new CbType();
         loseSensor.cbTypes.add(loseSensorCBT);
         loseSensor.space = _space;
-        //we use ongoing because of situation when we shoot with bubble and while connecting to the mesh it is touching sensor
+        //we use ongoing because of situation when we shoot with bubble and while connecting to the _mesh it is touching sensor
         _space.listeners.add(new InteractionListener(CbEvent.ONGOING, InteractionType.SENSOR, loseSensorCBT, Bubble.ConnectedBubbleCBType, GameLose));
 
         //bullet exploding cond.

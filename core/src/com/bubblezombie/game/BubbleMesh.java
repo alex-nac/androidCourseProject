@@ -198,7 +198,7 @@ public class BubbleMesh extends Actor {
         _mesh.get((int)meshPos.x).set((int)meshPos.y, null);
 
         if (bubble instanceof Zombie || bubble instanceof Sprayer) _enemiesNum = _enemiesNum - 1;
-        if (bubble instanceof SimpleBubble) _colors[((SimpleBubble) bubble).getColor().getIndex()]--;
+//        if (bubble instanceof SimpleBubble) _colors[((SimpleBubble) bubble).getColor().getIndex()]--;
     }
 
     public void Stop() {
@@ -411,58 +411,58 @@ public class BubbleMesh extends Actor {
     */
 
     //creating mesh at the beggining
-    private function CreateMesh(startRowAmount:int):void {
-        for (var i:int = 0; i < startRowAmount; i++) {
-
-            _rowsNum++;
-            _offset.unshift(!_offset[0]);
-
-            var topRow:Vector.<Bubble> = _meshPattern.GetNextRow();
-            for (var j:int = 0; j < topRow.length; j++) {
-                topRow[j].position = GetWorldPos(new Vec2(0, j));
-                topRow[j].space = _space;
-                topRow[j].mesh = this;
-                _bubbleLayer.addChild(topRow[j].view);
-                _bubbleEffectsLayer.addChild(topRow[j].effects);
-            }
-
-            for each(var bblRow:Vector.<Bubble> in _mesh)
-            for each (var bbl:Bubble in bblRow)
-            if (bbl) bbl.position = bbl.position.add(new Vec2(0, Bubble.DIAMETR));
-
-            for each(var effect:DisplayObject in _bubbleEffectsLayer)
-            effect.y += Bubble.DIAMETR;
-
-
-            _mesh.unshift(topRow);
-
-
-            //if it is the last wave
-            if (_wavesNum == _meshPattern.rowsNum - _meshPattern.startRowsNum) {
-                dispatchEvent(new Event(LAST_WAVE));
-                break;
-            }
-        }
-
-        enemiesNum = _meshPattern.columsNum * _meshPattern.rowsNum;
-    }
-
-    //if every == 3 every 3rd zombie will be deleted
-    private var _wasAnimationStopped:Boolean = false;
-    private function StopAnimations(every:int):void {
-        if (_wasAnimationStopped) return;
-
-        _wasAnimationStopped = true;
-
-        //firstable get all zombies from the pattern
-        var zombieVec:Vector.<Zombie> = _meshPattern.GetRemainingZombies();
-
-        //then from the mesh
-        for (var i:int = 0; i < _mesh.length; i++)
-        for (var j:int = 0; j < _meshPattern.columsNum; j++)
-        if (_mesh[i][j] is Zombie) zombieVec.push(_mesh[i][j]);
-
-        for (i = 0; i < zombieVec.length; i += every)
-            zombieVec[i].animationActive = false;
-    }
+//    private function CreateMesh(startRowAmount:int):void {
+//        for (var i:int = 0; i < startRowAmount; i++) {
+//
+//            _rowsNum++;
+//            _offset.unshift(!_offset[0]);
+//
+//            var topRow:Vector.<Bubble> = _meshPattern.GetNextRow();
+//            for (var j:int = 0; j < topRow.length; j++) {
+//                topRow[j].position = GetWorldPos(new Vec2(0, j));
+//                topRow[j].space = _space;
+//                topRow[j].mesh = this;
+//                _bubbleLayer.addChild(topRow[j].view);
+//                _bubbleEffectsLayer.addChild(topRow[j].effects);
+//            }
+//
+//            for each(var bblRow:Vector.<Bubble> in _mesh)
+//            for each (var bbl:Bubble in bblRow)
+//            if (bbl) bbl.position = bbl.position.add(new Vec2(0, Bubble.DIAMETR));
+//
+//            for each(var effect:DisplayObject in _bubbleEffectsLayer)
+//            effect.y += Bubble.DIAMETR;
+//
+//
+//            _mesh.unshift(topRow);
+//
+//
+//            //if it is the last wave
+//            if (_wavesNum == _meshPattern.rowsNum - _meshPattern.startRowsNum) {
+//                dispatchEvent(new Event(LAST_WAVE));
+//                break;
+//            }
+//        }
+//
+//        enemiesNum = _meshPattern.columsNum * _meshPattern.rowsNum;
+//    }
+//
+//    //if every == 3 every 3rd zombie will be deleted
+//    private var _wasAnimationStopped:Boolean = false;
+//    private function StopAnimations(every:int):void {
+//        if (_wasAnimationStopped) return;
+//
+//        _wasAnimationStopped = true;
+//
+//        //firstable get all zombies from the pattern
+//        var zombieVec:Vector.<Zombie> = _meshPattern.GetRemainingZombies();
+//
+//        //then from the mesh
+//        for (var i:int = 0; i < _mesh.length; i++)
+//        for (var j:int = 0; j < _meshPattern.columsNum; j++)
+//        if (_mesh[i][j] is Zombie) zombieVec.push(_mesh[i][j]);
+//
+//        for (i = 0; i < zombieVec.length; i += every)
+//            zombieVec[i].animationActive = false;
+//    }
 }

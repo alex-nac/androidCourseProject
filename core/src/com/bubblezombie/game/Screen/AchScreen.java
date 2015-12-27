@@ -13,7 +13,7 @@ import com.bubblezombie.game.Util.Factory.ButtonFactory;
 /**
  * Created by Alex on 17/12/15.
  */
-public class AchScreen extends BaseUIScreen {
+public class    AchScreen extends BaseUIScreen {
     private static final String TAG = "AchScreen";
 
     private static final int ACH_BUTTONS_X = 465;
