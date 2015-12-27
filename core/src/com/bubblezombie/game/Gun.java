@@ -153,25 +153,25 @@ public class Gun {
         final Bubble bullet = _nextBullet;
         bullet.getView().addAction(sequence(
                 moveTo(80 + bullet.getView().getWidth() / 2, bullet.getView().getY(), (80 + bullet.getView().getWidth() / 2) / SHOOTING_VEL),
-                        new Action() {
-                            public boolean act (float delta) {
-                                if (CheckForTouchingMesh()) {
-                                    bullet.Delete();
-                                    return true;
-                                }
+                new Action() {
+                    public boolean act(float delta) {
+                        if (CheckForTouchingMesh()) {
+                            bullet.Delete();
+                            return true;
+                        }
 
-                                _view.getParent().addActor(bullet.getView());
-                                _view.getParent().addActor(bullet.getEffects());
+                        _view.getParent().addActor(bullet.getView());
+                        _view.getParent().addActor(bullet.getEffects());
 
-                                bullet.setSpace(_space);
+                        bullet.setSpace(_space);
 
-                                bullet.setPosition(_gun.localToParentCoordinates(bullet.getPosition()));
-                                bullet.setVelocity(new Vector2(SHOOTING_VEL * MathUtils.cos(-_angle), -SHOOTING_VEL * MathUtils.sin(-_angle)));
-                                bullet.getView().addAction(scaleTo(1.0f, 1.0f, 0.1f)); //scale it to normal size
+                        bullet.setPosition(_gun.localToParentCoordinates(bullet.getPosition()));
+                        bullet.setVelocity(new Vector2(SHOOTING_VEL * MathUtils.cos(-_angle), -SHOOTING_VEL * MathUtils.sin(-_angle)));
+                        bullet.getView().addAction(scaleTo(1.0f, 1.0f, 0.1f)); //scale it to normal size
 
-                                return true;
-                            }
-                        }));
+                        return true;
+                    }
+                }));
 
         if (bullet.isDead()) return;
         bullet.StartLifeTimer();
