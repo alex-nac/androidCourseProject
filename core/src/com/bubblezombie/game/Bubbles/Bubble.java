@@ -15,8 +15,8 @@ public class Bubble {
     private static final int LIFE_TIME = 4;                //how long does this bubble live in seconds
 
     public static final int DIAMETR = 44;          		//diametr of the bubble
-    public static final double FROZEN_TIME = 0.1;   	//time to give frozen to near bubbles
-    public static double MESH_BUBBLE_DIAMETR;
+    public static final float FROZEN_TIME = 0.1f;   	//time to give frozen to near bubbles
+    public static float MESH_BUBBLE_DIAMETR;
 
 //    //CallBack Types for physics engine
 //    private static var _connectedBubbleCBType:CbType = new CbType();  //assigned when bubble is connected to the mesh
@@ -158,14 +158,14 @@ public class Bubble {
 //        }
 //    }
 //
-//    public function set mesh(newMesh:BubbleMesh):void {
+    public void setMesh(BubbleMesh newMesh) {
 //        if (newMesh == null) {
 //            if (_isConnected) _mesh.Delete(this);
 //            isConnected = false;
 //        }
 //        else
 //            onConnected(newMesh);
-//    }
+    }
     /////////////
     //FUNCTIONS//
     /////////////
@@ -198,6 +198,8 @@ public class Bubble {
 //            (Main.GSM.GetCurrentState() as GameState).removeEventListener(State.RESUME, onGameStateChanged);
 //        });
     }
+
+    public void Update() {}
 
     public void StartLifeTimer() {
         //_lifeTimer = new Timer(LIFE_TIME * 1000, 1);
