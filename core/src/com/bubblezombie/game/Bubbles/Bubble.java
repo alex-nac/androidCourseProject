@@ -40,21 +40,21 @@ public class Bubble {
 
     protected BubbleMesh _mesh;                      	//we save ref to the _mesh when connect bubble
     protected Scene2dSprite _effects = new Scene2dSprite();        	//here we place all sprites that need to be on top of zombies
-    protected double _scale;				    		 	//bubble's movieclip _scale
+    private double _scale;				    		 	//bubble's movieclip _scale
 //    private var _view:MovieClip = new MovieClip();   	//bubble's _view
-    protected Scene2dSprite _view = new Scene2dSprite();
-    protected Body _body;                              	//bubble's body in physics world
-    protected BubbleType type;                           	//bubble's type
-    protected Vector2 _meshPosition;
-    protected boolean _isDead;
-    protected boolean _isConnected = false;
-    protected boolean _wasCallbackCalled = false;     //have we called the BubbleHDR function for ths bubble
-    protected Timer _lifeTimer = new Timer();
-    protected int _timesWallTouched = 0; 				//how many times we have touched the wall
+    private Scene2dSprite _view = new Scene2dSprite();
+    private Body _body;                              	//bubble's body in physics world
+    private BubbleType type;                           	//bubble's type
+    private Vector2 _meshPosition;
+    private boolean _isDead;
+    private boolean _isConnected = false;
+    private boolean _wasCallbackCalled = false;     //have we called the BubbleHDR function for ths bubble
+    private Timer _lifeTimer = new Timer();
+    private int _timesWallTouched = 0; 				//how many times we have touched the wall
 
 
-    protected Scene2dSprite _frozenMC; //= new ice_01_mc();	//ice movieclip
-    protected boolean _isFrozen = false;			    //if bubble is frozen or not
+    private Scene2dSprite _frozenMC; //= new ice_01_mc();	//ice movieclip
+    private boolean _isFrozen = false;			    //if bubble is frozen or not
 
 //    private var _iceTween:GTween;
 

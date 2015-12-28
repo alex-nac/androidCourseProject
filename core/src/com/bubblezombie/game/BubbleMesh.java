@@ -42,7 +42,7 @@ public class BubbleMesh extends Actor {
     //VARIABLES//
     /////////////
 
-    private ArrayList<ArrayList<Bubble>> _mesh;
+    private ArrayList<ArrayList<Bubble>> _mesh = new ArrayList<ArrayList<Bubble>>();
     private ArrayList<Integer> _colors;
     private MeshPattern _meshPattern;
     private int _rowsNum;
@@ -115,7 +115,7 @@ public class BubbleMesh extends Actor {
         _offset.add(!_meshPattern.isLastRowOffseted());
 
         // creating mesh
-        //CreateMesh(_meshPattern.getStartRowsNum());
+        CreateMesh(_meshPattern.getStartRowsNum());
 
         //_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Bubble.ConnectedBubbleCBType, Bubble.BubbleCBType, BubbleHDR, -1));
 
