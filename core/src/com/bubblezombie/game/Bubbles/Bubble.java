@@ -183,9 +183,10 @@ public class Bubble {
     }
 
     public void setView(Scene2dSprite sprite) {
-        _view.clearChildren();
-        _view.addActor(sprite);
-        if (_isFrozen) _effects.addActor(_frozenMC);
+        _view = sprite;
+//        _view.clearChildren();
+//        _view.addActor(sprite);
+//        if (_isFrozen) _effects.addActor(_frozenMC);
     }
 
     public void setIsFrozen(boolean value) {

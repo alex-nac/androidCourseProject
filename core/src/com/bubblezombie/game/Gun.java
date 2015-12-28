@@ -125,6 +125,7 @@ public class Gun extends Actor {
 
         //bullet in a gun
         _nextBullet = GetNextBullet();
+        _nextBullet.setSpace(_space);
         _nextBullet.getView().setAlpha(0);
         _bulletPlace.addActor(_nextBullet.getView());
         float scale = BULLET_DIAMETR / Bubble.DIAMETR;
@@ -259,6 +260,7 @@ public class Gun extends Actor {
     // putting new bullet to the basket
     private void PutBullet() {
         _basketBullet = GetNextBullet();
+        _basketBullet.setSpace(_space);
         _basketBullet.getView().setAlpha(0);
 
         _bulletPlace.addActor(_basketBullet.getView());
