@@ -26,6 +26,8 @@ public class Bubble {
     public static final float FROZEN_TIME = 0.1f;   	//time to give frozen to near bubbles
     public static float MESH_BUBBLE_DIAMETR;
 
+
+    protected static final float common_scale = 0.6136364f;
 //    //CallBack Types for physics engine
 //    private static var _connectedBubbleCBType:CbType = new CbType();  //assigned when bubble is connected to the _mesh
 //    public static function get ConnectedBubbleCBType():CbType { return _connectedBubbleCBType; }
@@ -288,6 +290,9 @@ public class Bubble {
         _body.setBullet(false);
         _mesh = mesh;
 
+        // ОСТОРОЖНО, ГОВНОКОД
+        _view.setScale(common_scale, common_scale);
+
         _body.getFixtureList().clear();
         FixtureDef fdef = new FixtureDef();
         fdef.shape = new CircleShape();
@@ -342,6 +347,7 @@ public class Bubble {
 //
     //return bubble's graphics
     public Scene2dSprite GetBubbleImage() {
+        assert false;
         return null;
     }
 
