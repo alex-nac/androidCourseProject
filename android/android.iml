@@ -89,8 +89,8 @@
     <orderEntry type="library" exported="" name="gdx-freetype-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-controllers-android-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.0.0" level="project" />
-    <orderEntry type="library" exported="" name="gdx-box2d-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-backend-android-1.7.1" level="project" />
+    <orderEntry type="library" exported="" name="gdx-box2d-1.7.1" level="project" />
     <orderEntry type="module" module-name="vksdk_library" exported="" />
     <orderEntry type="module" module-name="core" exported="" />
   </component>

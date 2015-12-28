@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Screen.GameScreen;
+import com.bubblezombie.game.Screen.IntroScreen;
 import com.bubblezombie.game.Screen.MainMenuScreen;
 import com.bubblezombie.game.Screen.TestScreen;
 import com.bubblezombie.game.Social.Shareable;
@@ -44,6 +45,6 @@ public class BubbleZombieGame extends Game {
 		FontFactory.initialize("fonts/EuropeExt_Bold.ttf", "fonts/EuropeExt_Bold.ttf");
 		ButtonFactory.initialize(this);
 		Box2D.init();
-		setScreen(new GameScreen(this, 1));
+		setScreen(new MainMenuScreen(this));
 	}
 }
