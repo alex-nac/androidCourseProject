@@ -57,7 +57,6 @@ public class GameEvent extends Event {
     public GameEvent(Type type, Bubble nextBullet) throws IncorrentGameEventDataException { // shoot
         if (type != Type.SHOOT)
             throw new IncorrentGameEventDataException("Trying to create gun shoot event without providing shooted bullet");
-
         _type = type;
         _bulletSprite = nextBullet.GetBubbleImage();
         _bulletType = nextBullet.getType();

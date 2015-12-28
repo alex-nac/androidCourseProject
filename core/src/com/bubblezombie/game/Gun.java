@@ -135,9 +135,12 @@ public class Gun extends Actor {
 
         // pause shooting timer
         _canShootTimer = new Timer();
-
         try {
-            notify(new GameEvent(GameEvent.Type.SHOOT, _nextBullet), false);
+            ///?????
+            GameEvent event = new GameEvent(GameEvent.Type.SHOOT, _nextBullet);
+            event.setTarget(this);
+            ///?????
+            notify(event, false);
         }
         catch (IncorrentGameEventDataException e) {
             Gdx.app.log("Gun", e.getMessage());
@@ -150,7 +153,11 @@ public class Gun extends Actor {
         _gunBody.setTransform(0, 0, _angle);
 
         try {
-            notify(new GameEvent(GameEvent.Type.MOVED, (int)(_angle * 180 / MathUtils.PI)), false);
+            ///?????
+            GameEvent event = new GameEvent(GameEvent.Type.MOVED, (int)(_angle * 180 / MathUtils.PI));
+            event.setTarget(this);
+            ///?????
+            notify(event, false);
         }
         catch (IncorrentGameEventDataException e) {
             Gdx.app.log("Gun", e.getMessage());
