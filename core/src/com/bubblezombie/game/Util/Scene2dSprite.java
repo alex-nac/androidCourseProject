@@ -21,6 +21,8 @@ public class Scene2dSprite extends Group {
 
     public Scene2dSprite(Texture drawable) {
         _spriteDrawable = new SpriteDrawable(new Sprite(drawable));
+        this.setHeight(_spriteDrawable.getSprite().getHeight());
+        this.setWidth(_spriteDrawable.getSprite().getWidth());
     }
 
     public SpriteDrawable getDrawable() {
@@ -28,6 +30,8 @@ public class Scene2dSprite extends Group {
     }
 
     public void setDrawable(Texture drawable) {
+        Sprite s;
+
         _spriteDrawable = new SpriteDrawable(new Sprite(drawable));
     }
 
@@ -42,9 +46,6 @@ public class Scene2dSprite extends Group {
         if (_spriteDrawable != null) {
             float oldAlpha = this.getColor().a;
             _spriteDrawable.getSprite().setAlpha(this.getColor().a * parentAlpha);
-            Sprite spr = _spriteDrawable.getSprite();
-            this.setWidth(spr.getWidth());
-            this.setHeight(spr.getHeight());
             _spriteDrawable.draw(batch, this.getX(), this.getY(), this.getOriginX(), this.getOriginY(), this.getWidth(), this.getHeight(),
                     this.getScaleX(), this.getScaleY(), this.getRotation());
             _spriteDrawable.getSprite().setAlpha(oldAlpha);
@@ -52,12 +53,6 @@ public class Scene2dSprite extends Group {
         }
         super.draw(batch, parentAlpha);
     }
-
-    @Override
-    public float getWidth() { return max(super.getWidth(), _spriteDrawable.getSprite().getWidth()); }
-
-    @Override
-    public float getHeight() { return max(super.getHeight(), _spriteDrawable.getSprite().getHeight()); }
 
     public void rotate(float degrees) {
         this.setRotation(degrees);
@@ -80,7 +75,6 @@ public class Scene2dSprite extends Group {
     public Vector2 getAnchorPoint() {
         return new Vector2(_spriteDrawable.getSprite().getOriginX(), _spriteDrawable.getSprite().getOriginY());
     }
-
 
 
 }

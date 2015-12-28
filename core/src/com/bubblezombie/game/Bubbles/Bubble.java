@@ -27,7 +27,6 @@ public class Bubble {
     public static float MESH_BUBBLE_DIAMETR;
 
 
-    protected static final float common_scale = 0.6136364f;
 //    //CallBack Types for physics engine
 //    private static var _connectedBubbleCBType:CbType = new CbType();  //assigned when bubble is connected to the _mesh
 //    public static function get ConnectedBubbleCBType():CbType { return _connectedBubbleCBType; }
@@ -42,7 +41,7 @@ public class Bubble {
 
     protected BubbleMesh _mesh;                      	//we save ref to the _mesh when connect bubble
     protected Scene2dSprite _effects = new Scene2dSprite();        	//here we place all sprites that need to be on top of zombies
-    private double _scale;				    		 	//bubble's movieclip _scale
+    private float _scale;				    		 	//bubble's movieclip _scale
 //    private var _view:MovieClip = new MovieClip();   	//bubble's _view
     private Scene2dSprite _view = new Scene2dSprite();
     private Body _body;                              	//bubble's body in physics world
@@ -105,7 +104,7 @@ public class Bubble {
         return _body.getPosition().y;
     }
 
-    public Number getScale() {
+    public float getScale() {
         return _scale;
     }
 
@@ -125,7 +124,7 @@ public class Bubble {
         _wasCallbackCalled = value;
     }
 
-    public void setScale(double value) {
+    public void setScale(float value) {
         _scale = value;
     }
 
@@ -290,8 +289,6 @@ public class Bubble {
         _body.setBullet(false);
         _mesh = mesh;
 
-        // ОСТОРОЖНО, ГОВНОКОД
-        _view.setScale(common_scale, common_scale);
 
         _body.getFixtureList().clear();
         FixtureDef fdef = new FixtureDef();

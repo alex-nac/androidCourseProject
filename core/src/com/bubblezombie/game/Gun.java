@@ -103,7 +103,6 @@ public class Gun extends Actor {
         _gun.setX(GUN_X);
         _gun.setY(GUN_Y);
         _view.addActor(_gun);
-
         _cfg = cfg;
         _view.setPosition(VIEW_X, VIEW_Y);
 
