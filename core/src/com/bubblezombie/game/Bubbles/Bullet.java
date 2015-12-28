@@ -15,17 +15,21 @@ import java.util.ArrayList;
  */
 public class Bullet extends SimpleBubble {
 
-    private static final String blue = "game/bubbles/bomb_normal_blue.png";
+    private static final String     blue = "game/bubbles/bomb_normal_blue.png";
     private static final String green = "game/bubbles/bomb_normal_green.png";
     private static final String pink = "game/bubbles/bomb_normal_pink.png";
     private static final String red = "game/bubbles/bomb_normal_red.png";
     private static final String violett = "game/bubbles/bomb_normal_violett.png";
     private static final String yellow = "game/bubbles/bomb_normal_yellow.png";
 
-    public Bullet() { super(); }
+    public Bullet() {
+        super();
+        setColor(getColor());
+    }
 
     public Bullet(BubbleColor color) {
         super(color);
+        setColor(color);
     }
 
     @Override
@@ -39,12 +43,17 @@ public class Bullet extends SimpleBubble {
 
         sprite = getBubbleImage();
 
+        setScale( DIAMETR / sprite.getWidth());
+
+        sprite.setWidth(getScale() * sprite.getWidth());
+        sprite.setHeight(getScale() * sprite.getHeight());
+
         setView(sprite);
     }
 
     public Scene2dSprite getBubbleImage() {
         if (!BubbleZombieGame.INSTANCE.assetManager.isLoaded(pink)) {
-            // ОСТОРОЖНО, ГОВНОКОД
+            // ОСТОРОЖНО ГОВНОКОД
             BubbleZombieGame.INSTANCE.assetManager.load(blue, Texture.class);
             BubbleZombieGame.INSTANCE.assetManager.load(green, Texture.class);
             BubbleZombieGame.INSTANCE.assetManager.load(pink, Texture.class);
@@ -113,16 +122,16 @@ public class Bullet extends SimpleBubble {
         }
     }
 
-    @Override
-    public void Delete(boolean withPlane) {
-        // useless
+//    @Override
+//    public void Delete(boolean withPlane) {
+//        //useless
 //        Main.SM.PlaySound(new shot_04_snd());
 //        var expl:Animation = new Animation(new bomb_expl_mc(), 0.9 * scale);
 //        expl.x = view.x;
 //        expl.y = view.y;
 //        if (_mesh) _mesh.AddEffect(expl);
 //        else view.parent.addChild(expl);
-
-        super.Delete(withPlane);
-    }
+//
+//        super.Delete(withPlane);
+//    }
 }

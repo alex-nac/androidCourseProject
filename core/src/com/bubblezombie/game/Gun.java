@@ -6,15 +6,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.Bubbles.Bomb;
@@ -131,7 +128,7 @@ public class Gun extends Actor {
         _nextBullet.getView().setAlpha(0);
         _bulletPlace.addActor(_nextBullet.getView());
         float scale = BULLET_DIAMETR / Bubble.DIAMETR;
-        _nextBullet.getView().setScale(scale);
+//        _nextBullet.getView().setScale(scale);
         _nextBullet.setX(-4);
         _nextBullet.getView().addAction(fadeIn(0.4f));
 
@@ -182,7 +179,7 @@ public class Gun extends Actor {
                 new Action() {
                     public boolean act(float delta) {
                         if (CheckForTouchingMesh()) {
-                            bullet.Delete();
+                            bullet.Delete(false);
                             return true;
                         }
 

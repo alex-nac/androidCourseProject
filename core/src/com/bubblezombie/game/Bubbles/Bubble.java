@@ -272,9 +272,6 @@ public class Bubble {
         }, LIFE_TIME);
     }
 
-    public void Delete() {
-        this.Delete(false);
-    }
     public void Delete(boolean withPlane) {
         _isDead = true;
     }
@@ -282,7 +279,7 @@ public class Bubble {
     public void Update() {}
 
     private void onLifeEnd(Timer.Task e) {
-        Delete();
+        Delete(false);
     }
 
     public void onConnected(BubbleMesh mesh) {
@@ -370,7 +367,7 @@ public class Bubble {
     public void WallTouched() {
         _timesWallTouched++;
         if (_timesWallTouched == MAX_TIMES_WALL_TOUCHED && _mesh == null)
-            Delete();
+            Delete(false);
     }
 
 
