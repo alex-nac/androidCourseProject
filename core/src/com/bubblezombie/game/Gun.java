@@ -109,7 +109,7 @@ public class Gun extends Actor {
         // body
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.KinematicBody;
-        def.position.set(_view.getX() + _gun.getX() + 1, _view.getY() + _gun.getY());
+        def.position.set(_view.getX() + _gun.getX(), _view.getY() + _gun.getY());
         _gunBody = _space.createBody(def);
 
         // shape
