@@ -1,17 +1,18 @@
 package com.bubblezombie.game.Bubbles;
 
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.BubbleMesh;
-import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Util.Scene2dSprite;
+
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
@@ -48,7 +49,7 @@ public class Bubble {
     private boolean _isDead;
     private boolean _isConnected = false;
     private boolean _wasCallbackCalled = false;     //have we called the BubbleHDR function for ths bubble
-//    private var _lifeTimer:Timer;
+    private Timer _lifeTimer = new Timer();
     private int _timesWallTouched = 0; 				//how many times we have touched the wall
 
 
@@ -138,17 +139,17 @@ public class Bubble {
         FixtureDef fdef = new FixtureDef();
         fdef.isSensor = value;
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(_view.getWidth(), _view.getHeight());
+        fdef.shape = new CircleShape();
+        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
         fdef.shape = shape;
         _body.createFixture(fdef);
-//        _body.shapes.at(0).sensorEnabled = value;
     }
 
     public void setIsBullet(Boolean value) { _body.setBullet(value); }
-//    public function set _isConnected(value:Boolean):void {
-//        _isConnected = value;
+    public void setIsConnected(boolean value) {
+        _isConnected = value;
 //        if (!_isConnected) _body.cbTypes.remove(Bubble.ConnectedBubbleCBType);
-//    }
+    }
 //
     public void setVelocity(Vector2 vel) {
         _body.setLinearVelocity(vel);
@@ -216,7 +217,7 @@ public class Bubble {
     public void setMesh(BubbleMesh newMesh) {
         if (newMesh == null) {
             if (_isConnected) {
-//                _mesh.Delete(this);
+                _mesh.Delete(this);
             }
             _isConnected = false;
         }
@@ -230,21 +231,29 @@ public class Bubble {
     /////////////
 
     //saving data and setting the graphics
-    public Bubble(BubbleType type) {
+    public Bubble(BubbleType type, World space) {
         this.type = type;
 
         //creating body
-//        _body.shapes.add(new Circle(DIAMETR / 2));
+        BodyDef bdef = new BodyDef();
+        bdef.type = BodyDef.BodyType.KinematicBody;
+        bdef.position.set(_view.getX(), _view.getY());
+        _body = space.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = new CircleShape();
+        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
+        _body.createFixture(fdef);
+
 //        _body.userData.ref = this;
-//        _body.allowMovement = false;
-//        _body.allowRotation = false;
+        _body.setLinearVelocity(new Vector2(0, 0));
+        _body.setAngularVelocity(0f);
+        _body.setBullet(true);
 //        _body.cbTypes.add(_bubbleCBType);
-//        _body.isBullet = true;
 
         //ice is a little bit wider than diametr
-//        var frozenMCScale:Number = 1.2 * DIAMETR / _frozenMC.width;
-//        _frozenMC.scaleX = frozenMCScale;
-//        _frozenMC.scaleY = frozenMCScale;
+        float frozenMCScale = 1.2f * DIAMETR / _frozenMC.getWidth();
+        _frozenMC.setScale(frozenMCScale, frozenMCScale);
 
 //        _view.addEventListener(Event.ENTER_FRAME, UpdateGraphics);
 
@@ -258,9 +267,12 @@ public class Bubble {
     }
 
     public void StartLifeTimer() {
-        //_lifeTimer = new Timer(LIFE_TIME * 1000, 1);
-        //_lifeTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onLifeEnd);
-        //_lifeTimer.start();
+        _lifeTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                onLifeEnd(this);
+            }
+        }, LIFE_TIME);
     }
 
     public void Delete() {
@@ -271,34 +283,37 @@ public class Bubble {
     }
 
     public void Update() {}
-//
-//    public function StartLifeTimer():void {
-//        _lifeTimer = new Timer(LIFE_TIME * 1000, 1);
-//        _lifeTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onLifeEnd);
-//        _lifeTimer.start();
-//    }
-//
-//    private function onLifeEnd(e:TimerEvent):void {
-//        Delete();
-//    }
-//
+
+    private void onLifeEnd(Timer.Task e) {
+        Delete();
+    }
+
     public void onConnected(BubbleMesh mesh) {
         _isConnected = true;
         _body.setBullet(false);
         _mesh = mesh;
 
-//        _body.shapes.clear();
-//        _body.shapes.add(new Circle(MESH_BUBBLE_DIAMETR / 2));
+        _body.getFixtureList().clear();
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = new CircleShape();
+        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
+        _body.createFixture(fdef);
+
 //        _body.cbTypes.add(_connectedBubbleCBType);
-//        _body.type = BodyDef.BodyType.KINEMATIC;
-//
-//        _body.allowMovement = false;
-//
-//        if (_lifeTimer) {
-//            _lifeTimer.stop();
+
+        _body.setType(BodyDef.BodyType.KinematicBody);
+
+        // TODO: ???
+        //  _body.allowMovement = false;
+        _body.setAngularVelocity(0f);
+        _body.setLinearVelocity(new Vector2(0, 0));
+
+        if (_lifeTimer != null) {
+            _lifeTimer.stop();
 //            _lifeTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onLifeEnd);
-//        }
+        }
     }
+
 //
 //    //deleting the bubble from mesh and removing view
 //    public function Delete(withPlane:Boolean = false):void {
@@ -330,9 +345,11 @@ public class Bubble {
 //        }
 //    }
 //
-//    //return bubble's graphics
-//    public function GetBubbleImage():MovieClip { return null; }
-//
+    //return bubble's graphics
+    public Scene2dSprite GetBubbleImage() {
+        return null;
+    }
+
 //    public function AddCBT(cbt:CbType):void {
 //        _body.cbTypes.add(cbt);
 //    }
@@ -351,12 +368,12 @@ public class Bubble {
 //        if (_lifeTimer) e.type == State.PAUSE ? _lifeTimer.stop() : _lifeTimer.start();
 //    }
 //
-//    public function WallTouched():void {
-//        _timesWallTouched++;
-//        if (_timesWallTouched == MAX_TIMES_WALL_TOUCHED && mesh == null)
-//            Delete();
-//    }
-//
-//
-//
+    public void WallTouched() {
+        _timesWallTouched++;
+        if (_timesWallTouched == MAX_TIMES_WALL_TOUCHED && _mesh == null)
+            Delete();
+    }
+
+
+
 }
