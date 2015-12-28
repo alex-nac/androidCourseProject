@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.Bubbles.Bomb;
@@ -26,6 +27,7 @@ import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Scene2dSprite;
+
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
@@ -268,7 +270,7 @@ public class Gun extends Actor {
     private void PutBullet() {
         _basketBullet = GetNextBullet();
         _basketBullet.setSpace(_space);
-        _basketBullet.getView().setAlpha(0);
+//        _basketBullet.getView().setAlpha(0);
 
         _bulletPlace.addActor(_basketBullet.getView());
         float scale = BULLET_DIAMETR / Bubble.DIAMETR;

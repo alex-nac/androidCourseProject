@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Bubbles.BubbleColor;
@@ -429,41 +430,52 @@ public class BubbleMesh extends Actor {
     */
 
     //creating mesh at the beggining
-//    private function CreateMesh(startRowAmount:int):void {
-//        for (var i:int = 0; i < startRowAmount; i++) {
-//
-//            _rowsNum++;
-//            _offset.unshift(!_offset[0]);
-//
-//            var topRow:Vector.<Bubble> = _meshPattern.GetNextRow();
-//            for (var j:int = 0; j < topRow.length; j++) {
-//                topRow[j].position = GetWorldPos(new Vec2(0, j));
-//                topRow[j].space = _space;
-//                topRow[j].mesh = this;
-//                _bubbleLayer.addChild(topRow[j].view);
-//                _bubbleEffectsLayer.addChild(topRow[j].effects);
+    private void CreateMesh(int startRowAmount) {
+        for (int i = 0; i < startRowAmount; i++) {
+
+            _rowsNum++;
+            _offset.add(0, !_offset.get(0));
+
+            ArrayList<Bubble> topRow = _meshPattern.getNextRow();
+            for (int j = 0; j < topRow.size(); j++) {
+                // TODO: ОСТОРОЖНО
+                topRow.get(j).setSpace(_space);
+                topRow.get(j).setPosition(GetWorldPos(new Vector2(0, j)));
+
+                topRow.get(j).setMesh(this);
+                _bubbleLayer.addActor(topRow.get(j).getView());
+                _bubbleEffectsLayer.addActor(topRow.get(j).getEffects());
+            }
+
+            for (ArrayList<Bubble> bblRow: _mesh) {
+                for (Bubble bbl: bblRow){
+                    if (bbl != null) {
+                        bbl.setPosition(bbl.getPosition().add(new Vector2(0, Bubble.DIAMETR)));
+                    }
+                }
+            }
+//            for (var effect:DisplayObject in _bubbleEffectsLayer){
+//                effect.y += Bubble.DIAMETR;
 //            }
-//
-//            for each(var bblRow:Vector.<Bubble> in _mesh)
-//            for each (var bbl:Bubble in bblRow)
-//            if (bbl) bbl.position = bbl.position.add(new Vec2(0, Bubble.DIAMETR));
-//
-//            for each(var effect:DisplayObject in _bubbleEffectsLayer)
-//            effect.y += Bubble.DIAMETR;
-//
-//
-//            _mesh.unshift(topRow);
-//
-//
-//            //if it is the last wave
-//            if (_wavesNum == _meshPattern.rowsNum - _meshPattern.startRowsNum) {
-//                dispatchEvent(new Event(LAST_WAVE));
-//                break;
-//            }
-//        }
-//
-//        enemiesNum = _meshPattern.columsNum * _meshPattern.rowsNum;
-//    }
+
+
+            _mesh.add(0, topRow);
+
+
+            //if it is the last wave
+            if (_wavesNum == _meshPattern.getRowsNum() - _meshPattern.getStartRowsNum()) {
+                try {
+                    notify(new GameEvent(GameEvent.Type.LAST_WAVE), false);
+                } catch (IncorrentGameEventDataException e) {
+                    e.printStackTrace();
+                    Gdx.app.log("mesh", e.getMessage());
+                }
+                break;
+            }
+        }
+
+        _enemiesNum = _meshPattern.getColumsNum() * _meshPattern.getRowsNum();
+    }
 //
 //    //if every == 3 every 3rd zombie will be deleted
 //    private var _wasAnimationStopped:Boolean = false;

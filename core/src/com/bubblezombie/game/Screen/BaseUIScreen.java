@@ -48,7 +48,7 @@ public class BaseUIScreen extends BaseScreen {
     // area in the middle of the screen when we should put all stuff
     protected WidgetGroup actionArea;
 
-    private BitmapFont _europeExtBoldSize15;
+    private BitmapFont _europeExtBoldSize10;
 
     private static final String RES_MENU = "background/screens/menu.png";
     private static final String RES_SCREEN_GLASS = "background/screens/UI_screen_glass.png";
@@ -98,13 +98,13 @@ public class BaseUIScreen extends BaseScreen {
 
         TextButton.TextButtonStyle tbs;
 
-        _europeExtBoldSize15 = FontFactory.getEuropeExt(FontFactory.FontType.BUTTON, 15);
+        _europeExtBoldSize10 = FontFactory.getEuropeExt(FontFactory.FontType.BUTTON, 10);
 
         // more games button
         if (_isMoreGamesBtn) {
             moreGamesBtn = ButtonFactory.getTextButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
-                    "MORE\nGAMES", _europeExtBoldSize15, _isMoreGamesBtnShaded, 45.0f, 45.0f);
-            moreGamesBtn.setPosition(17.0f, 415.0f);
+                    "MORE\nGAMES", _europeExtBoldSize10, _isMoreGamesBtnShaded, 63.0f, 63.0f);
+            moreGamesBtn.setPosition(11.0f, 397.0f);
             stage.addActor(moreGamesBtn);
         }
 
@@ -127,7 +127,7 @@ public class BaseUIScreen extends BaseScreen {
         // achievments button
         if (_isAchievmentsBtn) {
             achievmentsBtn = ButtonFactory.getTextButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
-                    "ACH", _europeExtBoldSize15, _isAchievmentsBtnShaded, 63.0f, 63.0f);
+                    "ACH", _europeExtBoldSize10, _isAchievmentsBtnShaded, 63.0f, 63.0f);
             achievmentsBtn.setPosition(288.5f, 7.0f);
             stage.addActor(achievmentsBtn);
         }
@@ -159,7 +159,7 @@ public class BaseUIScreen extends BaseScreen {
         // reset button
         if (_isResetBtn) {
             resetBtn = ButtonFactory.getTextButton(game.assetManager.get(RES_BTN_BACKGROUND, Texture.class),
-                    "RESET", _europeExtBoldSize15, _isResetBtnShaded, 63.0f, 63.0f);
+                    "RESET", _europeExtBoldSize10, _isResetBtnShaded, 63.0f, 63.0f);
             resetBtn.setPosition(469.0f, 7.0f);
             stage.addActor(resetBtn);
         }
@@ -179,7 +179,7 @@ public class BaseUIScreen extends BaseScreen {
 
     @Override
     public void dispose() {
-        _europeExtBoldSize15.dispose();
+        _europeExtBoldSize10.dispose();
 
         super.dispose();
     }

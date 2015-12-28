@@ -1,5 +1,6 @@
 package com.bubblezombie.game.Util;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -27,13 +28,17 @@ public class Scene2dSprite extends Group {
         _spriteDrawable = new SpriteDrawable(new Sprite(drawable));
     }
 
-    public void setAlpha(float a) { _spriteDrawable.getSprite().setAlpha(a); }
-
+    public void setAlpha(float a) {
+        Color col = getColor();
+        col.a = a;
+        this.setColor(col);
+        _spriteDrawable.getSprite().setAlpha(a);
+    }
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (_spriteDrawable != null) {
-            float oldAlpha = _spriteDrawable.getSprite().getColor().a;
-            _spriteDrawable.getSprite().setAlpha(_spriteDrawable.getSprite().getColor().a * parentAlpha);
+            float oldAlpha = this.getColor().a;
+            _spriteDrawable.getSprite().setAlpha(this.getColor().a * parentAlpha);
             Sprite spr = _spriteDrawable.getSprite();
             this.setWidth(spr.getWidth());
             this.setHeight(spr.getHeight());

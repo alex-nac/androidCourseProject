@@ -21,6 +21,8 @@ import com.bubblezombie.game.Util.GameConfig;
 
 import java.io.IOException;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+
 
 public class GameScreen extends BaseScreen {
     private static final String TAG = "GameScreen";
