@@ -38,7 +38,7 @@ public class GameEvent extends Event {
     public int getAngle() { return _angle; }
 
     // general
-    GameEvent(Type type) throws IncorrentGameEventDataException {
+    public GameEvent(Type type) throws IncorrentGameEventDataException {
         if (type == Type.COMBO || type == Type.SHOOT || type == Type.MOVED)
             throw new IncorrentGameEventDataException("Not enough data provided for this kind of event");
 
@@ -46,7 +46,7 @@ public class GameEvent extends Event {
     }
 
     // combo
-    GameEvent(Type type, ArrayList<Bubble> killedBubbles) throws IncorrentGameEventDataException {
+    public GameEvent(Type type, ArrayList<Bubble> killedBubbles) throws IncorrentGameEventDataException {
         if (type != Type.COMBO) throw new IncorrentGameEventDataException("Trying to create combo event without providing killed bubbles");
 
         _type = type;
@@ -54,7 +54,7 @@ public class GameEvent extends Event {
     }
 
     // gun
-    GameEvent(Type type, Bubble nextBullet) throws IncorrentGameEventDataException { // shoot
+    public GameEvent(Type type, Bubble nextBullet) throws IncorrentGameEventDataException { // shoot
         if (type != Type.SHOOT)
             throw new IncorrentGameEventDataException("Trying to create gun shoot event without providing shooted bullet");
 
@@ -67,7 +67,7 @@ public class GameEvent extends Event {
             _bulletColor = ((ColorBomb)nextBullet).getColor();
     }
 
-    GameEvent(Type type, int angle) throws IncorrentGameEventDataException { // moved
+    public GameEvent(Type type, int angle) throws IncorrentGameEventDataException { // moved
         if (type != Type.MOVED)
             throw new IncorrentGameEventDataException("Trying to create gun moved event without providing angle");
 

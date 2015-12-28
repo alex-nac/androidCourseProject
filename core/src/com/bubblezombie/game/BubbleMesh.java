@@ -1,6 +1,7 @@
 package com.bubblezombie.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,6 +14,8 @@ import com.bubblezombie.game.Bubbles.BubbleColor;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
 import com.bubblezombie.game.Bubbles.Sprayer;
 import com.bubblezombie.game.Bubbles.Zombie;
+import com.bubblezombie.game.EventSystem.GameEvent;
+import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Managers.PopupManager;
 
@@ -76,13 +79,18 @@ public class BubbleMesh extends Actor {
     }
 
     public void setAllowMeshMovement(Boolean value) { /*if (!_wasMeshStopped) _waveTimer.isPaused = !value;*/ }
-    /*
-    public function set enemiesNum(value:int):void {
+    public void setEnemiesNum(int value) {
         _enemiesNum = value;
-        if (_enemiesNum == 0)
-            dispatchEvent(new Event(ALL_EMENIES_KILLED));
+        if (_enemiesNum == 0) {
+            try {
+                notify(new GameEvent(GameEvent.Type.ALL_ENEMIES_KILLED), false);
+            }
+            catch (IncorrentGameEventDataException e) {
+                Gdx.app.log("Mesh", e.getMessage());
+            }
+        }
     }
-    */
+
 
     /////////////
     //FUNCTIONS//
@@ -275,7 +283,12 @@ public class BubbleMesh extends Actor {
 
     // adding one more row to the top of the mesh
     private void AddRow() {
-        //dispatchEvent(new Event(NEW_ROW));
+        try {
+            notify(new GameEvent(GameEvent.Type.NEW_ROW), false);
+        }
+        catch (IncorrentGameEventDataException e) {
+            Gdx.app.log("Mesh", e.getMessage());
+        }
 
         // firstable setting bubbles positions for our new row
         ArrayList<Bubble> topRow = _meshPattern.getNextRow();

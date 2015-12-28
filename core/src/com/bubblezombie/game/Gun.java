@@ -1,5 +1,6 @@
 package com.bubblezombie.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -9,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
@@ -19,6 +22,8 @@ import com.bubblezombie.game.Bubbles.Bullet;
 import com.bubblezombie.game.Bubbles.ColorBomb;
 import com.bubblezombie.game.Bubbles.FreezeBomb;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
+import com.bubblezombie.game.EventSystem.GameEvent;
+import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Scene2dSprite;
 
@@ -35,7 +40,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
  * and one in the gun
  */
 
-public class Gun {
+public class Gun extends Actor {
 
     private static final String RES_GUN_DOWN = "game/gun_down.png";
     private static final String RES_GUN_TOP = "game/gun_top.png";
@@ -130,14 +135,25 @@ public class Gun {
         // pause shooting timer
         _canShootTimer = new Timer();
 
-        //dispatchEvent( new GunEvent(GunEvent.SHOOT, _nextBullet));
+        try {
+            notify(new GameEvent(GameEvent.Type.SHOOT, _nextBullet), false);
+        }
+        catch (IncorrentGameEventDataException e) {
+            Gdx.app.log("Gun", e.getMessage());
+        }
     }
 
     // rotate gun
     public void setGunRotation(float degrees) {
         _gun.setRotation(degrees);
         _gunBody.setTransform(0, 0, _angle);
-        //dispatchEvent(new GunEvent(GunEvent.MOVED, null, _angle * 180 / Math.PI));
+
+        try {
+            notify(new GameEvent(GameEvent.Type.MOVED, (int)(_angle * 180 / MathUtils.PI)), false);
+        }
+        catch (IncorrentGameEventDataException e) {
+            Gdx.app.log("Gun", e.getMessage());
+        }
     }
 
     public void Shoot() {
@@ -182,7 +198,12 @@ public class Gun {
         _nextBullet.getView().addAction(moveTo(_nextBullet.getView().getX(), 0, 0.3f)); // move it right
 
         //dispatching event about new bubble
-        //dispatchEvent( new GunEvent(GunEvent.SHOOT, _nextBullet) );
+        try {
+            notify(new GameEvent(GameEvent.Type.SHOOT, _nextBullet), false);
+        }
+        catch (IncorrentGameEventDataException e) {
+            Gdx.app.log("Gun", e.getMessage());
+        }
 
         //and add new bullet to the basket
         PutBullet();

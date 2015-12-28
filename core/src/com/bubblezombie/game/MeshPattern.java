@@ -116,7 +116,7 @@ public class MeshPattern {
         for (int i = 0; i < _rowsNum; ++i) {
             _pattern.add(new ArrayList<Bubble>(_colNum));
             for (int j = 0; j < _colNum; ++j) {
-                _pattern.get(i).set(j, new Zombie());
+                _pattern.get(i).add(new Zombie());
             }
             allBubbles.addAll(new ArrayList<Bubble>(_pattern.get(i)));
         }
