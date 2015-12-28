@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class Scene2dSprite extends Group {
@@ -16,6 +17,10 @@ public class Scene2dSprite extends Group {
 
     public Scene2dSprite(Texture drawable) {
         _spriteDrawable = new SpriteDrawable(new Sprite(drawable));
+    }
+
+    public SpriteDrawable getDrawable() {
+        return _spriteDrawable;
     }
 
     public void setDrawable(Texture drawable) {
