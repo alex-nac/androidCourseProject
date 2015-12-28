@@ -19,7 +19,7 @@ public class SimpleBubble extends Bubble {
     }
 
     public SimpleBubble(BubbleColor color) {
-        super(BubbleType.SIMPLE, null);
+        super(BubbleType.SIMPLE);
         if (color == BubbleColor.NONE) {
             _color = BubbleColor.values()[(int)Math.floor(Math.random() * SimpleBubble.COLORS_AMOUNT) + 1];
         } else {

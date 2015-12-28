@@ -5,6 +5,6 @@ package com.bubblezombie.game.Bubbles;
  */
 public class FreezeBomb extends Bubble {
     public FreezeBomb() {
-        super(BubbleType.FREEZE_BOMB, null);
+        super(BubbleType.FREEZE_BOMB);
     }
 }

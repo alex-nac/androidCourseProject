@@ -42,7 +42,7 @@ public class Bubble {
     protected Scene2dSprite _effects = new Scene2dSprite();        	//here we place all sprites that need to be on top of zombies
     private double _scale;				    		 	//bubble's movieclip _scale
 //    private var _view:MovieClip = new MovieClip();   	//bubble's _view
-    private Scene2dSprite _view;
+    private Scene2dSprite _view = new Scene2dSprite();
     private Body _body;                              	//bubble's body in physics world
     private BubbleType type;                           	//bubble's type
     private Vector2 _meshPosition;
@@ -130,10 +130,17 @@ public class Bubble {
 
     public void setSpace(World space) {
         /// TODO: ????
-        BodyDef def = new BodyDef();
-        def.type = BodyDef.BodyType.KinematicBody;
-        def.position.set(_view.getX(), _view.getY());
-        _body = space.createBody(def);
+        BodyDef bdef = new BodyDef();
+        bdef.type = BodyDef.BodyType.KinematicBody;
+        bdef.position.set(_view.getX(), _view.getY());
+        _body = space.createBody(bdef);
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = new CircleShape();
+        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
+        _body.createFixture(fdef);
+        _body.setLinearVelocity(new Vector2(0, 0));
+        _body.setAngularVelocity(0f);
+        _body.setBullet(true);
     }
     public void setIsSensor(boolean value) {
         FixtureDef fdef = new FixtureDef();
@@ -156,19 +163,19 @@ public class Bubble {
     }
 
     public void setX(float value) {
-//        _body.position.x = value;
+        _body.setTransform(new Vector2(value, _body.getPosition().y), 0f);
         _view.setX(value);
-        _view.setY(value);
+        _effects.setX(value);
     }
 
     public void setY(float value){
-//        _body.position.y = value;
+        _body.setTransform(new Vector2(_body.getPosition().x, value), 0f);
         _view.setY(value);
         _effects.setY(value);
     }
 
     public void setPosition(Vector2 pos) {
-//        body.position = pos;
+        _body.setTransform(pos, 0f);
         _view.setX(pos.x);
         _view.setY(pos.y);
         _effects.setX(pos.x);
@@ -231,29 +238,16 @@ public class Bubble {
     /////////////
 
     //saving data and setting the graphics
-    public Bubble(BubbleType type, World space) {
+    public Bubble(BubbleType type) {
         this.type = type;
 
-        //creating body
-        BodyDef bdef = new BodyDef();
-        bdef.type = BodyDef.BodyType.KinematicBody;
-        bdef.position.set(_view.getX(), _view.getY());
-        _body = space.createBody(bdef);
-
-        FixtureDef fdef = new FixtureDef();
-        fdef.shape = new CircleShape();
-        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
-        _body.createFixture(fdef);
-
 //        _body.userData.ref = this;
-        _body.setLinearVelocity(new Vector2(0, 0));
-        _body.setAngularVelocity(0f);
-        _body.setBullet(true);
+
 //        _body.cbTypes.add(_bubbleCBType);
 
         //ice is a little bit wider than diametr
-        float frozenMCScale = 1.2f * DIAMETR / _frozenMC.getWidth();
-        _frozenMC.setScale(frozenMCScale, frozenMCScale);
+//        float frozenMCScale = 1.2f * DIAMETR / _frozenMC.getWidth();
+//        _frozenMC.setScale(frozenMCScale, frozenMCScale);
 
 //        _view.addEventListener(Event.ENTER_FRAME, UpdateGraphics);
 

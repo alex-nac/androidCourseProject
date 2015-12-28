@@ -71,6 +71,9 @@ public class BubbleMesh extends Actor {
     public int getColumnsNum() { return _meshPattern.getColumsNum(); }
     public int getRowsNum() { return _rowsNum; }
     public Group getView() { return _view; }
+    public World getSpace() {
+        return _space;
+    }
 
     public void setAllowMeshMovement(Boolean value) { /*if (!_wasMeshStopped) _waveTimer.isPaused = !value;*/ }
     /*
