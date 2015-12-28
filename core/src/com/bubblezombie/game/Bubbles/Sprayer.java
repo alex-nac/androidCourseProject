@@ -30,7 +30,7 @@ public class Sprayer extends Bubble {
     private ArrayList<Direction> actDir = new ArrayList<Direction>(); //active directions
 
     public  Sprayer(int activeGuns, double time) {
-        super(BubbleType.SPRAYER);
+        super(BubbleType.SPRAYER, null);
 
 //        some random delay to prevent synchronization
 //        timer = new Timer(Generator.randDouble(time));
