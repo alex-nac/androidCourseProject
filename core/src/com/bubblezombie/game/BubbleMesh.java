@@ -148,6 +148,7 @@ public class BubbleMesh extends Actor {
         int i = (int)bubble.getMeshPosition().x;
         int j = (int)bubble.getMeshPosition().y;
 
+        /*
         int[] dx = { 0, -1, -1, 0, 1,  1};
         int[] dy = {-1, -1,  0, 1, 0, -1};
         for (int k = 0; k < 6; ++k) {
@@ -156,6 +157,7 @@ public class BubbleMesh extends Actor {
                 offset = _offset.get(i) ? 1 : 0;
             vec.add(_mesh.get(i + dx[k]).get(j + dy[k] + offset));
         }
+        */
 
         if (at(i, j - 1) != null) vec.add(_mesh.get(i).get(j - 1)); else vec.add(null);
         if (at(i - 1, j - 1 + (_offset.get(i) ? 1 : 0)) != null) vec.add(_mesh.get(i - 1).get(j - 1 + (_offset.get(i) ? 1 : 0))); else vec.add(null);
