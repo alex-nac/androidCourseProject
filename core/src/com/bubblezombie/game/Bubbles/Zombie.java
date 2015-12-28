@@ -68,10 +68,8 @@ public class Zombie extends SimpleBubble {
 
         setScale( DIAMETR / m_MC.getWidth());
 
-        m_MC.setHeight(DIAMETR);
-        m_MC.setWidth(DIAMETR);
-//        m_MC.setWidth(getScale() * m_MC.getWidth());
-//        m_MC.setHeight(getScale() * m_MC.getHeight());
+        m_MC.setWidth(getScale() * m_MC.getWidth());
+        m_MC.setHeight(getScale() * m_MC.getHeight());
 
 //        if (_color == SimpleBubble.UBER_BLACK) {
 //            var axe:axe_mc = new axe_mc();
