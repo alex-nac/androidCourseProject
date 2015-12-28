@@ -30,7 +30,7 @@ public class GameConfig {
     public int meshBubbleDiametr;
     public int planeButtonTime;
 
-    //mesh config
+    //_mesh config
     public int waveVelocity;
     public int columnsNum;
     public int rowsShowed;
@@ -82,7 +82,7 @@ public class GameConfig {
             getFloatAttribute = null;
 
     public static void initialize() {
-        // ебать, как я люблю джаву
+        // е**ть, как я люблю джаву
         try {
             Class<Element> elementClass = Element.class;
             get = elementClass.getMethod("get", String.class);
@@ -100,7 +100,7 @@ public class GameConfig {
     }
 
     /**
-     * constructor reads all level parameters, and seeds to generate mesh
+     * constructor reads all level parameters, and seeds to generate _mesh
      * @param data file to be parsed
      * @throws IOException
      */

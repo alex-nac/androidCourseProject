@@ -46,7 +46,7 @@ public class MeshPattern {
 
 
     public MeshPattern(GameConfig cfg) {
-        // saving mesh parametrs
+        // saving _mesh parametrs
         _startRowsNum = cfg.rowsShowed;
         _colNum = cfg.columnsNum;
         _rowsNum = cfg.rowsNum;
@@ -57,7 +57,7 @@ public class MeshPattern {
 
         _prefabManager = new PrefabManager(cfg);
 
-        // create mesh _pattern
+        // create _mesh _pattern
         createMeshPattern();
     }
 
@@ -116,7 +116,7 @@ public class MeshPattern {
         for (int i = 0; i < _rowsNum; ++i) {
             _pattern.add(new ArrayList<Bubble>(_colNum));
             for (int j = 0; j < _colNum; ++j) {
-                _pattern.get(i).set(j, new Zombie());
+                _pattern.get(i).add(new Zombie());
             }
             allBubbles.addAll(new ArrayList<Bubble>(_pattern.get(i)));
         }

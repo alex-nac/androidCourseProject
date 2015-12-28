@@ -1,15 +1,20 @@
 package com.bubblezombie.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.Bubbles.Bomb;
@@ -19,8 +24,11 @@ import com.bubblezombie.game.Bubbles.Bullet;
 import com.bubblezombie.game.Bubbles.ColorBomb;
 import com.bubblezombie.game.Bubbles.FreezeBomb;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
+import com.bubblezombie.game.EventSystem.GameEvent;
+import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Scene2dSprite;
+
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
@@ -35,7 +43,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
  * and one in the gun
  */
 
-public class Gun {
+public class Gun extends Actor {
 
     private static final String RES_GUN_DOWN = "game/gun_down.png";
     private static final String RES_GUN_TOP = "game/gun_top.png";
@@ -95,7 +103,6 @@ public class Gun {
         _gun.setX(GUN_X);
         _gun.setY(GUN_Y);
         _view.addActor(_gun);
-
         _cfg = cfg;
         _view.setPosition(VIEW_X, VIEW_Y);
 
@@ -120,6 +127,7 @@ public class Gun {
 
         //bullet in a gun
         _nextBullet = GetNextBullet();
+        _nextBullet.setSpace(_space);
         _nextBullet.getView().setAlpha(0);
         _bulletPlace.addActor(_nextBullet.getView());
         float scale = BULLET_DIAMETR / Bubble.DIAMETR;
@@ -129,15 +137,33 @@ public class Gun {
 
         // pause shooting timer
         _canShootTimer = new Timer();
-
-        //dispatchEvent( new GunEvent(GunEvent.SHOOT, _nextBullet));
+        try {
+            ///?????
+            GameEvent event = new GameEvent(GameEvent.Type.SHOOT, _nextBullet);
+            event.setTarget(this);
+            ///?????
+            notify(event, false);
+        }
+        catch (IncorrentGameEventDataException e) {
+            Gdx.app.log("Gun", e.getMessage());
+        }
     }
 
     // rotate gun
     public void setGunRotation(float degrees) {
         _gun.setRotation(degrees);
-        _gunBody.setTransform(0, 0, _angle);
-        //dispatchEvent(new GunEvent(GunEvent.MOVED, null, _angle * 180 / Math.PI));
+        _gunBody.setTransform(_gunBody.getPosition().x, _gunBody.getPosition().y, degrees * (float)Math.PI / 180f);
+
+        try {
+            ///?????
+            GameEvent event = new GameEvent(GameEvent.Type.MOVED, (int)(_angle * 180 / MathUtils.PI));
+            event.setTarget(this);
+            ///?????
+            notify(event, false);
+        }
+        catch (IncorrentGameEventDataException e) {
+            Gdx.app.log("Gun", e.getMessage());
+        }
     }
 
     public void Shoot() {
@@ -182,7 +208,12 @@ public class Gun {
         _nextBullet.getView().addAction(moveTo(_nextBullet.getView().getX(), 0, 0.3f)); // move it right
 
         //dispatching event about new bubble
-        //dispatchEvent( new GunEvent(GunEvent.SHOOT, _nextBullet) );
+        try {
+            notify(new GameEvent(GameEvent.Type.SHOOT, _nextBullet), false);
+        }
+        catch (IncorrentGameEventDataException e) {
+            Gdx.app.log("Gun", e.getMessage());
+        }
 
         //and add new bullet to the basket
         PutBullet();
@@ -238,7 +269,8 @@ public class Gun {
     // putting new bullet to the basket
     private void PutBullet() {
         _basketBullet = GetNextBullet();
-        _basketBullet.getView().setAlpha(0);
+        _basketBullet.setSpace(_space);
+//        _basketBullet.getView().setAlpha(0);
 
         _bulletPlace.addActor(_basketBullet.getView());
         float scale = BULLET_DIAMETR / Bubble.DIAMETR;
