@@ -135,6 +135,7 @@ public class Bubble {
         bdef.type = BodyDef.BodyType.KinematicBody;
         bdef.position.set(_view.getX(), _view.getY());
         _body = space.createBody(bdef);
+
         FixtureDef fdef = new FixtureDef();
         fdef.shape = new CircleShape();
         fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);

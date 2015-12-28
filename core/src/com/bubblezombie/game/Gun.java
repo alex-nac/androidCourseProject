@@ -123,7 +123,7 @@ public class Gun extends Actor {
         _gunBody.createFixture(fixtureDef);
 
         //bullet in a basket
-        //PutBullet();
+        PutBullet();
 
         //bullet in a gun
         _nextBullet = GetNextBullet();
@@ -191,9 +191,9 @@ public class Gun extends Actor {
 
                         bullet.setSpace(_space);
 
-                        bullet.setPosition(_gun.localToParentCoordinates(bullet.getPosition()));
+                        bullet.setPosition(_gun.localToStageCoordinates(bullet.getPosition()));
                         bullet.setVelocity(new Vector2(SHOOTING_VEL * MathUtils.cos(-_angle), -SHOOTING_VEL * MathUtils.sin(-_angle)));
-                        bullet.getView().addAction(scaleTo(1.0f, 1.0f, 0.1f)); //scale it to normal size
+                        bullet.getView().addAction(scaleTo(bullet.getScale(), bullet.getScale(), 0.1f)); //scale it to normal size
 
                         return true;
                     }
@@ -209,7 +209,9 @@ public class Gun extends Actor {
 
         //dispatching event about new bubble
         try {
-            notify(new GameEvent(GameEvent.Type.SHOOT, _nextBullet), false);
+            GameEvent event = new GameEvent(GameEvent.Type.SHOOT, _nextBullet);
+            event.setTarget(this);
+            notify(event, false);
         }
         catch (IncorrentGameEventDataException e) {
             Gdx.app.log("Gun", e.getMessage());

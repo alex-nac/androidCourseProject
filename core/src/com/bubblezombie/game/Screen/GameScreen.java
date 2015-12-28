@@ -162,7 +162,12 @@ public class GameScreen extends BaseScreen {
         //_gun.addEventListener(GunEvent.SHOOT, aimPointer.onNewBullet);
         //_gun.addEventListener(GunEvent.MOVED, aimPointer.onGunMoved);
         _game.addActor(_gun.getView());
-        //stage.addEventListener(MouseEvent.MOUSE_DOWN, Shoot);
+        stage.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                _gun.Shoot();
+            }
+        });
 
 
         ////////
