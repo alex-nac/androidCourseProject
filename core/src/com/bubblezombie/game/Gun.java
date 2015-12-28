@@ -54,7 +54,7 @@ public class Gun extends Actor {
     private static final float SHOOTING_DELAY = 0.2f;
     private static final int VIEW_X = BubbleZombieGame.width / 2;
     private static final int VIEW_Y = -13;
-    private static final int GUN_X = 13;
+    private static final int GUN_X = -4;
     private static final int GUN_Y = 32;
     private static final int TOP_GUN_X = 27;
     private static final int TOP_GUN_Y = -7;
@@ -102,6 +102,7 @@ public class Gun extends Actor {
         _gun.addActor(topGun);
         _gun.setX(GUN_X);
         _gun.setY(GUN_Y);
+        _gun.setAnchorPoint(20, 20);
         _view.addActor(_gun);
         _cfg = cfg;
         _view.setPosition(VIEW_X, VIEW_Y);
@@ -109,12 +110,12 @@ public class Gun extends Actor {
         // body
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.KinematicBody;
-        def.position.set(_view.getX() + _gun.getX(), _view.getY() + _gun.getY());
+        def.position.set(_view.getX() + _gun.getX() + 20, _view.getY() + _gun.getY() + 10);
         _gunBody = _space.createBody(def);
 
         // shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(_gun.getWidth() * 2, _gun.getHeight() / 4, new Vector2(_gun.getWidth(), _gun.getHeight() / 8), 0);
+        shape.setAsBox(_gun.getWidth() * 2, _gun.getHeight() / 4, new Vector2(0, _gun.getHeight() / 8), 0);
 
         // fixture
         FixtureDef fixtureDef = new FixtureDef();
@@ -123,7 +124,7 @@ public class Gun extends Actor {
         _gunBody.createFixture(fixtureDef);
 
         //bullet in a basket
-        PutBullet();
+        //PutBullet();
 
         //bullet in a gun
         _nextBullet = GetNextBullet();

@@ -20,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SerializationException;
 import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.Bubbles.BubbleColor;
+import com.bubblezombie.game.Bubbles.Zombie;
 import com.bubblezombie.game.Gun;
 import com.bubblezombie.game.Util.BFS;
 import com.bubblezombie.game.Util.GameConfig;
@@ -162,14 +164,6 @@ public class GameScreen extends BaseScreen {
         _game.addActor(_gun.getView());
         //stage.addEventListener(MouseEvent.MOUSE_DOWN, Shoot);
 
-        BodyDef bdef = new BodyDef();
-        bdef.type = BodyDef.BodyType.KinematicBody;
-        bdef.position.set(320, 240);
-        Body body = _space.createBody(bdef);
-        FixtureDef fdef = new FixtureDef();
-        fdef.shape = new CircleShape();
-        fdef.shape.setRadius(30);
-        body.createFixture(fdef);
 
         ////////
         ///UI///
@@ -226,6 +220,7 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void dispose() {
+        _debug.dispose();
         super.dispose();
     }
 }
