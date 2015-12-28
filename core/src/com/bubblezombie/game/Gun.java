@@ -153,7 +153,7 @@ public class Gun extends Actor {
     // rotate gun
     public void setGunRotation(float degrees) {
         _gun.setRotation(degrees);
-        _gunBody.setTransform(_gunBody.getPosition().x, _gunBody.getPosition().y, degrees);
+        _gunBody.setTransform(_gunBody.getPosition().x, _gunBody.getPosition().y, degrees * (float)Math.PI / 180f);
 
         try {
             ///?????
