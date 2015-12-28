@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Bullet extends SimpleBubble {
 
-    private static final String     blue = "game/bubbles/bomb_normal_blue.png";
+    private static final String blue = "game/bubbles/bomb_normal_blue.png";
     private static final String green = "game/bubbles/bomb_normal_green.png";
     private static final String pink = "game/bubbles/bomb_normal_pink.png";
     private static final String red = "game/bubbles/bomb_normal_red.png";

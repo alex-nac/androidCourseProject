@@ -3,6 +3,7 @@ package com.bubblezombie.game.Bubbles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.Util.Generator;
 import com.bubblezombie.game.Util.Scene2dSprite;
 
 /**
@@ -10,7 +11,7 @@ import com.bubblezombie.game.Util.Scene2dSprite;
  */
 public class SimpleBubble extends Bubble {
     //amount of SimpleBubble's colors
-    public static int COLORS_AMOUNT;
+    public static int COLORS_AMOUNT = BubbleColor.values().length;
 
     public BubbleColor _color;
 
@@ -25,7 +26,7 @@ public class SimpleBubble extends Bubble {
     public SimpleBubble(BubbleColor color) {
         super(BubbleType.SIMPLE);
         if (color == BubbleColor.NONE) {
-            _color = BubbleColor.values()[(int)Math.floor(Math.random() * SimpleBubble.COLORS_AMOUNT) + 1];
+            _color = BubbleColor.values()[Generator.rand(COLORS_AMOUNT - 1) + 1];
         } else {
             _color = color;
         }
