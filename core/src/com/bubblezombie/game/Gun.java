@@ -128,8 +128,9 @@ public class Gun extends Actor {
         _nextBullet.getView().setAlpha(0);
         _bulletPlace.addActor(_nextBullet.getView());
         float scale = BULLET_DIAMETR / Bubble.DIAMETR;
-//        _nextBullet.getView().setScale(scale);
-        _nextBullet.setX(-4);
+        _nextBullet.getView().setScale(scale);
+        _nextBullet.setX(2);
+        _nextBullet.setY(2);
         _nextBullet.getView().addAction(fadeIn(0.4f));
 
         // pause shooting timer
@@ -190,7 +191,7 @@ public class Gun extends Actor {
 
                         bullet.setPosition(_gun.localToStageCoordinates(bullet.getPosition()));
                         bullet.setVelocity(new Vector2(SHOOTING_VEL * MathUtils.cos(-_angle), -SHOOTING_VEL * MathUtils.sin(-_angle)));
-                        bullet.getView().addAction(scaleTo(bullet.getScale(), bullet.getScale(), 0.1f)); //scale it to normal size
+                        //bullet.getView().addAction(scaleTo(bullet.getScale(), bullet.getScale(), 0.1f)); //scale it to normal size
 
                         return true;
                     }
@@ -274,8 +275,8 @@ public class Gun extends Actor {
         _bulletPlace.addActor(_basketBullet.getView());
         float scale = BULLET_DIAMETR / Bubble.DIAMETR;
         _basketBullet.getView().setScale(scale);
-        _basketBullet.setX(-4);
-        _basketBullet.setY(-28);
+        _basketBullet.setX(2);
+        _basketBullet.setY(30);
 
         _basketBullet.getView().addAction(fadeIn(0.4f));
     }
