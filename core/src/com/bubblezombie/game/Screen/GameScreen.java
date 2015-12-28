@@ -5,6 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -54,7 +59,7 @@ public class GameScreen extends BaseScreen {
     float i = 0f;
     // game object
     private World _space = new World(new Vector2(0, 0), true);
-    //private var _debug:Debug;
+    private Box2DDebugRenderer _debug = new Box2DDebugRenderer();
     private BubbleMesh _mesh;
     private Gun _gun;
     //private var _wonTimer:Timer
@@ -73,7 +78,7 @@ public class GameScreen extends BaseScreen {
     /**
      * @param levelNum - which level is we now playing?
      */
-    GameScreen(BubbleZombieGame game, int levelNum) {
+    public GameScreen(BubbleZombieGame game, int levelNum) {
         super(game);
 
         _lvlNum = levelNum;
@@ -157,6 +162,15 @@ public class GameScreen extends BaseScreen {
         _game.addActor(_gun.getView());
         //stage.addEventListener(MouseEvent.MOUSE_DOWN, Shoot);
 
+        BodyDef bdef = new BodyDef();
+        bdef.type = BodyDef.BodyType.KinematicBody;
+        bdef.position.set(320, 240);
+        Body body = _space.createBody(bdef);
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = new CircleShape();
+        fdef.shape.setRadius(30);
+        body.createFixture(fdef);
+
         ////////
         ///UI///
         ////////
@@ -201,6 +215,9 @@ public class GameScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
+
+        _debug.render(_space, stage.getCamera().combined);
+        _space.step(1/60.0f, 10, 10);
 
         Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
         float _angle = (float)Math.atan2(loc.y + 34, loc.x - 13);

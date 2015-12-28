@@ -417,7 +417,7 @@ public class BubbleMesh extends Actor {
     //determining world position by mesh coord
     private Vector2 GetWorldPos(Vector2 meshPos) {
         Vector2 pos = new Vector2(meshPos.y * (Bubble.DIAMETR + EMPTY_SPACE) + Bubble.DIAMETR / 2 *
-                ((_offset.get((int)meshPos.x) ? 1 : 0) + 1), (meshPos.x + 0.5f) * Bubble.DIAMETR);
+                ((_offset.get((int)meshPos.x) ? 1 : 0) + 1), BubbleZombieGame.height - (meshPos.x + 0.5f) * Bubble.DIAMETR);
         pos = pos.add(_meshOriginBody.getPosition());
         return pos;
     }
@@ -450,12 +450,12 @@ public class BubbleMesh extends Actor {
             for (ArrayList<Bubble> bblRow: _mesh) {
                 for (Bubble bbl: bblRow){
                     if (bbl != null) {
-                        bbl.setPosition(bbl.getPosition().add(new Vector2(0, Bubble.DIAMETR)));
+                        bbl.setPosition(bbl.getPosition().sub(new Vector2(0, Bubble.DIAMETR)));
                     }
                 }
             }
 //            for (var effect:DisplayObject in _bubbleEffectsLayer){
-//                effect.y += Bubble.DIAMETR;
+//                effect.y -= Bubble.DIAMETR;
 //            }
 
 

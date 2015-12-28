@@ -4,12 +4,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+
+import static java.lang.Math.max;
 
 public class Scene2dSprite extends Group {
     private SpriteDrawable _spriteDrawable;
@@ -49,6 +52,12 @@ public class Scene2dSprite extends Group {
         }
         super.draw(batch, parentAlpha);
     }
+
+    @Override
+    public float getWidth() { return max(super.getWidth(), _spriteDrawable.getSprite().getWidth()); }
+
+    @Override
+    public float getHeight() { return max(super.getHeight(), _spriteDrawable.getSprite().getHeight()); }
 
     public void rotate(float degrees) {
         this.setRotation(degrees);
