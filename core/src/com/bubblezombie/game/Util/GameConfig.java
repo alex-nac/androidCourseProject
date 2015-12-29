@@ -82,7 +82,7 @@ public class GameConfig {
             getFloatAttribute = null;
 
     public static void initialize() {
-        // е**ть, как я люблю джаву
+        // как я люблю джаву
         try {
             Class<Element> elementClass = Element.class;
             get = elementClass.getMethod("get", String.class);

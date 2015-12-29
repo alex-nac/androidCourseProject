@@ -1,8 +1,10 @@
 package com.bubblezombie.game.Screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -63,6 +65,19 @@ public class    AchScreen extends BaseUIScreen {
         achContent.setPosition((BubbleZombieGame.width - achContent.getWidth()) / 2,
                 (BubbleZombieGame.height - achContent.getHeight()) / 2 + 15);
         actionArea.addActor(achContent);
+
+
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.BACK) {
+//                    dispose();
+                    game.setScreen(new LevelSelectScreen(game));
+                }
+                return false;
+//                return super.keyDown(event, keycode);
+            }
+        });
 
         for (int i = 0; i <= 4; i++) {
             Button achButton;

@@ -69,7 +69,7 @@ public class MainMenuScreen extends BaseScreen {
 
         _vkShareBtn = ButtonFactory.getTextButton(
                 game.assetManager.get(RES_BUT_MAIN_PLAY, Texture.class),/* Texture*/
-                "VK", /*Text*/
+                "share VK", /*Text*/
                 _europeExtBold, /*font*/
                 false, /*isShaded*/
                 0.0f, /*height (0 <=> default)*/
@@ -82,7 +82,7 @@ public class MainMenuScreen extends BaseScreen {
                 if (game.VkSharingSender == null) {
                     Gdx.app.log("vk button", "not implemented on this platform");
                 } else {
-                    game.VkSharingSender.postScore(100);
+                    game.VkSharingSender.postScore(BubbleZombieGame.score);
                 }
             }
         });

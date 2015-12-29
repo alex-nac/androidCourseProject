@@ -1,8 +1,10 @@
 package com.bubblezombie.game.Screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bubblezombie.game.BubbleZombieGame;
@@ -53,6 +55,19 @@ public class IntroScreen extends BaseUIScreen {
                 Gdx.app.log("level map button", "starting main menu screen...");
                 dispose();
                 game.setScreen(new MainMenuScreen(game));
+            }
+        });
+
+
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.BACK) {
+//                    dispose();
+                    game.setScreen(new MainMenuScreen(game));
+                }
+                return false;
+//                return super.keyDown(event, keycode);
             }
         });
 

@@ -1,11 +1,13 @@
 package com.bubblezombie.game.Screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -170,6 +172,19 @@ public class LevelSelectScreen extends BaseUIScreen {
             }
         });
 
+
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.BACK) {
+//                    dispose();
+                    game.setScreen(new IntroScreen(game));
+                }
+                return false;
+//                return super.keyDown(event, keycode);
+            }
+        });
+
         _europeExtBoldSize15 = FontFactory.getEuropeExt(FontFactory.FontType.BUTTON, 15);
 
 
@@ -182,6 +197,7 @@ public class LevelSelectScreen extends BaseUIScreen {
 
                 //if we can play this level
                 if (SaveManager.getSharedData(key)) {
+
                     levelbtn = ButtonFactory.getTextButton(game.assetManager.get(RES_LEVEL_BORDER, Texture.class),
                             Integer.toString(levelNum), _europeExtBoldSize15, false, LEVEL_BUTTON_SIZE, LEVEL_BUTTON_SIZE);
 
@@ -192,7 +208,7 @@ public class LevelSelectScreen extends BaseUIScreen {
                             Gdx.app.log("next screen button", "starting level select screen...");
                             dispose();
                             int lvlNum = Integer.parseInt(((TextButton)event.getListenerActor()).getText().toString());
-                            game.setScreen(new GameScreen(game, lvlNum));
+                            game.setScreen(new GameScreen(game, (lvlNum % 5) + 1));
                         }
                     });
 
@@ -233,7 +249,7 @@ public class LevelSelectScreen extends BaseUIScreen {
         _bestScore.setPosition(130, 100);
         actionArea.addActor(_bestScore);
 
-        _totalScore = new TextField("TOTAL: 765", textFieldStyle);
+        _totalScore = new TextField("TOTAL: " + BubbleZombieGame.score, textFieldStyle);
         _totalScore.setPosition(395, 100);
         actionArea.addActor(_totalScore);
 

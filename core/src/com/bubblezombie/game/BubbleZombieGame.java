@@ -1,19 +1,11 @@
 package com.bubblezombie.game;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
-import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Screen.GameScreen;
-import com.bubblezombie.game.Screen.IntroScreen;
 import com.bubblezombie.game.Screen.MainMenuScreen;
-import com.bubblezombie.game.Screen.TestScreen;
 import com.bubblezombie.game.Social.Shareable;
 import com.bubblezombie.game.Util.Factory.ButtonFactory;
 import com.bubblezombie.game.Util.Factory.FontFactory;
@@ -25,6 +17,8 @@ public class BubbleZombieGame extends Game {
 	public static final int width = 640;
 	public static final int height = 480;
 	public static Shareable VkSharingSender;
+
+	public static int score = 765;
 
 	public static LevelContainer LVLC = new LevelContainer();
 	public static final BubbleZombieGame INSTANCE = new BubbleZombieGame();
