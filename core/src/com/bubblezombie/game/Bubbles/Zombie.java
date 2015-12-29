@@ -40,11 +40,12 @@ public class Zombie extends SimpleBubble {
 
     public Zombie(BubbleColor color) {
         super(color);
-        SetView();
+        setColor(getColor());
     }
 
     public Zombie() {
         this(BubbleColor.NONE);
+        setColor(getColor());
     }
 
     @Override
@@ -68,10 +69,8 @@ public class Zombie extends SimpleBubble {
 
         setScale( DIAMETR / m_MC.getWidth());
 
-        m_MC.setHeight(DIAMETR);
-        m_MC.setWidth(DIAMETR);
-//        m_MC.setWidth(getScale() * m_MC.getWidth());
-//        m_MC.setHeight(getScale() * m_MC.getHeight());
+        m_MC.setWidth(getScale() * m_MC.getWidth());
+        m_MC.setHeight(getScale() * m_MC.getHeight());
 
 //        if (_color == SimpleBubble.UBER_BLACK) {
 //            var axe:axe_mc = new axe_mc();
@@ -87,7 +86,7 @@ public class Zombie extends SimpleBubble {
     public Scene2dSprite GetBubbleImage() {
         Scene2dSprite bubbleMC = null;
         if (!BubbleZombieGame.INSTANCE.assetManager.isLoaded(pink)) {
-            // ОСТОРОЖНО ГОВНОКОД
+            // TODO: this is bad
             BubbleZombieGame.INSTANCE.assetManager.load(pink, Texture.class);
             BubbleZombieGame.INSTANCE.assetManager.load(black, Texture.class);
             BubbleZombieGame.INSTANCE.assetManager.load(blue, Texture.class);

@@ -35,7 +35,7 @@ public class BubbleMesh extends Actor {
     private static final int STOP_ZOMBIE_ANIMATION_FPS = 25;
 
     public static final int EMPTY_SPACE = 1;  //horizontal space between the bubbles
-    private static final int MESH_Y = 5;
+    private static final int MESH_Y = 475;
     public static final float MESH_MOVING_TIME = 1.5f;
 
     /////////////
@@ -110,7 +110,7 @@ public class BubbleMesh extends Actor {
 
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.KinematicBody;
-        def.position.set((BubbleZombieGame.width - (Bubble.DIAMETR + EMPTY_SPACE) * _meshPattern.getColumsNum() + EMPTY_SPACE - 0.5f * Bubble.DIAMETR) / 2 + cfg.offset, MESH_Y);
+        def.position.set((BubbleZombieGame.width - (Bubble.DIAMETR + EMPTY_SPACE) * _meshPattern.getColumsNum() + EMPTY_SPACE - 1.5f * Bubble.DIAMETR) / 2 + cfg.offset, MESH_Y);
         _meshOriginBody = _space.createBody(def);
         _offset.add(!_meshPattern.isLastRowOffseted());
 
@@ -417,7 +417,7 @@ public class BubbleMesh extends Actor {
     //determining world position by mesh coord
     private Vector2 GetWorldPos(Vector2 meshPos) {
         Vector2 pos = new Vector2(meshPos.y * (Bubble.DIAMETR + EMPTY_SPACE) + Bubble.DIAMETR / 2 *
-                ((_offset.get((int)meshPos.x) ? 1 : 0) + 1), BubbleZombieGame.height - (meshPos.x + 0.5f) * Bubble.DIAMETR);
+                ((_offset.get((int)meshPos.x) ? 1 : 0) + 1), -(meshPos.x + 1.0f) * Bubble.DIAMETR);
         pos = pos.add(_meshOriginBody.getPosition());
         return pos;
     }

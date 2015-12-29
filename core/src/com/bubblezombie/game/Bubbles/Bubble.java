@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.Util.Scene2dSprite;
@@ -24,7 +23,7 @@ public class Bubble {
 
     public static final int DIAMETR = 44;          		//diametr of the bubble
     public static final float FROZEN_TIME = 0.1f;   	//time to give frozen to near bubbles
-    public static float MESH_BUBBLE_DIAMETR;
+    public static float MESH_BUBBLE_RADIUS = 22f;
 
 
 //    //CallBack Types for physics engine
@@ -41,17 +40,17 @@ public class Bubble {
 
     protected BubbleMesh _mesh;                      	//we save ref to the _mesh when connect bubble
     protected Scene2dSprite _effects = new Scene2dSprite();        	//here we place all sprites that need to be on top of zombies
-    private float _scale;				    		 	//bubble's movieclip _scale
+    protected float _scale;				    		 	//bubble's movieclip _scale
 //    private var _view:MovieClip = new MovieClip();   	//bubble's _view
-    private Scene2dSprite _view = new Scene2dSprite();
-    private Body _body;                              	//bubble's body in physics world
-    private BubbleType type;                           	//bubble's type
-    private Vector2 _meshPosition;
-    private boolean _isDead;
-    private boolean _isConnected = false;
-    private boolean _wasCallbackCalled = false;     //have we called the BubbleHDR function for ths bubble
-    private Timer _lifeTimer = new Timer();
-    private int _timesWallTouched = 0; 				//how many times we have touched the wall
+    protected Scene2dSprite _view = new Scene2dSprite();
+    protected Body _body;                              	//bubble's body in physics world
+    protected BubbleType type;                           	//bubble's type
+    protected Vector2 _meshPosition;
+    protected boolean _isDead;
+    protected boolean _isConnected = false;
+    protected boolean _wasCallbackCalled = false;     //have we called the BubbleHDR function for ths bubble
+    protected Timer _lifeTimer = new Timer();
+    protected int _timesWallTouched = 0; 				//how many times we have touched the wall
 
 
     private Scene2dSprite _frozenMC; //= new ice_01_mc();	//ice movieclip
@@ -135,9 +134,12 @@ public class Bubble {
         bdef.type = BodyDef.BodyType.KinematicBody;
         bdef.position.set(_view.getX(), _view.getY());
         _body = space.createBody(bdef);
+
         FixtureDef fdef = new FixtureDef();
-        fdef.shape = new CircleShape();
-        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
+        CircleShape shape = new CircleShape();
+        shape.setPosition(new Vector2(0,0));
+        shape.setRadius(MESH_BUBBLE_RADIUS);
+        fdef.shape = shape;
         _body.createFixture(fdef);
         _body.setLinearVelocity(new Vector2(0, 0));
         _body.setAngularVelocity(0f);
@@ -148,7 +150,7 @@ public class Bubble {
         fdef.isSensor = value;
         PolygonShape shape = new PolygonShape();
         fdef.shape = new CircleShape();
-        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
+        fdef.shape.setRadius(MESH_BUBBLE_RADIUS);
         fdef.shape = shape;
         _body.createFixture(fdef);
     }
@@ -242,7 +244,6 @@ public class Bubble {
     //saving data and setting the graphics
     public Bubble(BubbleType type) {
         this.type = type;
-
 //        _body.userData.ref = this;
 
 //        _body.cbTypes.add(_bubbleCBType);
@@ -271,9 +272,6 @@ public class Bubble {
         }, LIFE_TIME);
     }
 
-    public void Delete() {
-        this.Delete(false);
-    }
     public void Delete(boolean withPlane) {
         _isDead = true;
     }
@@ -281,7 +279,7 @@ public class Bubble {
     public void Update() {}
 
     private void onLifeEnd(Timer.Task e) {
-        Delete();
+        Delete(false);
     }
 
     public void onConnected(BubbleMesh mesh) {
@@ -292,8 +290,10 @@ public class Bubble {
 
         _body.getFixtureList().clear();
         FixtureDef fdef = new FixtureDef();
-        fdef.shape = new CircleShape();
-        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
+        CircleShape shape = new CircleShape();
+        shape.setPosition(new Vector2(Bubble.MESH_BUBBLE_RADIUS, Bubble.MESH_BUBBLE_RADIUS));
+        shape.setRadius(MESH_BUBBLE_RADIUS);
+        fdef.shape = shape;
         _body.createFixture(fdef);
 
 //        _body.cbTypes.add(_connectedBubbleCBType);
@@ -369,7 +369,7 @@ public class Bubble {
     public void WallTouched() {
         _timesWallTouched++;
         if (_timesWallTouched == MAX_TIMES_WALL_TOUCHED && _mesh == null)
-            Delete();
+            Delete(false);
     }
 
 

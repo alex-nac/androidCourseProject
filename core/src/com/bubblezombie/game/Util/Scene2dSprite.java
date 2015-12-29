@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import static java.lang.Math.max;
 
 public class Scene2dSprite extends Group {
-    private SpriteDrawable _spriteDrawable;
+    protected SpriteDrawable _spriteDrawable;
 
     public Scene2dSprite() {}
 
