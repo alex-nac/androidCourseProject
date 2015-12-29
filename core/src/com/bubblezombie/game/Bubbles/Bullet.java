@@ -23,8 +23,7 @@ public class Bullet extends SimpleBubble {
     private static final String yellow = "game/bubbles/bomb_normal_yellow.png";
 
     public Bullet() {
-        super();
-        setColor(getColor());
+        this(BubbleColor.NONE);
     }
 
     public Bullet(BubbleColor color) {
