@@ -52,7 +52,7 @@ public class Bullet extends SimpleBubble {
 
     public Scene2dSprite getBubbleImage() {
         if (!BubbleZombieGame.INSTANCE.assetManager.isLoaded(pink)) {
-            // ОСТОРОЖНО ГОВНОКОД
+            // TODO: this is bad
             BubbleZombieGame.INSTANCE.assetManager.load(blue, Texture.class);
             BubbleZombieGame.INSTANCE.assetManager.load(green, Texture.class);
             BubbleZombieGame.INSTANCE.assetManager.load(pink, Texture.class);

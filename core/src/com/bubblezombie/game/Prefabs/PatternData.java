@@ -14,7 +14,7 @@ public class PatternData {
     private Number[] getArrayFromString(String str, boolean prob) {
         String[] splited = str.split("_+");
         Number[] parsed = null;
-        // TODO: это говнокод и копипаста
+        // TODO: this is very bad
         if (!prob) {
             parsed = new Integer[splited.length];
         } else {

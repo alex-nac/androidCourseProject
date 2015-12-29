@@ -244,7 +244,6 @@ public class Bubble {
     //saving data and setting the graphics
     public Bubble(BubbleType type) {
         this.type = type;
-
 //        _body.userData.ref = this;
 
 //        _body.cbTypes.add(_bubbleCBType);

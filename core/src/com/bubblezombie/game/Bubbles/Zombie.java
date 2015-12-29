@@ -86,7 +86,7 @@ public class Zombie extends SimpleBubble {
     public Scene2dSprite GetBubbleImage() {
         Scene2dSprite bubbleMC = null;
         if (!BubbleZombieGame.INSTANCE.assetManager.isLoaded(pink)) {
-            // ОСТОРОЖНО ГОВНОКОД
+            // TODO: this is bad
             BubbleZombieGame.INSTANCE.assetManager.load(pink, Texture.class);
             BubbleZombieGame.INSTANCE.assetManager.load(black, Texture.class);
             BubbleZombieGame.INSTANCE.assetManager.load(blue, Texture.class);
