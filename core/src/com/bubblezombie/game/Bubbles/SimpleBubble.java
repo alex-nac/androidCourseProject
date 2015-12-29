@@ -11,7 +11,7 @@ import com.bubblezombie.game.Util.Scene2dSprite;
  */
 public class SimpleBubble extends Bubble {
     //amount of SimpleBubble's colors
-    public static int COLORS_AMOUNT = BubbleColor.values().length;
+    public static int COLORS_AMOUNT;
 
     public BubbleColor _color;
 
@@ -26,7 +26,7 @@ public class SimpleBubble extends Bubble {
     public SimpleBubble(BubbleColor color) {
         super(BubbleType.SIMPLE);
         if (color == BubbleColor.NONE) {
-            _color = BubbleColor.values()[Generator.rand(COLORS_AMOUNT - 1) + 1];
+            _color = BubbleColor.values()[Generator.rand(COLORS_AMOUNT) + 1];
         } else {
             _color = color;
         }

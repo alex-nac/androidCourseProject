@@ -85,6 +85,7 @@ public class Bullet extends SimpleBubble {
                 sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(violett, Texture.class));
                 break;
             case UBER_BLACK:
+                sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(violett, Texture.class));
                 break;
         }
         return sprite;

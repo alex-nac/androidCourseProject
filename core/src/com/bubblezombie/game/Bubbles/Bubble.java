@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.Util.Scene2dSprite;
@@ -24,7 +23,7 @@ public class Bubble {
 
     public static final int DIAMETR = 44;          		//diametr of the bubble
     public static final float FROZEN_TIME = 0.1f;   	//time to give frozen to near bubbles
-    public static float MESH_BUBBLE_DIAMETR;
+    public static float MESH_BUBBLE_RADIUS = 22f;
 
 
 //    //CallBack Types for physics engine
@@ -137,8 +136,10 @@ public class Bubble {
         _body = space.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
-        fdef.shape = new CircleShape();
-        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
+        CircleShape shape = new CircleShape();
+        shape.setPosition(new Vector2(0,0));
+        shape.setRadius(MESH_BUBBLE_RADIUS);
+        fdef.shape = shape;
         _body.createFixture(fdef);
         _body.setLinearVelocity(new Vector2(0, 0));
         _body.setAngularVelocity(0f);
@@ -149,7 +150,7 @@ public class Bubble {
         fdef.isSensor = value;
         PolygonShape shape = new PolygonShape();
         fdef.shape = new CircleShape();
-        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
+        fdef.shape.setRadius(MESH_BUBBLE_RADIUS);
         fdef.shape = shape;
         _body.createFixture(fdef);
     }
@@ -290,8 +291,10 @@ public class Bubble {
 
         _body.getFixtureList().clear();
         FixtureDef fdef = new FixtureDef();
-        fdef.shape = new CircleShape();
-        fdef.shape.setRadius(MESH_BUBBLE_DIAMETR / 2f);
+        CircleShape shape = new CircleShape();
+        shape.setPosition(new Vector2(Bubble.MESH_BUBBLE_RADIUS, Bubble.MESH_BUBBLE_RADIUS));
+        shape.setRadius(MESH_BUBBLE_RADIUS);
+        fdef.shape = shape;
         _body.createFixture(fdef);
 
 //        _body.cbTypes.add(_connectedBubbleCBType);

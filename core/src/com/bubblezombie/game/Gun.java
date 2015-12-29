@@ -28,6 +28,7 @@ import com.bubblezombie.game.Util.Scene2dSprite;
 
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
@@ -149,8 +150,9 @@ public class Gun extends Actor {
 
     // rotate gun
     public void setGunRotation(float degrees) {
-        _gun.setRotation(degrees);
+        _angle  = degrees * (float)Math.PI / 180f;
         _gunBody.setTransform(_gunBody.getPosition().x, _gunBody.getPosition().y, degrees * (float)Math.PI / 180f);
+        _gun.setRotation(degrees);
 
         try {
             ///?????
@@ -191,7 +193,8 @@ public class Gun extends Actor {
 
                         bullet.setPosition(_gun.localToStageCoordinates(bullet.getPosition()));
                         bullet.setVelocity(new Vector2(SHOOTING_VEL * MathUtils.cos(-_angle), -SHOOTING_VEL * MathUtils.sin(-_angle)));
-                        //bullet.getView().addAction(scaleTo(bullet.getScale(), bullet.getScale(), 0.1f)); //scale it to normal size
+                        float newScale = 2f*Bubble.MESH_BUBBLE_RADIUS /bullet.getView().getWidth();
+                        bullet.getView().addAction(scaleTo(newScale, newScale, 0.1f)); //scale it to normal size
 
                         return true;
                     }
@@ -270,14 +273,13 @@ public class Gun extends Actor {
     private void PutBullet() {
         _basketBullet = GetNextBullet();
         _basketBullet.setSpace(_space);
-//        _basketBullet.getView().setAlpha(0);
+        _basketBullet.getView().setAlpha(0);
 
         _bulletPlace.addActor(_basketBullet.getView());
         float scale = BULLET_DIAMETR / Bubble.DIAMETR;
         _basketBullet.getView().setScale(scale);
         _basketBullet.setX(2);
         _basketBullet.setY(30);
-
         _basketBullet.getView().addAction(fadeIn(0.4f));
     }
 

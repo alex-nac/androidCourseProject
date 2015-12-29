@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.SerializationException;
 import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Bubbles.BubbleColor;
+import com.bubblezombie.game.Bubbles.SimpleBubble;
 import com.bubblezombie.game.Bubbles.Zombie;
 import com.bubblezombie.game.Gun;
 import com.bubblezombie.game.Util.BFS;
@@ -123,12 +124,14 @@ public class GameScreen extends BaseScreen {
         stage.addActor(_pause);
         stage.addActor(_UI);
 
+        SimpleBubble.COLORS_AMOUNT = cfg.colors;
+
         //_debug = new BitmapDebug(640, 480, 333333 ,true);
         //addChild(_debug.display);
 
         _useDebugView = cfg.useDebugView;
 
-        //Bubble.MESH_BUBBLE_DIAMETR = cfg.meshBubbleDiametr;
+        //Bubble.MESH_BUBBLE_RADIUS = cfg.meshBubbleDiametr;
         //SimpleBubble.COLORS_AMOUNT = cfg.colors;
 
         CreateGameConditionals(cfg);
@@ -216,11 +219,11 @@ public class GameScreen extends BaseScreen {
         super.render(delta);
 
         _debug.render(_space, stage.getCamera().combined);
-        _space.step(1/60.0f, 10, 10);
+        _space.step(1 / 60.0f, 10, 10);
 
         Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
         float _angle = (float)Math.atan2(loc.y + 34, loc.x - 13);
-        _gun.setGunRotation(_angle * 180 / (float)Math.PI);
+        _gun.setGunRotation(_angle * 180 / (float) Math.PI);
     }
 
     @Override
