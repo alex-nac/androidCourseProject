@@ -137,10 +137,8 @@ public class Gun extends Actor {
         // pause shooting timer
         _canShootTimer = new Timer();
         try {
-            ///?????
-            GameEvent event = new GameEvent(GameEvent.Type.SHOOT, _nextBullet);
+            GameEvent event = new GameEvent(GameEvent.Type.SHOOT, null);
             event.setTarget(this);
-            ///?????
             notify(event, false);
         }
         catch (IncorrentGameEventDataException e) {
@@ -210,7 +208,7 @@ public class Gun extends Actor {
 
         //dispatching event about new bubble
         try {
-            GameEvent event = new GameEvent(GameEvent.Type.SHOOT, _nextBullet);
+            GameEvent event = new GameEvent(GameEvent.Type.SHOOT, _nextBullet, bullet);
             event.setTarget(this);
             notify(event, false);
         }

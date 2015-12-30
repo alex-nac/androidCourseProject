@@ -20,10 +20,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SerializationException;
 import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Bubbles.BubbleColor;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
 import com.bubblezombie.game.Bubbles.Zombie;
+import com.bubblezombie.game.EventSystem.GameEvent;
+import com.bubblezombie.game.EventSystem.GameEventListener;
 import com.bubblezombie.game.Gun;
+import com.bubblezombie.game.Updatable;
 import com.bubblezombie.game.Util.BFS;
 import com.bubblezombie.game.Util.GameConfig;
 
@@ -54,6 +58,7 @@ public class GameScreen extends BaseScreen {
     private GameState currWonState = GameState.UNDEF;
 
     private Boolean _useDebugView;
+    private ArrayList<Updatable> _gameObjects;
 
     // sprite containers
     private Group _game = new Group();
@@ -160,11 +165,21 @@ public class GameScreen extends BaseScreen {
 
         BFS.setMesh(_mesh);
 
+        // gun
         _gun = new Gun(cfg, _space, _lvlNum >= 21, _mesh);
-        //_gun.addEventListener(GunEvent.SHOOT, _indicator.SetNextSprite);
-        //_gun.addEventListener(GunEvent.SHOOT, aimPointer.onNewBullet);
+
+        _gun.addListener(new GameEventListener() {
+            @Override
+            public void shoot(GameEvent event, Bubble nextBubble, Bubble nowShootedBubble) {
+                //_indicator.SetNextSprite
+                //aimPointer.onGunMoved
+
+            }
+        });
+
         //_gun.addEventListener(GunEvent.MOVED, aimPointer.onGunMoved);
         _game.addActor(_gun.getView());
+
         stage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -41,7 +41,7 @@ public class GameEventListener implements EventListener {
                 lastWave(event);
                 break;
             case SHOOT:
-                shoot(event, event.getBulletSprite(), event.getBulletType(), event.getBulletColor());
+                shoot(event, event.getNextBubble(), event.getNowShootedBubble());
                 break;
             case MOVED:
                 moved(event, event.getAngle());
@@ -66,6 +66,6 @@ public class GameEventListener implements EventListener {
     public void lastWave(GameEvent event) {}
 
     // gun
-    public void shoot(GameEvent event, Scene2dSprite sprite, BubbleType type, BubbleColor color) {}
+    public void shoot(GameEvent event, Bubble nextBubble, Bubble nowShootedBubble) {}
     public void moved(GameEvent event, int angle) {}
 }

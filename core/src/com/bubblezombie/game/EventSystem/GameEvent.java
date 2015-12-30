@@ -24,17 +24,14 @@ public class GameEvent extends Event {
     private ArrayList<Bubble> _killedBubbles;
 
     // gun events data
-    private Scene2dSprite _bulletSprite;
-    private BubbleType _bulletType;
-    private BubbleColor _bulletColor = BubbleColor.NONE;
+    private Bubble _nextBubble, _nowShootedBubble;
     private int _angle;
 
     // getters
     public Type getType() { return _type; }
     public ArrayList<Bubble> getKilledBubbles() { return _killedBubbles; };
-    public Scene2dSprite getBulletSprite() { return _bulletSprite; }
-    public BubbleType getBulletType() { return _bulletType; }
-    public BubbleColor getBulletColor() { return _bulletColor; }
+    public Bubble getNextBubble() { return _nextBubble; }
+    public Bubble getNowShootedBubble() { return _nowShootedBubble; }
     public int getAngle() { return _angle; }
 
     // general
@@ -54,16 +51,12 @@ public class GameEvent extends Event {
     }
 
     // gun
-    public GameEvent(Type type, Bubble nextBullet) throws IncorrentGameEventDataException { // shoot
+    public GameEvent(Type type, Bubble nextBullet, Bubble nowShootedBubble) throws IncorrentGameEventDataException { // shoot
         if (type != Type.SHOOT)
             throw new IncorrentGameEventDataException("Trying to create gun shoot event without providing shooted bullet");
         _type = type;
-        _bulletSprite = nextBullet.GetBubbleImage();
-        _bulletType = nextBullet.getType();
-        if (_bulletType == BubbleType.SIMPLE)
-            _bulletColor = ((SimpleBubble)nextBullet).getColor();
-        if (_bulletType == BubbleType.COLOR_BOMB)
-            _bulletColor = ((ColorBomb)nextBullet).getColor();
+        _nextBubble = nextBullet;
+        _nowShootedBubble = nowShootedBubble;
     }
 
     public GameEvent(Type type, int angle) throws IncorrentGameEventDataException { // moved
