@@ -27,6 +27,7 @@ import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Scene2dSprite;
 
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
@@ -137,7 +138,7 @@ public class Gun extends Actor {
         // pause shooting timer
         _canShootTimer = new Timer();
         try {
-            GameEvent event = new GameEvent(GameEvent.Type.SHOOT, null);
+            GameEvent event = new GameEvent(GameEvent.Type.SHOOT, _nextBullet, null);
             event.setTarget(this);
             notify(event, false);
         }
@@ -189,10 +190,11 @@ public class Gun extends Actor {
 
                         bullet.setSpace(_space);
 
-                        bullet.setPosition(_gun.localToStageCoordinates(bullet.getPosition()));
+                        bullet.setPosition(_bulletPlace.localToStageCoordinates(new Vector2(bullet.getView().getX(), bullet.getView().getY())));
                         bullet.setVelocity(new Vector2(SHOOTING_VEL * MathUtils.cos(-_angle), -SHOOTING_VEL * MathUtils.sin(-_angle)));
                         float newScale = 2f*Bubble.MESH_BUBBLE_RADIUS /bullet.getView().getWidth();
                         bullet.getView().addAction(scaleTo(newScale, newScale, 0.1f)); //scale it to normal size
+
 
                         return true;
                     }
@@ -255,13 +257,13 @@ public class Gun extends Actor {
                 if (bullet.getType() == BubbleType.BOMB || bullet.getType() == BubbleType.FREEZE_BOMB)
                     return GetNextBullet();
                 if (bullet.getType() == BubbleType.COLOR_BOMB &&
-                        ((ColorBomb) bullet).getColor() == ((ColorBomb) _nextBullet).getColor())
+                        ((ColorBomb) bullet).getBubbleColor() == ((ColorBomb) _nextBullet).getBubbleColor())
                     return GetNextBullet();
             }
         }
 
         if (bullet instanceof SimpleBubble &&
-                _mesh.GetRemainingBubblesByColor(((SimpleBubble) bullet).getColor()) <= 0)
+                _mesh.GetRemainingBubblesByColor(((SimpleBubble) bullet).getBubbleColor()) <= 0)
             return GetNextBullet();
 
         return bullet;

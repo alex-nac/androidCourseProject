@@ -17,7 +17,7 @@ public class SimpleBubble extends Bubble {
 
     public void setColor(BubbleColor newColor) {}
 
-    public BubbleColor getColor() { return _color; }
+    public BubbleColor getBubbleColor() { return _color; }
 
     public SimpleBubble() {
         this(BubbleColor.NONE);
@@ -31,6 +31,7 @@ public class SimpleBubble extends Bubble {
             _color = color;
         }
     }
+
     @Override
     public void Delete(boolean withPlane) {
         super.Delete(withPlane);

@@ -40,6 +40,9 @@ public class GameEventListener implements EventListener {
             case LAST_WAVE:
                 lastWave(event);
                 break;
+            case BUBBLE_CONNECTED:
+                bubbleConnected(event, event.getConnectedBubble());
+                break;
             case SHOOT:
                 shoot(event, event.getNextBubble(), event.getNowShootedBubble());
                 break;
@@ -64,6 +67,7 @@ public class GameEventListener implements EventListener {
     // mesh
     public void newRow(GameEvent event) {}
     public void lastWave(GameEvent event) {}
+    public void bubbleConnected(GameEvent event, Bubble connectedBubble) {}
 
     // gun
     public void shoot(GameEvent event, Bubble nextBubble, Bubble nowShootedBubble) {}

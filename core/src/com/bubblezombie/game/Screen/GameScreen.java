@@ -5,11 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -21,17 +17,15 @@ import com.badlogic.gdx.utils.SerializationException;
 import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Bubbles.BubbleColor;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
-import com.bubblezombie.game.Bubbles.Zombie;
 import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.GameEventListener;
 import com.bubblezombie.game.Gun;
-import com.bubblezombie.game.Updatable;
 import com.bubblezombie.game.Util.BFS;
 import com.bubblezombie.game.Util.GameConfig;
 
 import java.io.IOException;
+import java.util.Vector;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 
@@ -49,27 +43,28 @@ public class GameScreen extends BaseScreen {
     private static final int SWAT_CAR_Y_OFFSET = -13;
 
     // update loop delta time in ms
-    private static final float DT = 1000/30;
+    private static final float DT = 1000 / 30;
 
     // game states
-    private enum GameState { LOSE, WON, UNDEF };
+    private enum GameState {
+        LOSE, WON, UNDEF
+    }
 
     // whether the player losed the game
     private GameState currWonState = GameState.UNDEF;
 
     private Boolean _useDebugView;
-    private ArrayList<Updatable> _gameObjects;
 
     // sprite containers
     private Group _game = new Group();
     private Image _pause;
     private Group _UI = new Group();
-    float i = 0f;
     // game object
     private World _space = new World(new Vector2(0, 0), true);
     private Box2DDebugRenderer _debug = new Box2DDebugRenderer();
     private BubbleMesh _mesh;
     private Gun _gun;
+    private Vector<Bubble> _freeBubbles = new Vector<Bubble>(); // here we place bubbles that aren't in gun and aren't in mesh
     //private var _wonTimer:Timer
     //private var _score:Score;
     private int _lvlNum;
@@ -170,10 +165,24 @@ public class GameScreen extends BaseScreen {
 
         _gun.addListener(new GameEventListener() {
             @Override
-            public void shoot(GameEvent event, Bubble nextBubble, Bubble nowShootedBubble) {
+            public void shoot(GameEvent event, Bubble nextBubble, final Bubble nowShootedBubble) {
                 //_indicator.SetNextSprite
                 //aimPointer.onGunMoved
 
+                // gun dispatch SHOOT event when it is initialized, in that case nowShootedBubble == null
+                if (nowShootedBubble != null) {
+                    // add our bubble to control it
+                    _freeBubbles.add(nowShootedBubble);
+
+                    // when it is connected to the mesh remove it
+                    nowShootedBubble.addListener(new GameEventListener() {
+                        @Override
+                        public void bubbleConnected(GameEvent event, Bubble connectedBubble) {
+                            _freeBubbles.remove(nowShootedBubble);
+                            nowShootedBubble.removeListener(this);
+                        }
+                    });
+                }
             }
         });
 
@@ -229,16 +238,29 @@ public class GameScreen extends BaseScreen {
         */
     }
 
+    public void update(float delta) {
+        _space.step(1 / 60.0f, 10, 10);
+
+        // set gun's rotation
+        Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+        float _angle = (float) Math.atan2(loc.y + 34, loc.x - 13);
+        _gun.setGunRotation(_angle * 180 / (float) Math.PI);
+
+        _mesh.Update();
+        for (Bubble bbl: _freeBubbles) bbl.Update();
+        //_airplane.Update();
+        //_wonTimer.Update();
+        //_slidingPanel.Update(_score, _wonTimer.GetRemainingTime());
+    }
+
     @Override
     public void render(float delta) {
         super.render(delta);
 
-        _debug.render(_space, stage.getCamera().combined);
-        _space.step(1 / 60.0f, 10, 10);
+      //  if (_useDebugView)
+            _debug.render(_space, stage.getCamera().combined);
 
-        Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
-        float _angle = (float)Math.atan2(loc.y + 34, loc.x - 13);
-        _gun.setGunRotation(_angle * 180 / (float) Math.PI);
+        update(delta);
     }
 
     @Override

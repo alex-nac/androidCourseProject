@@ -10,7 +10,7 @@ public class ColorBomb extends Bubble {
         super(BubbleType.COLOR_BOMB);
     }
 
-    public BubbleColor getColor() {
+    public BubbleColor getBubbleColor() {
         return _color;
     }
 }

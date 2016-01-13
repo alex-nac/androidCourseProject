@@ -212,7 +212,7 @@ public class BubbleMesh extends Actor {
         _mesh.get((int)meshPos.x).set((int)meshPos.y, null);
 
         if (bubble instanceof Zombie || bubble instanceof Sprayer) _enemiesNum = _enemiesNum - 1;
-//        if (bubble instanceof SimpleBubble) _colors[((SimpleBubble) bubble).getColor().getIndex()]--;
+//        if (bubble instanceof SimpleBubble) _colors[((SimpleBubble) bubble).getBubbleColor().getIndex()]--;
     }
 
     public void Stop() {

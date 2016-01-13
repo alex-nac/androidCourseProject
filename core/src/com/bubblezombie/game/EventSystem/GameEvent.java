@@ -23,6 +23,9 @@ public class GameEvent extends Event {
     // combo event data
     private ArrayList<Bubble> _killedBubbles;
 
+    // mesh events data
+    private Bubble _connectedBubble;
+
     // gun events data
     private Bubble _nextBubble, _nowShootedBubble;
     private int _angle;
@@ -30,13 +33,14 @@ public class GameEvent extends Event {
     // getters
     public Type getType() { return _type; }
     public ArrayList<Bubble> getKilledBubbles() { return _killedBubbles; };
+    public Bubble getConnectedBubble() { return _connectedBubble; }
     public Bubble getNextBubble() { return _nextBubble; }
     public Bubble getNowShootedBubble() { return _nowShootedBubble; }
     public int getAngle() { return _angle; }
 
     // general
     public GameEvent(Type type) throws IncorrentGameEventDataException {
-        if (type == Type.COMBO || type == Type.SHOOT || type == Type.MOVED)
+        if (type == Type.COMBO || type == Type.SHOOT || type == Type.MOVED || type == Type.BUBBLE_CONNECTED)
             throw new IncorrentGameEventDataException("Not enough data provided for this kind of event");
 
         _type = type;
@@ -44,16 +48,25 @@ public class GameEvent extends Event {
 
     // combo
     public GameEvent(Type type, ArrayList<Bubble> killedBubbles) throws IncorrentGameEventDataException {
-        if (type != Type.COMBO) throw new IncorrentGameEventDataException("Trying to create combo event without providing killed bubbles");
+        if (type != Type.COMBO)
+            throw new IncorrentGameEventDataException("Combo event overload, when you are using " + type.toString() + "event ctor");
 
         _type = type;
         _killedBubbles = killedBubbles;
     }
 
+    // mesh
+    public GameEvent(Type type, Bubble bubble) throws IncorrentGameEventDataException{ // connected_bubble
+        if (type != Type.BUBBLE_CONNECTED)
+            throw new IncorrentGameEventDataException("Bubble connected event overload, when you are using " + type.toString() + "event ctor");
+        _type = type;
+        _connectedBubble = bubble;
+    }
+
     // gun
     public GameEvent(Type type, Bubble nextBullet, Bubble nowShootedBubble) throws IncorrentGameEventDataException { // shoot
         if (type != Type.SHOOT)
-            throw new IncorrentGameEventDataException("Trying to create gun shoot event without providing shooted bullet");
+            throw new IncorrentGameEventDataException("Shoot event overload, when you are using " + type.toString() + "event ctor");
         _type = type;
         _nextBubble = nextBullet;
         _nowShootedBubble = nowShootedBubble;
@@ -61,7 +74,7 @@ public class GameEvent extends Event {
 
     public GameEvent(Type type, int angle) throws IncorrentGameEventDataException { // moved
         if (type != Type.MOVED)
-            throw new IncorrentGameEventDataException("Trying to create gun moved event without providing angle");
+            throw new IncorrentGameEventDataException("Gun moved event overload, when you are using " + type.toString() + "event ctor");
 
         _type = type;
         _angle = angle;
@@ -82,6 +95,7 @@ public class GameEvent extends Event {
         // mesh
         NEW_ROW,
         LAST_WAVE,
+        BUBBLE_CONNECTED,
 
         // gun
         SHOOT,

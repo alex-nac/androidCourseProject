@@ -64,7 +64,7 @@ public class Bullet extends SimpleBubble {
 
         Scene2dSprite sprite = null;
 
-        switch (getColor()) {
+        switch (getBubbleColor()) {
             case PINK:
                 sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(pink, Texture.class));
                 break;

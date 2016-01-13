@@ -40,12 +40,12 @@ public class Zombie extends SimpleBubble {
 
     public Zombie(BubbleColor color) {
         super(color);
-        setColor(getColor());
+        setColor(getBubbleColor());
     }
 
     public Zombie() {
         this(BubbleColor.NONE);
-        setColor(getColor());
+        setColor(getBubbleColor());
     }
 
     @Override
