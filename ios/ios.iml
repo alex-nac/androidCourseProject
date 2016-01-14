@@ -36,6 +36,5 @@
     <orderEntry type="library" exported="" name="gdx-freetype-platform-1.7.1-natives-ios" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="robovm-objc-1.9.0" level="project" />
-    <orderEntry type="library" exported="" name="ios.ios-1.0" level="project" />
   </component>
 </module>

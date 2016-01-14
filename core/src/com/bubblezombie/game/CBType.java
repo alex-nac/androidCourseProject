@@ -1,10 +1,5 @@
 package com.bubblezombie.game;
 
-import java.io.Serializable;
-
-public class CBType {
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
+public enum CBType {
+    TYPE1, TYPE2, ETC;
 }
