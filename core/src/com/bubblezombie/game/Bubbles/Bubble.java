@@ -141,13 +141,13 @@ public class Bubble extends Actor {
     }
 
     public void setX(float value) {
-        _body.setTransform(new Vector2(value, _body.getPosition().y), 0f);
+        if (_body != null) _body.setTransform(new Vector2(value, _body.getPosition().y), 0f);
         _view.setX(value);
         _effects.setX(value);
     }
 
     public void setY(float value){
-        _body.setTransform(new Vector2(_body.getPosition().x, value), 0f);
+        if (_body != null) _body.setTransform(new Vector2(_body.getPosition().x, value), 0f);
         _view.setY(value);
         _effects.setY(value);
     }
@@ -215,6 +215,7 @@ public class Bubble extends Actor {
     public Bubble(BubbleType type) {
         this.type = type;
 
+        _view.setAnchorPoint(DIAMETR / 2, DIAMETR / 2);
 
         // ice is a little bit wider than diametr
         //float frozenMCScale = 1.2f * DIAMETR / _frozenMC.getWidth();
@@ -257,7 +258,6 @@ public class Bubble extends Actor {
         _isConnected = true;
         _body.setBullet(false);
         _mesh = mesh;
-
 
         _body.getFixtureList().clear();
         FixtureDef fdef = new FixtureDef();
