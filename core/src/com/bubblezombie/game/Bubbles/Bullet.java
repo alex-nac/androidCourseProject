@@ -46,6 +46,7 @@ public class Bullet extends SimpleBubble {
 
         sprite.setWidth(getScale() * sprite.getWidth());
         sprite.setHeight(getScale() * sprite.getHeight());
+        sprite.setAnchorPoint(MESH_BUBBLE_RADIUS, MESH_BUBBLE_RADIUS);
 
         setView(sprite);
     }

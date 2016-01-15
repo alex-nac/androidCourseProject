@@ -215,7 +215,7 @@ public class Bubble extends Actor {
     public Bubble(BubbleType type) {
         this.type = type;
 
-        _view.setAnchorPoint(DIAMETR / 2, DIAMETR / 2);
+        _view.setAnchorPoint(MESH_BUBBLE_RADIUS, MESH_BUBBLE_RADIUS);
 
         // ice is a little bit wider than diametr
         //float frozenMCScale = 1.2f * DIAMETR / _frozenMC.getWidth();
@@ -245,8 +245,8 @@ public class Bubble extends Actor {
 
     public void Update() {
         if (_body != null) {
-            _view.setPosition(_body.getPosition().x, _body.getPosition().y);
-            _effects.setPosition(_body.getPosition().x, _body.getPosition().y);
+            _view.setPosition(_body.getPosition().x - _view.getAnchorPoint().x, _body.getPosition().y - _view.getAnchorPoint().y);
+            _effects.setPosition(_body.getPosition().x - _view.getAnchorPoint().x, _body.getPosition().y - _view.getAnchorPoint().y);
         }
     }
 

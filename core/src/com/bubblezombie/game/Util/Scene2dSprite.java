@@ -68,8 +68,6 @@ public class Scene2dSprite extends Group {
 
     public void setAnchorPoint(float x, float y) {
         this.setOrigin(x, y);
-
-
     }
 
     public Vector2 getAnchorPoint() {
