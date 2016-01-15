@@ -19,6 +19,10 @@ public class CBTypebody extends Body {
         super(world, addr);
     }
 
+//    public CBTypebody(Body body) {
+//
+//    }
+
     public void addCbtype(CBType element) {
         set.add(element);
     }
