@@ -227,7 +227,7 @@ public class GameScreen extends BaseScreen {
         var shape:Shape = new Polygon(Polygon.rect(0, 416, stage.stageWidth, stage.stageHeight - 416));
         shape.sensorEnabled = true;
         loseSensor.shapes.add(shape);
-        var loseSensorCBT:CbType = new CbType();
+        var loseSensorCBT:CBType = new CBType();
         loseSensor.cbTypes.add(loseSensorCBT);
         loseSensor.space = _space;
         //we use ongoing because of situation when we shoot with bubble and while connecting to the _mesh it is touching sensor

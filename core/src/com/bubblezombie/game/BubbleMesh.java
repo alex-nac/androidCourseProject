@@ -1,14 +1,16 @@
 package com.bubblezombie.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Bubbles.BubbleColor;
@@ -117,7 +119,7 @@ public class BubbleMesh extends Actor {
         // creating mesh
         CreateMesh(_meshPattern.getStartRowsNum());
 
-        //_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Bubble.ConnectedBubbleCBType, Bubble.BubbleCBType, BubbleHDR, -1));
+        //_space.setContactListener(new BubbleHDR());
 
         //_waveTimer = new Timer(_meshPattern.waveVel);
         //_waveTimer.addEventListener(Timer.TRIGGED, WaveTimerHandler);
@@ -366,53 +368,80 @@ public class BubbleMesh extends Actor {
             _meshOriginBody.userData.y = _meshOriginBody.position.y + Bubble.DIAMETR;
         }
     }
+    */
 
     //collision with mesh handler
-    private function BubbleHDR(e:InteractionCallback):void {
-        var bubble:Bubble = e.int2.castBody.userData.ref as Bubble;
-        if (bubble.wasCallbackCalled) return;
-        bubble.wasCallbackCalled = true;
+    public class BubbleHDR implements ContactListener {
+        @Override
+        public void beginContact(Contact contact) {
+            Body bA = contact.getFixtureA().getBody();
+            Body bB = contact.getFixtureB().getBody();
 
-        //connect bubble to the mesh
-        var meshPos:Vec2 = GetMeshPos(bubble);
-        if (meshPos.x < 0) {
-            bubble.Delete();
-            return;
+            // this is callback for BUBBLE and CONNECTED_BUBBLE
+            if ((((BodyData)bA.getUserData()).hasCbtype(CBType.BUBBLE) && !((BodyData)bB.getUserData()).hasCbtype(CBType.CONNECTED_BUBBLE)) ||
+                    (((BodyData)bB.getUserData()).hasCbtype(CBType.BUBBLE) && !((BodyData)bA.getUserData()).hasCbtype(CBType.CONNECTED_BUBBLE)))
+                return;
+            Gdx.app.log("ABC", "collision");
+
+            Bubble bubble;
+            if (((BodyData)bA.getUserData()).hasCbtype(CBType.BUBBLE)) bubble = (Bubble) ((BodyData) bA.getUserData()).owner;
+            else bubble = (Bubble) ((BodyData) bB.getUserData()).owner;
+
+            if (bubble.wasCallbackCalled()) return;
+            bubble.setCallbackCalled(true);
+
+            //connect bubble to the mesh
+            Vector2 meshPos = BubbleMesh.this.getMeshPos(bubble); // outer class
+            if (meshPos.x < 0) {
+                bubble.Delete(false);
+                return;
+            }
+            if (meshPos.y < 0) meshPos.y = 0;
+            if (meshPos.y >= _meshPattern.getColumsNum()) meshPos.y = _meshPattern.getColumsNum() - 1;
+
+
+            if (at(meshPos.x, meshPos.y) != null) {
+                //throw (new Error("HEEEEEEEY!! Here we have already have bubble!! You're trying to put at " + meshPos + "while " +
+                //"coordinates is " + bubble.position.x + " " + bubble.position.y));
+                //dispatchEvent(new Event(CAR_EXPLOSION));
+                bubble.Delete(false);
+                return;
+            }
+
+
+            //if we need to create new row
+            if (meshPos.x > _mesh.size() - 1) {
+                _rowsNum++;
+                _mesh.add(new ArrayList<Bubble>(_meshPattern.getColumsNum()));
+                _offset.add(!_offset.get(_offset.size() - 1));
+            }
+
+            _mesh.get((int)meshPos.x).set((int)meshPos.y, bubble);
+            if (_isMeshMoving) bubble.setVelocity(new Vector2(0, Bubble.DIAMETR / MESH_MOVING_TIME));
+            else bubble.setVelocity(new Vector2(0, 0));
+
+            _bubbleLayer.addActor(bubble.getView());
+            _bubbleEffectsLayer.addActor(bubble.getEffects());
+
+            if (bubble instanceof SimpleBubble) {
+                int index = ((SimpleBubble) bubble).getBubbleColor().getIndex();
+                _colors.set(index, _colors.get(index) + 1);
+            }
+
+            Vector2 pos = GetWorldPos(meshPos);
+            bubble.setPosition(pos);
+            bubble.onConnected(BubbleMesh.this); // getting instance of the outer class
         }
-        if (meshPos.y < 0) meshPos.y = 0
-        if (meshPos.y >= _meshPattern.columsNum) meshPos.y = _meshPattern.columsNum - 1;
 
-        if (At(meshPos.x, meshPos.y)) {
-            //throw (new Error("HEEEEEEEY!! Here we have already have bubble!! You're trying to put at " + meshPos + "while " +
-            //"coordinates is " + bubble.position.x + " " + bubble.position.y));
-            //dispatchEvent(new Event(CAR_EXPLOSION));
-            bubble.Delete();
-            return;
-        }
+        @Override
+        public void endContact(Contact contact) { }
 
-        //if we need to create new row
-        if (meshPos.x > _mesh.length - 1) {
-            _rowsNum++;
-            _mesh.push(new Vector.<Bubble>(_meshPattern.columsNum));
-            _offset.push(!_offset[_offset.length - 1]);
-        }
+        @Override
+        public void preSolve(Contact contact, Manifold manifold) { }
 
-        _mesh[meshPos.x][meshPos.y] = bubble;
-        if (_isMeshMoving) bubble.velocity = new Vec2(0, Bubble.DIAMETR / MESH_MOVING_TIME);
-        else bubble.velocity = new Vec2();
-
-        _bubbleLayer.addChild(bubble.view);
-        _bubbleEffectsLayer.addChild(bubble.effects);
-
-
-        if (bubble is SimpleBubble) _colors[bubble["color"]]++;
-
-        var pos:Vec2 = GetWorldPos(meshPos);
-        bubble.x = pos.x;
-        bubble.y = pos.y;
-        bubble.onConnected(this);
-    }
-    */
+        @Override
+        public void postSolve(Contact contact, ContactImpulse impulse) { }
+    };
 
     //determining world position by mesh coord
     private Vector2 GetWorldPos(Vector2 meshPos) {

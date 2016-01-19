@@ -1,27 +1,23 @@
 package com.bubblezombie.game;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.World;
-
 import java.util.HashSet;
 
-public class CBTypebody extends Body {
+/*
+ * Class helps us save physical body owner
+ * and check CbTypes in ContactListener
+ */
+
+public class BodyData {
+    public Object owner;
 
     private static HashSet<CBType> set = new HashSet<CBType>();
 
-    /**
-     * Constructs a new body with the given address
-     *
-     * @param world the world
-     * @param addr  the address
-     */
-    protected CBTypebody(World world, long addr) {
-        super(world, addr);
-    }
+    public BodyData(Object owner, CBType... cbtypes) {
+        this.owner = owner;
 
-//    public CBTypebody(Body body) {
-//
-//    }
+        for (CBType type: cbtypes)
+            addCbtype(type);
+    }
 
     public void addCbtype(CBType element) {
         set.add(element);
@@ -36,5 +32,4 @@ public class CBTypebody extends Body {
     public boolean hasCbtype(CBType element) {
         return set.contains(element);
     }
-
 }

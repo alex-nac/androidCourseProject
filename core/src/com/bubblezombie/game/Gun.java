@@ -53,8 +53,8 @@ public class Gun extends Actor {
     private static final float SHOOTING_DELAY = 0.2f;
     private static final int VIEW_X = BubbleZombieGame.width / 2;
     private static final int VIEW_Y = -13;
-    private static final int GUN_X = 13;
-    private static final int GUN_Y = 32;
+    private static final int GUN_X = 0;
+    private static final int GUN_Y = 27;
     private static final int TOP_GUN_X = 27;
     private static final int TOP_GUN_Y = -7;
 
@@ -98,7 +98,8 @@ public class Gun extends Actor {
         _gun.addActor(_bulletPlace);
         Image topGun = new Image(BubbleZombieGame.INSTANCE.assetManager.get(RES_GUN_TOP, Texture.class));
         topGun.setPosition(TOP_GUN_X, TOP_GUN_Y);
-        //_gun.addActor(topGun);
+        _gun.setAnchorPoint(20.0f, 18.0f);
+        _gun.addActor(topGun);
         _gun.setX(GUN_X);
         _gun.setY(GUN_Y);
         _view.addActor(_gun);
@@ -195,7 +196,6 @@ public class Gun extends Actor {
                         bullet.setVelocity(new Vector2(SHOOTING_VEL * MathUtils.cos(-_angle), -SHOOTING_VEL * MathUtils.sin(-_angle)));
                         float newScale = 2f * Bubble.MESH_BUBBLE_RADIUS / bullet.getView().getWidth();
                         bullet.getView().addAction(scaleTo(newScale, newScale, 0.1f)); //scale it to normal size
-
 
                         return true;
                     }

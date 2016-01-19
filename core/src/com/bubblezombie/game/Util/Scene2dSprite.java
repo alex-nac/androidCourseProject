@@ -45,6 +45,7 @@ public class Scene2dSprite extends Group {
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
+
         if (_spriteDrawable != null) {
             float oldAlpha = this.getColor().a;
             _spriteDrawable.getSprite().setAlpha(this.getColor().a * parentAlpha);
@@ -56,6 +57,7 @@ public class Scene2dSprite extends Group {
             // DEBUG
 
         }
+
         super.draw(batch, parentAlpha);
     }
 

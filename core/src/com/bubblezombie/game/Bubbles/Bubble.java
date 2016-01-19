@@ -9,7 +9,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Timer;
+import com.bubblezombie.game.BodyData;
 import com.bubblezombie.game.BubbleMesh;
+import com.bubblezombie.game.CBType;
 import com.bubblezombie.game.Util.Scene2dSprite;
 
 
@@ -29,14 +31,6 @@ public class Bubble extends Actor {
     public static final int DIAMETR = 44;          		    // diametr of the bubble
     public static final float FROZEN_TIME = 0.1f;   	    // time to give frozen to near bubbles
     public static float MESH_BUBBLE_RADIUS = 22f;
-
-
-//    //CallBack Types for physics engine
-//    private static var _connectedBubbleCBType:CbType = new CbType();  //assigned when bubble is connected to the _mesh
-//    public static function get ConnectedBubbleCBType():CbType { return _connectedBubbleCBType; }
-//
-//    private static var _bubbleCBType:CbType = new CbType();           //assigned to all bubbles
-//    public static function get BubbleCBType():CbType { return _bubbleCBType; }
 
 
     /////////////
@@ -117,7 +111,7 @@ public class Bubble extends Actor {
     public void setSpace(World space) {
         // body
         BodyDef bdef = new BodyDef();
-        bdef.type = BodyDef.BodyType.KinematicBody;
+        bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.position.set(_view.getX(), _view.getY());
         _body = space.createBody(bdef);
 
@@ -131,8 +125,7 @@ public class Bubble extends Actor {
         // it is bullet
         _body.setBullet(true);
 
-        //_body.userData.ref = this;
-        //_body.cbTypes.add(_bubbleCBType);
+        _body.setUserData(new BodyData(this, CBType.BUBBLE));
     }
 
     public void setIsConnected(boolean value) {
@@ -153,7 +146,7 @@ public class Bubble extends Actor {
     }
 
     public void setPosition(Vector2 pos) {
-        _body.setTransform(pos, 0f);
+        if (_body != null) _body.setTransform(pos, 0f);
         _view.setX(pos.x);
         _view.setY(pos.y);
         _effects.setX(pos.x);
@@ -267,12 +260,12 @@ public class Bubble extends Actor {
         fdef.shape = shape;
         _body.createFixture(fdef);
 
-//        _body.cbTypes.add(_connectedBubbleCBType);
+        ((BodyData) _body.getUserData()).addCbtype(CBType.CONNECTED_BUBBLE);
 
         _body.setType(BodyDef.BodyType.KinematicBody);
 
         // TODO: ???
-        //  _body.allowMovement = false;
+        //  _body.allowMovement = false;F
         _body.setAngularVelocity(0f);
         _body.setLinearVelocity(new Vector2(0, 0));
 
@@ -319,7 +312,7 @@ public class Bubble extends Actor {
         return null;
     }
 
-//    public function AddCBT(cbt:CbType):void {
+//    public function AddCBT(cbt:CBType):void {
 //        _body.cbTypes.add(cbt);
 //    }
 //

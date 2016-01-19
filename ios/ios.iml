@@ -35,6 +35,9 @@
     <orderEntry type="library" exported="" name="gdx-box2d-platform-1.7.1-natives-ios" level="project" />
     <orderEntry type="library" exported="" name="gdx-freetype-platform-1.7.1-natives-ios" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.7.1" level="project" />
+    <orderEntry type="library" exported="" name="gdx-box2d-1.7.1" level="project" />
+    <orderEntry type="library" exported="" name="gdx-controllers-1.7.1" level="project" />
+    <orderEntry type="library" exported="" name="gdx-freetype-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="robovm-objc-1.9.0" level="project" />
   </component>
 </module>
