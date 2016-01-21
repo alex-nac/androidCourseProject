@@ -4,6 +4,7 @@ package com.bubblezombie.game.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -13,11 +14,13 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.SerializationException;
 import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
+import com.bubblezombie.game.Bubbles.Zombie;
 import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.GameEventListener;
 import com.bubblezombie.game.Gun;
@@ -90,6 +93,7 @@ public class GameScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
+
 
         GameConfig cfg = null;
         try {

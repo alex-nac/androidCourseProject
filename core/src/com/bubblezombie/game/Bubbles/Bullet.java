@@ -1,6 +1,7 @@
 package com.bubblezombie.game.Bubbles;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.EventSystem.GameEvent;
@@ -46,7 +47,6 @@ public class Bullet extends SimpleBubble {
 
         sprite.setWidth(getScale() * sprite.getWidth());
         sprite.setHeight(getScale() * sprite.getHeight());
-        sprite.setAnchorPoint(MESH_BUBBLE_RADIUS, MESH_BUBBLE_RADIUS);
 
         setView(sprite);
     }

@@ -119,7 +119,7 @@ public class BubbleMesh extends Actor {
         // creating mesh
         CreateMesh(_meshPattern.getStartRowsNum());
 
-        //_space.setContactListener(new BubbleHDR());
+        _space.setContactListener(new BubbleHDR());
 
         //_waveTimer = new Timer(_meshPattern.waveVel);
         //_waveTimer.addEventListener(Timer.TRIGGED, WaveTimerHandler);
@@ -370,7 +370,7 @@ public class BubbleMesh extends Actor {
     }
     */
 
-    //collision with mesh handler
+    // collision with mesh handler
     public class BubbleHDR implements ContactListener {
         @Override
         public void beginContact(Contact contact) {
@@ -378,14 +378,14 @@ public class BubbleMesh extends Actor {
             Body bB = contact.getFixtureB().getBody();
 
             // this is callback for BUBBLE and CONNECTED_BUBBLE
-            if ((((BodyData)bA.getUserData()).hasCbtype(CBType.BUBBLE) && !((BodyData)bB.getUserData()).hasCbtype(CBType.CONNECTED_BUBBLE)) ||
+            if ((((BodyData)bA.getUserData()).hasCbtype(CBType.BUBBLE) && !((BodyData)bB.getUserData()).hasCbtype(CBType.CONNECTED_BUBBLE)) &&
                     (((BodyData)bB.getUserData()).hasCbtype(CBType.BUBBLE) && !((BodyData)bA.getUserData()).hasCbtype(CBType.CONNECTED_BUBBLE)))
                 return;
             Gdx.app.log("ABC", "collision");
 
             Bubble bubble;
-            if (((BodyData)bA.getUserData()).hasCbtype(CBType.BUBBLE)) bubble = (Bubble) ((BodyData) bA.getUserData()).owner;
-            else bubble = (Bubble) ((BodyData) bB.getUserData()).owner;
+            if (((BodyData)bA.getUserData()).hasCbtype(CBType.CONNECTED_BUBBLE)) bubble = (Bubble) ((BodyData) bB.getUserData()).owner;
+            else bubble = (Bubble) ((BodyData) bA.getUserData()).owner;
 
             if (bubble.wasCallbackCalled()) return;
             bubble.setCallbackCalled(true);

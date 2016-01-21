@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.BodyData;
 import com.bubblezombie.game.BubbleMesh;
@@ -38,9 +39,9 @@ public class Bubble extends Actor {
     /////////////
 
     protected BubbleMesh _mesh;                      	        // we save ref to the _mesh when connect bubble
-    protected Scene2dSprite _effects = new Scene2dSprite();   	// here we place all sprites that need to be on top of zombies
+    protected Group _effects = new Group();                     // here we place all sprites that need to be on top of zombies
     protected float _scale;				    		 	        // bubble's movieclip _scale
-    protected Scene2dSprite _view = new Scene2dSprite();        // bubble's _view
+    protected Scene2dSprite _view;                              // bubble's _view
     protected Body _body;                              	        // bubble's body in physics world
     protected BubbleType type;                           	    // bubble's type
     protected Vector2 _meshPosition;
@@ -79,7 +80,7 @@ public class Bubble extends Actor {
     public Scene2dSprite getView() {
         return _view;
     }
-    public Scene2dSprite getEffects(){
+    public Group getEffects(){
         return _effects;
     }
     public float getX() { return _body.getPosition().x; }
@@ -208,7 +209,7 @@ public class Bubble extends Actor {
     public Bubble(BubbleType type) {
         this.type = type;
 
-        _view.setAnchorPoint(MESH_BUBBLE_RADIUS, MESH_BUBBLE_RADIUS);
+        //_view.setAnchorPoint(MESH_BUBBLE_RADIUS * 2, MESH_BUBBLE_RADIUS);
 
         // ice is a little bit wider than diametr
         //float frozenMCScale = 1.2f * DIAMETR / _frozenMC.getWidth();
@@ -238,8 +239,8 @@ public class Bubble extends Actor {
 
     public void Update() {
         if (_body != null) {
-            _view.setPosition(_body.getPosition().x - _view.getAnchorPoint().x, _body.getPosition().y - _view.getAnchorPoint().y);
-            _effects.setPosition(_body.getPosition().x - _view.getAnchorPoint().x, _body.getPosition().y - _view.getAnchorPoint().y);
+            _view.setPosition(_body.getPosition().x, _body.getPosition().y);
+            _effects.setPosition(_body.getPosition().x, _body.getPosition().y);
         }
     }
 
@@ -255,7 +256,7 @@ public class Bubble extends Actor {
         _body.getFixtureList().clear();
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setPosition(new Vector2(Bubble.MESH_BUBBLE_RADIUS, Bubble.MESH_BUBBLE_RADIUS));
+        //shape.setPosition(new Vector2(Bubble.MESH_BUBBLE_RADIUS, Bubble.MESH_BUBBLE_RADIUS));
         shape.setRadius(MESH_BUBBLE_RADIUS);
         fdef.shape = shape;
         _body.createFixture(fdef);

@@ -1,6 +1,7 @@
 package com.bubblezombie.game.Bubbles;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Util.Scene2dSprite;
@@ -67,7 +68,7 @@ public class Zombie extends SimpleBubble {
 
         setView(m_MC);
 
-        setScale( DIAMETR / m_MC.getWidth());
+        setScale(DIAMETR / m_MC.getWidth());
 
         m_MC.setWidth(getScale() * m_MC.getWidth());
         m_MC.setHeight(getScale() * m_MC.getHeight());

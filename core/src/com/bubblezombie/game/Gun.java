@@ -53,10 +53,10 @@ public class Gun extends Actor {
     private static final float SHOOTING_DELAY = 0.2f;
     private static final int VIEW_X = BubbleZombieGame.width / 2;
     private static final int VIEW_Y = -13;
-    private static final int GUN_X = 0;
-    private static final int GUN_Y = 27;
-    private static final int TOP_GUN_X = 27;
-    private static final int TOP_GUN_Y = -7;
+    private static final int GUN_X = 17;
+    private static final int GUN_Y = 45;
+    private static final int TOP_GUN_X = 8;
+    private static final int TOP_GUN_Y = -25;
 
 
     private Group _view = new Group();
@@ -94,11 +94,10 @@ public class Gun extends Actor {
         _repeatBulletsEnabled = repeateBulletsEnabled;
         _space = space;
 
-        _gun = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(RES_GUN_DOWN, Texture.class));
+        _gun = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(RES_GUN_DOWN, Texture.class), new Vector2(20.0f, 18.0f));
         _gun.addActor(_bulletPlace);
         Image topGun = new Image(BubbleZombieGame.INSTANCE.assetManager.get(RES_GUN_TOP, Texture.class));
         topGun.setPosition(TOP_GUN_X, TOP_GUN_Y);
-        _gun.setAnchorPoint(20.0f, 18.0f);
         _gun.addActor(topGun);
         _gun.setX(GUN_X);
         _gun.setY(GUN_Y);
@@ -120,7 +119,7 @@ public class Gun extends Actor {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.isSensor = true;
         fixtureDef.shape = shape;
-        _gunBody.createFixture(fixtureDef);
+        //_gunBody.createFixture(fixtureDef);
 
         //bullet in a basket
         PutBullet();
