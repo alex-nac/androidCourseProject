@@ -1,7 +1,7 @@
 package com.bubblezombie.game.Prefabs;
 
 import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Bubbles.BubbleColor;
+import com.bubblezombie.game.Enums.BubbleColor;
 import com.bubblezombie.game.Bubbles.Zombie;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Pair;

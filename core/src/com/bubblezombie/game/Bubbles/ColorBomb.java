@@ -4,13 +4,13 @@ package com.bubblezombie.game.Bubbles;
  * Created by Alex on 24/12/15.
  */
 public class ColorBomb extends Bubble {
-    private BubbleColor _color;
+    private com.bubblezombie.game.Enums.BubbleColor _color;
 
     public ColorBomb() {
-        super(BubbleType.COLOR_BOMB);
+        super(com.bubblezombie.game.Enums.BubbleType.COLOR_BOMB);
     }
 
-    public BubbleColor getColor() {
+    public com.bubblezombie.game.Enums.BubbleColor getBubbleColor() {
         return _color;
     }
 }

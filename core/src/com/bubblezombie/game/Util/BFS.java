@@ -1,9 +1,9 @@
 package com.bubblezombie.game.Util;
 
 import com.badlogic.gdx.math.Vector2;
-import com.bubblezombie.game.BubbleMesh;
+import com.bubblezombie.game.GameObjects.BubbleMesh;
 import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Bubbles.BubbleColor;
+import com.bubblezombie.game.Enums.BubbleColor;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
 
 import java.util.ArrayList;
@@ -39,23 +39,23 @@ public class BFS {
             //first edge
             queue.add(meshPos);
             boolMesh.get((int)meshPos.x).set((int)meshPos.y, true);
-            BubbleColor color = ((SimpleBubble)_mesh.at(meshPos.x, meshPos.y)).getColor();
+            BubbleColor color = ((SimpleBubble)_mesh.at(meshPos.x, meshPos.y)).getBubbleColor();
             //bfs
             while(queue.size() != 0) {
                 Vector2 v = queue.remove(0);
                 Bubble bbl = _mesh.at(v.x, v.y);
-                if (!withZombie && ((SimpleBubble)bbl).getColor() == BubbleColor.UBER_BLACK) {
+                if (!withZombie && ((SimpleBubble)bbl).getBubbleColor() == BubbleColor.UBER_BLACK) {
                     continue; //if it is zombie and we don't want zombie go to the next
                 }
                 bubbles.add(_mesh.at(v.x, v.y));
-                if (((SimpleBubble)bbl).getColor() == BubbleColor.UBER_BLACK) {
+                if (((SimpleBubble)bbl).getBubbleColor() == BubbleColor.UBER_BLACK) {
                     continue; //if it is zombie then we stop wave
                 }
                 for (Bubble bubble : _mesh.getBubblesAround(_mesh.at(v.x, v.y))) {
                     if (!(bubble instanceof SimpleBubble)) continue;
                     Vector2 point = bubble.getMeshPosition();
-                    if (!boolMesh.get((int)point.x).get((int)point.y) && ( ((SimpleBubble)_mesh.at(point.x, point.y)).getColor() == color
-                            || ((SimpleBubble)_mesh.at(point.x, point.y)).getColor() == BubbleColor.UBER_BLACK)) {
+                    if (!boolMesh.get((int)point.x).get((int)point.y) && ( ((SimpleBubble)_mesh.at(point.x, point.y)).getBubbleColor() == color
+                            || ((SimpleBubble)_mesh.at(point.x, point.y)).getBubbleColor() == BubbleColor.UBER_BLACK)) {
                         queue.add(point);
                         boolMesh.get((int)point.x).set((int)point.y,true);
                     }
@@ -118,11 +118,10 @@ public class BFS {
      */
         private static ArrayList<ArrayList<Boolean>> getBoolMesh() {
             ArrayList<ArrayList<Boolean>> boolMesh = new ArrayList<ArrayList<Boolean>>(_mesh.getRowsNum());
-            for (int i = 0; i < boolMesh.size(); i++) {
+            for (int i = 0; i < _mesh.getRowsNum(); i++) {
                 ArrayList<Boolean> vec = new ArrayList<Boolean>(_mesh.getColumnsNum());
-                for (int j = 0; j < vec.size(); j++)
-                vec.set(j, false);
-                boolMesh.set(i, vec);
+                for (int j = 0; j < _mesh.getColumnsNum(); j++) vec.add(false);
+                boolMesh.add(vec);
             }
 
             return boolMesh;

@@ -2,7 +2,7 @@ package com.bubblezombie.game;
 
 import com.badlogic.gdx.Gdx;
 import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Bubbles.BubbleColor;
+import com.bubblezombie.game.Enums.BubbleColor;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
 import com.bubblezombie.game.Bubbles.Sprayer;
 import com.bubblezombie.game.Bubbles.Zombie;
@@ -96,7 +96,7 @@ public class MeshPattern {
         for (int i = 0; i < _pattern.size(); ++i) {
             for (int j = 0; j < _colNum; ++j) {
                 if (_pattern.get(i).get(j) instanceof SimpleBubble) {
-                    colors[((SimpleBubble) _pattern.get(i).get(j)).getColor().getIndex()]++;
+                    colors[((SimpleBubble) _pattern.get(i).get(j)).getBubbleColor().getIndex()]++;
                 }
             }
         }
@@ -129,7 +129,7 @@ public class MeshPattern {
 
         int currentUberZombieAmount = 0;
         for (int i = 0; i < allBubbles.size(); i++) {
-            if (((Zombie) allBubbles.get(i)).getColor() == BubbleColor.UBER_BLACK) {
+            if (((Zombie) allBubbles.get(i)).getBubbleColor() == BubbleColor.UBER_BLACK) {
                 currentUberZombieAmount++;
                 allBubbles.remove(i);
             }
@@ -154,7 +154,7 @@ public class MeshPattern {
             int c = Generator.rand(_colNum);
 
             //if it isn't "special" bubble already there set sprayrer here
-            if (_pattern.get(r).get(c) instanceof Zombie && ((Zombie) _pattern.get(r).get(c)).getColor() != BubbleColor.UBER_BLACK) {
+            if (_pattern.get(r).get(c) instanceof Zombie && ((Zombie) _pattern.get(r).get(c)).getBubbleColor() != BubbleColor.UBER_BLACK) {
                 _pattern.get(r).set(c, new Sprayer(_sprayers.get(i).first, _sprayers.get(i).second));
             } else {
                 i--; //else find another places

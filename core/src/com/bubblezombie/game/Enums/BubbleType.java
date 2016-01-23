@@ -1,4 +1,4 @@
-package com.bubblezombie.game.Bubbles;
+package com.bubblezombie.game.Enums;
 
 /**
  * Created by artem on 02.12.15.

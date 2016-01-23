@@ -4,10 +4,6 @@ package com.bubblezombie.game.EventSystem;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Bubbles.BubbleColor;
-import com.bubblezombie.game.Bubbles.BubbleType;
-import com.bubblezombie.game.EventSystem.GameEvent.Type;
-import com.bubblezombie.game.Util.Scene2dSprite;
 
 import java.util.ArrayList;
 
@@ -40,8 +36,11 @@ public class GameEventListener implements EventListener {
             case LAST_WAVE:
                 lastWave(event);
                 break;
+            case BUBBLE_CONNECTED:
+                bubbleConnected(event, event.getConnectedBubble());
+                break;
             case SHOOT:
-                shoot(event, event.getBulletSprite(), event.getBulletType(), event.getBulletColor());
+                shoot(event, event.getNextBubble(), event.getNowShootedBubble());
                 break;
             case MOVED:
                 moved(event, event.getAngle());
@@ -64,8 +63,9 @@ public class GameEventListener implements EventListener {
     // mesh
     public void newRow(GameEvent event) {}
     public void lastWave(GameEvent event) {}
+    public void bubbleConnected(GameEvent event, Bubble connectedBubble) {}
 
     // gun
-    public void shoot(GameEvent event, Scene2dSprite sprite, BubbleType type, BubbleColor color) {}
+    public void shoot(GameEvent event, Bubble nextBubble, Bubble nowShootedBubble) {}
     public void moved(GameEvent event, int angle) {}
 }

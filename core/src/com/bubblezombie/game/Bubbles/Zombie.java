@@ -3,7 +3,7 @@ package com.bubblezombie.game.Bubbles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.BubbleZombieGame;
-import com.bubblezombie.game.Util.Scene2dSprite;
+import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
 
 /**
  * Created by artem on 02.12.15.
@@ -38,18 +38,18 @@ public class Zombie extends SimpleBubble {
 
     private Scene2dSprite m_MC;
 
-    public Zombie(BubbleColor color) {
+    public Zombie(com.bubblezombie.game.Enums.BubbleColor color) {
         super(color);
-        setColor(getColor());
+        setColor(getBubbleColor());
     }
 
     public Zombie() {
-        this(BubbleColor.NONE);
-        setColor(getColor());
+        this(com.bubblezombie.game.Enums.BubbleColor.NONE);
+        setColor(getBubbleColor());
     }
 
     @Override
-    public void setColor(BubbleColor newColor) {
+    public void setColor(com.bubblezombie.game.Enums.BubbleColor newColor) {
         _color = newColor;
         SetView();
     }
@@ -67,7 +67,7 @@ public class Zombie extends SimpleBubble {
 
         setView(m_MC);
 
-        setScale( DIAMETR / m_MC.getWidth());
+        setScale(DIAMETR / m_MC.getWidth());
 
         m_MC.setWidth(getScale() * m_MC.getWidth());
         m_MC.setHeight(getScale() * m_MC.getHeight());

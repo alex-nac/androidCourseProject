@@ -5,6 +5,6 @@ package com.bubblezombie.game.Bubbles;
  */
 public class Bomb extends Bubble {
     public Bomb() {
-        super(BubbleType.BOMB);
+        super(com.bubblezombie.game.Enums.BubbleType.BOMB);
     }
 }

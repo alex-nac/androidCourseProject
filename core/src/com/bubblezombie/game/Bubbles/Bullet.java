@@ -1,12 +1,14 @@
 package com.bubblezombie.game.Bubbles;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.bubblezombie.game.BubbleMesh;
+import com.bubblezombie.game.GameObjects.BubbleDeleter;
+import com.bubblezombie.game.GameObjects.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
+import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.BFS;
-import com.bubblezombie.game.Util.Scene2dSprite;
+import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
 
 import java.util.ArrayList;
 
@@ -23,16 +25,16 @@ public class Bullet extends SimpleBubble {
     private static final String yellow = "game/bubbles/bomb_normal_yellow.png";
 
     public Bullet() {
-        this(BubbleColor.NONE);
+        this(com.bubblezombie.game.Enums.BubbleColor.NONE);
     }
 
-    public Bullet(BubbleColor color) {
+    public Bullet(com.bubblezombie.game.Enums.BubbleColor color) {
         super(color);
         setColor(color);
     }
 
     @Override
-    public void setColor(BubbleColor newColor) {
+    public void setColor(com.bubblezombie.game.Enums.BubbleColor newColor) {
         super.setColor(newColor);
         setBulletView();
     }
@@ -64,7 +66,7 @@ public class Bullet extends SimpleBubble {
 
         Scene2dSprite sprite = null;
 
-        switch (getColor()) {
+        switch (getBubbleColor()) {
             case PINK:
                 sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(pink, Texture.class));
                 break;
@@ -95,9 +97,8 @@ public class Bullet extends SimpleBubble {
     public void onConnected(BubbleMesh mesh) {
         super.onConnected(mesh);
 
-//        Main.SM.PlaySound(new bomb_touch_snd());
+        //Main.SM.PlaySound(new bomb_touch_snd());
         ArrayList<Bubble> deletedBubbles = BFS.getSameColorBubbles(getMeshPosition(), false);
-
 
         if(deletedBubbles.size() >= 3) {
             deletedBubbles = BFS.getSameColorBubbles(getMeshPosition(), true);
@@ -118,7 +119,8 @@ public class Bullet extends SimpleBubble {
                 e.printStackTrace();
             }
 
-//            new BubbleDeleter(position, deletedBubbles, space);
+            // start deleter
+            ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddGameObject(new BubbleDeleter(getPosition(), deletedBubbles, _body.getWorld()));
         }
     }
 
