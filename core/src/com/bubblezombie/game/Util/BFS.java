@@ -1,9 +1,9 @@
 package com.bubblezombie.game.Util;
 
 import com.badlogic.gdx.math.Vector2;
-import com.bubblezombie.game.BubbleMesh;
+import com.bubblezombie.game.GameObjects.BubbleMesh;
 import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Bubbles.BubbleColor;
+import com.bubblezombie.game.Enums.BubbleColor;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
 
 import java.util.ArrayList;
@@ -118,11 +118,10 @@ public class BFS {
      */
         private static ArrayList<ArrayList<Boolean>> getBoolMesh() {
             ArrayList<ArrayList<Boolean>> boolMesh = new ArrayList<ArrayList<Boolean>>(_mesh.getRowsNum());
-            for (int i = 0; i < boolMesh.size(); i++) {
+            for (int i = 0; i < _mesh.getRowsNum(); i++) {
                 ArrayList<Boolean> vec = new ArrayList<Boolean>(_mesh.getColumnsNum());
-                for (int j = 0; j < vec.size(); j++)
-                vec.set(j, false);
-                boolMesh.set(i, vec);
+                for (int j = 0; j < _mesh.getColumnsNum(); j++) vec.add(false);
+                boolMesh.add(vec);
             }
 
             return boolMesh;

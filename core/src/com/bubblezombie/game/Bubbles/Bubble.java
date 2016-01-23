@@ -10,17 +10,19 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Timer;
-import com.bubblezombie.game.BodyData;
-import com.bubblezombie.game.BubbleMesh;
-import com.bubblezombie.game.CBType;
-import com.bubblezombie.game.Util.Scene2dSprite;
+import com.bubblezombie.game.Physics.BodyData;
+import com.bubblezombie.game.GameObjects.BubbleMesh;
+import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.GameObjects.GameObject;
+import com.bubblezombie.game.Screen.GameScreen;
+import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
 
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-public class Bubble extends Actor {
+public class Bubble extends Actor implements GameObject {
 
     ////////////////////
     //STATIC VARIABLES//
@@ -31,7 +33,7 @@ public class Bubble extends Actor {
 
     public static final int DIAMETR = 44;          		    // diametr of the bubble
     public static final float FROZEN_TIME = 0.1f;   	    // time to give frozen to near bubbles
-    public static float MESH_BUBBLE_RADIUS = 22f;
+    public static float MESH_BUBBLE_DIAMETR;
 
 
     /////////////
@@ -43,7 +45,7 @@ public class Bubble extends Actor {
     protected float _scale;				    		 	        // bubble's movieclip _scale
     protected Scene2dSprite _view;                              // bubble's _view
     protected Body _body;                              	        // bubble's body in physics world
-    protected BubbleType type;                           	    // bubble's type
+    protected com.bubblezombie.game.Enums.BubbleType type;                           	    // bubble's type
     protected Vector2 _meshPosition;
     protected boolean _isDead;
     protected boolean _isConnected = false;
@@ -62,7 +64,7 @@ public class Bubble extends Actor {
 
     public boolean isDead() { return _isDead; }
     public boolean isConnected() { return _isConnected; }
-    public BubbleType getType() {
+    public com.bubblezombie.game.Enums.BubbleType getType() {
         return type;
     }
     public World getSpace() {
@@ -119,14 +121,14 @@ public class Bubble extends Actor {
         // fixture
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(MESH_BUBBLE_RADIUS);
+        shape.setRadius(DIAMETR / 2);
         fdef.shape = shape;
         _body.createFixture(fdef);
 
         // it is bullet
         _body.setBullet(true);
 
-        _body.setUserData(new BodyData(this, CBType.BUBBLE));
+        _body.setUserData(new BodyData(this, BodyData.CBType.BUBBLE));
     }
 
     public void setIsConnected(boolean value) {
@@ -206,22 +208,12 @@ public class Bubble extends Actor {
     /////////////
 
     //saving data and setting the graphics
-    public Bubble(BubbleType type) {
+    public Bubble(com.bubblezombie.game.Enums.BubbleType type) {
         this.type = type;
-
-        //_view.setAnchorPoint(MESH_BUBBLE_RADIUS * 2, MESH_BUBBLE_RADIUS);
 
         // ice is a little bit wider than diametr
         //float frozenMCScale = 1.2f * DIAMETR / _frozenMC.getWidth();
         //_frozenMC.setScale(frozenMCScale, frozenMCScale);
-
-//        (Main.GSM.GetCurrentState() as GameState).addEventListener(State.PAUSE, onGameStateChanged);
-//        (Main.GSM.GetCurrentState() as GameState).addEventListener(State.RESUME, onGameStateChanged);
-//        (Main.GSM.GetCurrentState() as GameState).addEventListener(State.REMOVED, function onRemove(e:Event):void {
-//            (Main.GSM.GetCurrentState() as GameState).removeEventListener(State.REMOVED, onRemove);
-//            (Main.GSM.GetCurrentState() as GameState).removeEventListener(State.PAUSE, onGameStateChanged);
-//            (Main.GSM.GetCurrentState() as GameState).removeEventListener(State.RESUME, onGameStateChanged);
-//        });
     }
 
     public void StartLifeTimer() {
@@ -233,10 +225,7 @@ public class Bubble extends Actor {
         }, LIFE_TIME);
     }
 
-    public void Delete(boolean withPlane) {
-        _isDead = true;
-    }
-
+    @Override
     public void Update() {
         if (_body != null) {
             _view.setPosition(_body.getPosition().x, _body.getPosition().y);
@@ -244,8 +233,48 @@ public class Bubble extends Actor {
         }
     }
 
+    @Override
+    public void Pause() {
+        //_lifeTimer.stop();
+    }
+
+    @Override
+    public void Resume() {
+        //_lifeTimer.start();
+    }
+
+    @Override
+    public void Delete() {
+        // destroy body
+        if (_body != null) {
+            _body.getWorld().destroyBody(_body);
+            _body = null;
+        }
+
+        if (_effects.getParent() != null)
+            _effects.getParent().removeActor(_effects);
+        _effects = null;
+
+        _view.getParent().removeActor(_view);
+        _view = null;
+
+        /*
+        if (_iceTween) {
+            _iceTween.paused = true;
+            _iceTween.onComplete = null;
+            _iceTween = null;
+        }
+
+        if (_lifeTimer) {
+            _lifeTimer.stop();
+            _lifeTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onLifeEnd);
+        }
+        */
+    }
+
+
     private void onLifeEnd(Timer.Task e) {
-        Delete(false);
+        ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(this);
     }
 
     public void onConnected(BubbleMesh mesh) {
@@ -253,20 +282,11 @@ public class Bubble extends Actor {
         _body.setBullet(false);
         _mesh = mesh;
 
-        _body.getFixtureList().clear();
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        //shape.setPosition(new Vector2(Bubble.MESH_BUBBLE_RADIUS, Bubble.MESH_BUBBLE_RADIUS));
-        shape.setRadius(MESH_BUBBLE_RADIUS);
-        fdef.shape = shape;
-        _body.createFixture(fdef);
 
-        ((BodyData) _body.getUserData()).addCbtype(CBType.CONNECTED_BUBBLE);
+        _body.getFixtureList().get(0).getShape().setRadius(MESH_BUBBLE_DIAMETR / 2);
+        ((BodyData) _body.getUserData()).addCbtype(BodyData.CBType.CONNECTED_BUBBLE);
 
         _body.setType(BodyDef.BodyType.KinematicBody);
-
-        // TODO: ???
-        //  _body.allowMovement = false;F
         _body.setAngularVelocity(0f);
         _body.setLinearVelocity(new Vector2(0, 0));
 
@@ -276,65 +296,20 @@ public class Bubble extends Actor {
         }
     }
 
-//
-//    //deleting the bubble from mesh and removing view
-//    public function Delete(withPlane:Boolean = false):void {
-//        mesh = null;
-//        _mesh = null;
-//        if (_body) _body.space = null;
-//        _body = null;
-//
-//        if (_effects.parent) _effects.parent.removeChild(_effects);
-//        _effects = null;
-//
-//        _view.parent.removeChild(_view);
-//        _view.removeEventListener(Event.ENTER_FRAME, UpdateGraphics);
-//        _view = null;
-//
-//        if (_iceTween) {
-//            _iceTween.paused = true;
-//            _iceTween.onComplete = null;
-//            _iceTween = null;
-//        }
-//
-//        if (_lifeTimer) {
-//            _lifeTimer.stop();
-//            _lifeTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onLifeEnd);
-//        }
-//        if (Main.GSM.GetCurrentState() is GameState) {
-//            (Main.GSM.GetCurrentState() as GameState).removeEventListener(State.PAUSE, onGameStateChanged);
-//            (Main.GSM.GetCurrentState() as GameState).removeEventListener(State.RESUME, onGameStateChanged);
-//        }
-//    }
-//
     //return bubble's graphics
     public Scene2dSprite GetBubbleImage() {
         assert false;
         return null;
     }
 
-//    public function AddCBT(cbt:CBType):void {
-//        _body.cbTypes.add(cbt);
-//    }
-//
-//
-//    private function UpdateGraphics(e:Event):void {
-//        _view.x = _body.position.x;
-//        _view.y = _body.position.y;
-//
-//        _effects.x = _body.position.x;
-//        _effects.y = _body.position.y;
-//    }
-//
-//    //handling game pause/resume
-//    public function onGameStateChanged(e:Event):void {
-//        if (_lifeTimer) e.type == State.PAUSE ? _lifeTimer.stop() : _lifeTimer.start();
-//    }
-//
+    public void AddCBType(BodyData.CBType cbt) {
+        ((BodyData)_body.getUserData()).addCbtype(cbt);
+    }
+
     public void WallTouched() {
         _timesWallTouched++;
         if (_timesWallTouched == MAX_TIMES_WALL_TOUCHED && _mesh == null)
-            Delete(false);
+            ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(this);
     }
 
 

@@ -2,11 +2,6 @@ package com.bubblezombie.game.EventSystem;
 
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Bubbles.BubbleColor;
-import com.bubblezombie.game.Bubbles.BubbleType;
-import com.bubblezombie.game.Bubbles.ColorBomb;
-import com.bubblezombie.game.Bubbles.SimpleBubble;
-import com.bubblezombie.game.Util.Scene2dSprite;
 
 import java.util.ArrayList;
 

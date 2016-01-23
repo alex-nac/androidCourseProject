@@ -2,7 +2,7 @@ package com.bubblezombie.game;
 
 import com.badlogic.gdx.Gdx;
 import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Bubbles.BubbleColor;
+import com.bubblezombie.game.Enums.BubbleColor;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
 import com.bubblezombie.game.Bubbles.Sprayer;
 import com.bubblezombie.game.Bubbles.Zombie;

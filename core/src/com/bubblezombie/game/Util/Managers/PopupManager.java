@@ -1,6 +1,5 @@
 package com.bubblezombie.game.Util.Managers;
 
-import com.bubblezombie.game.BubbleMesh;
 import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Util.GameConfig;
 

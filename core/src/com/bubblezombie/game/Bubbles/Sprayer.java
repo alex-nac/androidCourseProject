@@ -30,7 +30,7 @@ public class Sprayer extends Bubble {
     private ArrayList<Direction> actDir = new ArrayList<Direction>(); //active directions
 
     public  Sprayer(int activeGuns, double time) {
-        super(BubbleType.SPRAYER);
+        super(com.bubblezombie.game.Enums.BubbleType.SPRAYER);
 
 //        some random delay to prevent synchronization
 //        timer = new Timer(Generator.randDouble(time));
@@ -52,10 +52,10 @@ public class Sprayer extends Bubble {
     }
 
 //    @Override
-//    public void update() {
-//        super.update();
+//    public void Update() {
+//        super.Update();
 //
-//        timer.update();
+//        timer.Update();
 //    }
 
 //

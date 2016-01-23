@@ -1,10 +1,9 @@
 package com.bubblezombie.game.Bubbles;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.BubbleZombieGame;
-import com.bubblezombie.game.Util.Scene2dSprite;
+import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
 
 /**
  * Created by artem on 02.12.15.
@@ -39,18 +38,18 @@ public class Zombie extends SimpleBubble {
 
     private Scene2dSprite m_MC;
 
-    public Zombie(BubbleColor color) {
+    public Zombie(com.bubblezombie.game.Enums.BubbleColor color) {
         super(color);
         setColor(getBubbleColor());
     }
 
     public Zombie() {
-        this(BubbleColor.NONE);
+        this(com.bubblezombie.game.Enums.BubbleColor.NONE);
         setColor(getBubbleColor());
     }
 
     @Override
-    public void setColor(BubbleColor newColor) {
+    public void setColor(com.bubblezombie.game.Enums.BubbleColor newColor) {
         _color = newColor;
         SetView();
     }

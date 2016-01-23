@@ -1,4 +1,4 @@
-package com.bubblezombie.game;
+package com.bubblezombie.game.Physics;
 
 import java.util.HashSet;
 
@@ -8,9 +8,17 @@ import java.util.HashSet;
  */
 
 public class BodyData {
+
+    public static enum CBType {
+        BUBBLE,             // just bubble
+        CONNECTED_BUBBLE,   // bubble in mesh
+        DELETING_BUBBLE,    // bubble prepared for deleting
+        DELETER             // bubble deleter
+    }
+
     public Object owner;
 
-    private static HashSet<CBType> set = new HashSet<CBType>();
+    private HashSet<CBType> _set = new HashSet<CBType>();
 
     public BodyData(Object owner, CBType... cbtypes) {
         this.owner = owner;
@@ -20,16 +28,17 @@ public class BodyData {
     }
 
     public void addCbtype(CBType element) {
-        set.add(element);
+        _set.add(element);
     }
 
     public void removeCbtype(CBType element) {
-        if (set.contains(element)) {
-            set.remove(element);
+        if (_set.contains(element)) {
+            _set.remove(element);
         }
     }
 
     public boolean hasCbtype(CBType element) {
-        return set.contains(element);
+        return _set.contains(element);
     }
+
 }

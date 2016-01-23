@@ -4,9 +4,13 @@ package com.bubblezombie.game.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,23 +18,25 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.SerializationException;
-import com.bubblezombie.game.BubbleMesh;
+import com.bubblezombie.game.GameObjects.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
-import com.bubblezombie.game.Bubbles.Zombie;
 import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.GameEventListener;
-import com.bubblezombie.game.Gun;
+import com.bubblezombie.game.GameObjects.GameObject;
+import com.bubblezombie.game.GameObjects.Gun;
+import com.bubblezombie.game.TweenAccessors.ShapeAccessor;
 import com.bubblezombie.game.Util.BFS;
 import com.bubblezombie.game.Util.GameConfig;
+import com.bubblezombie.game.Util.Managers.GameObjectsManager;
 
 import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
 
 
 public class GameScreen extends BaseScreen {
@@ -44,8 +50,10 @@ public class GameScreen extends BaseScreen {
     // general consts
     private static final int SWAT_CAR_X_OFFSET = BubbleZombieGame.width / 2 - 75;
     private static final int SWAT_CAR_Y_OFFSET = -13;
+    private static final int CONTACT_LISTENERS_START_CAPACITY = 5;
 
-    // update loop delta time in ms
+
+    // Update loop delta time in ms
     private static final float DT = 1000 / 30;
 
     // game states
@@ -62,12 +70,20 @@ public class GameScreen extends BaseScreen {
     private Group _game = new Group();
     private Image _pause;
     private Group _UI = new Group();
-    // game object
+
+    // game objects
     private World _space = new World(new Vector2(0, 0), true);
-    private Box2DDebugRenderer _debug = new Box2DDebugRenderer();
     private BubbleMesh _mesh;
     private Gun _gun;
-    private Vector<Bubble> _freeBubbles = new Vector<Bubble>(); // here we place bubbles that aren't in gun and aren't in mesh
+
+    // physics stuff
+    private Box2DDebugRenderer _debug = new Box2DDebugRenderer();
+    private ArrayList<ContactListener> _contactListeners = new ArrayList<ContactListener>(CONTACT_LISTENERS_START_CAPACITY); // need this in order to have more then one listener
+
+    // managers
+    private GameObjectsManager _gameObjectsManager = new GameObjectsManager();
+    private TweenManager _tweenManager = new TweenManager();
+
     //private var _wonTimer:Timer
     //private var _score:Score;
     private int _lvlNum;
@@ -135,10 +151,36 @@ public class GameScreen extends BaseScreen {
 
         _useDebugView = cfg.useDebugView;
 
-        //Bubble.MESH_BUBBLE_RADIUS = cfg.meshBubbleDiametr;
+        Bubble.MESH_BUBBLE_DIAMETR = cfg.meshBubbleDiametr;
         //SimpleBubble.COLORS_AMOUNT = cfg.colors;
 
         CreateGameConditionals(cfg);
+
+        // this root contact listener just delegates method calls
+        _space.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                for (ContactListener cl:_contactListeners) cl.beginContact(contact);
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+                for (ContactListener cl:_contactListeners) cl.endContact(contact);
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+                for (ContactListener cl:_contactListeners) cl.preSolve(contact, oldManifold);
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+                for (ContactListener cl:_contactListeners) cl.postSolve(contact, impulse);
+            }
+        });
+
+        // register tween accessors
+        Tween.registerAccessor(Shape.class, new ShapeAccessor());
 
         //////////////////
         ///GAME OBJECTS///
@@ -161,12 +203,11 @@ public class GameScreen extends BaseScreen {
         //_mesh.addEventListener(BubbleMesh.ALL_EMENIES_KILLED, MasterAchHandler);
         //_mesh.addEventListener(BubbleMesh.NEW_ROW, _waveIndicator.NewRow);
         _game.addActor(_mesh.getView());
-
+        AddGameObject(_mesh);
         BFS.setMesh(_mesh);
 
         // gun
         _gun = new Gun(cfg, _space, _lvlNum >= 21, _mesh);
-
         _gun.addListener(new GameEventListener() {
             @Override
             public void shoot(GameEvent event, Bubble nextBubble, final Bubble nowShootedBubble) {
@@ -176,29 +217,18 @@ public class GameScreen extends BaseScreen {
                 // gun dispatch SHOOT event when it is initialized, in that case nowShootedBubble == null
                 if (nowShootedBubble != null) {
                     // add our bubble to control it
-                    _freeBubbles.add(nowShootedBubble);
-
-                    // when it is connected to the mesh remove it
-                    nowShootedBubble.addListener(new GameEventListener() {
-                        @Override
-                        public void bubbleConnected(GameEvent event, Bubble connectedBubble) {
-                            _freeBubbles.remove(nowShootedBubble);
-                            nowShootedBubble.removeListener(this);
-                        }
-                    });
+                    _gameObjectsManager.AddGameObject(nowShootedBubble);
                 }
             }
         });
-
-        //_gun.addEventListener(GunEvent.MOVED, aimPointer.onGunMoved);
         _game.addActor(_gun.getView());
-
         stage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 _gun.Shoot();
             }
         });
+        AddGameObject(_gun);
 
 
         ////////
@@ -217,6 +247,57 @@ public class GameScreen extends BaseScreen {
             }
         });
 
+    }
+
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        //if (_useDebugView)
+        _debug.render(_space, stage.getCamera().combined);
+
+        Update(delta);
+    }
+
+    @Override
+    public void pause() {
+        super.pause();
+
+        _gameObjectsManager.Pause();
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+
+        _gameObjectsManager.Resume();
+    }
+
+    @Override
+    public void dispose() {
+        _gameObjectsManager.Dispose();
+        _debug.dispose();
+        super.dispose();
+    }
+
+    public void AddGameObject(GameObject gameObject) {
+        _gameObjectsManager.AddGameObject(gameObject);
+    }
+
+    public void RemoveGameObject(GameObject gameObject) {
+        _gameObjectsManager.RemoveGameObject(gameObject);
+    }
+
+    public void AddContactListener(ContactListener contactListener) {
+        _contactListeners.add(contactListener);
+    }
+
+    public void RemoveContactListener(ContactListener contactListener) {
+        _contactListeners.remove(contactListener);
+    }
+
+    public void AddTween(Tween tween) {
+        _tweenManager.add(tween);
     }
 
     private void CreateGameConditionals(GameConfig cfg) {
@@ -242,34 +323,20 @@ public class GameScreen extends BaseScreen {
         */
     }
 
-    public void update(float delta) {
+    public void Update(float delta) {
         _space.step(1 / 60.0f, 10, 10);
+        _tweenManager.update(delta);
+        _gameObjectsManager.Update();
 
         // set gun's rotation
         Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
         float _angle = (float) Math.atan2(loc.y + 34, loc.x - 13);
         _gun.setGunRotation(_angle * 180 / (float) Math.PI);
 
-        _mesh.Update();
-        for (Bubble bbl: _freeBubbles) bbl.Update();
+
+
         //_airplane.Update();
         //_wonTimer.Update();
         //_slidingPanel.Update(_score, _wonTimer.GetRemainingTime());
-    }
-
-    @Override
-    public void render(float delta) {
-        super.render(delta);
-
-      //  if (_useDebugView)
-            _debug.render(_space, stage.getCamera().combined);
-
-        update(delta);
-    }
-
-    @Override
-    public void dispose() {
-        _debug.dispose();
-        super.dispose();
     }
 }

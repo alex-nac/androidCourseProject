@@ -1,4 +1,4 @@
-package com.bubblezombie.game.Util;
+package com.bubblezombie.game.Util.CoreClasses;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

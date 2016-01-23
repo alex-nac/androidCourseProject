@@ -68,6 +68,8 @@
     <orderEntry type="library" exported="" name="gdx-controllers-android-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-controllers-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-box2d-1.7.1" level="project" />
+    <orderEntry type="library" exported="" name="tween-engine-api-sources" level="project" />
+    <orderEntry type="library" exported="" name="tween-engine-api" level="project" />
     <orderEntry type="library" exported="" name="gdx-backend-android-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.0.0" level="project" />

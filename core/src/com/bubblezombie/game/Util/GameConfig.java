@@ -115,7 +115,7 @@ public class GameConfig {
             tutorClassName = safeGet(parsed, get, "tutorial");
             frozenTime = safeGet(parsed, getInt, "frozen_time");
             useDebugView = safeGet(parsed, getBoolean, "use_debug_view");
-            meshBubbleDiametr = safeGet(parsed, getInt, "mesh_bubble_diameter");
+            meshBubbleDiametr = safeGet(parsed, getInt, "mesh_bubble_diametr");
             planeButtonTime = safeGet(parsed, getInt, "plane_button_time");
             // TODO: Airplane
 //        if (planeButtonTime < Airplane.SPACE_PLANE_TIME && planeButtonTime != 0 && planeButtonTime != -1)

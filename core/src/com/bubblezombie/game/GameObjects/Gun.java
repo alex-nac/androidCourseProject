@@ -1,4 +1,4 @@
-package com.bubblezombie.game;
+package com.bubblezombie.game.GameObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,17 +14,19 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
+import com.bubblezombie.game.*;
 import com.bubblezombie.game.Bubbles.Bomb;
 import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Bubbles.BubbleType;
+import com.bubblezombie.game.Enums.BubbleType;
 import com.bubblezombie.game.Bubbles.Bullet;
 import com.bubblezombie.game.Bubbles.ColorBomb;
 import com.bubblezombie.game.Bubbles.FreezeBomb;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
 import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
+import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.GameConfig;
-import com.bubblezombie.game.Util.Scene2dSprite;
+import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
 
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
@@ -42,7 +44,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
  * and one in the gun
  */
 
-public class Gun extends Actor {
+public class Gun extends Actor implements GameObject {
 
     private static final String RES_GUN_DOWN = "game/gun_down.png";
     private static final String RES_GUN_TOP = "game/gun_top.png";
@@ -146,6 +148,18 @@ public class Gun extends Actor {
         }
     }
 
+    @Override
+    public void Update() {}
+
+    @Override
+    public void Pause() { _canShoot = false; }
+
+    @Override
+    public void Resume() { _canShoot = true; }
+
+    @Override
+    public void Delete() { clearListeners(); }
+
     // rotate gun
     public void setGunRotation(float degrees) {
         _angle  = degrees * (float)Math.PI / 180f;
@@ -181,7 +195,7 @@ public class Gun extends Actor {
                 new Action() {
                     public boolean act(float delta) {
                         if (CheckForTouchingMesh()) {
-                            bullet.Delete(false);
+                            ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bullet);
                             return true;
                         }
 
@@ -193,7 +207,7 @@ public class Gun extends Actor {
 
                         bullet.setPosition(_bulletPlace.localToStageCoordinates(new Vector2(bullet.getView().getX(), bullet.getView().getY())));
                         bullet.setVelocity(new Vector2(SHOOTING_VEL * MathUtils.cos(-_angle), -SHOOTING_VEL * MathUtils.sin(-_angle)));
-                        float newScale = 2f * Bubble.MESH_BUBBLE_RADIUS / bullet.getView().getWidth();
+                        float newScale = Bubble.MESH_BUBBLE_DIAMETR / bullet.getView().getWidth();
                         bullet.getView().addAction(scaleTo(newScale, newScale, 0.1f)); //scale it to normal size
 
                         return true;

@@ -1,4 +1,4 @@
-package com.bubblezombie.game;
+package com.bubblezombie.game.GameObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
@@ -6,19 +6,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.bubblezombie.game.*;
 import com.bubblezombie.game.Bubbles.Bubble;
-import com.bubblezombie.game.Bubbles.BubbleColor;
+import com.bubblezombie.game.Enums.*;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
 import com.bubblezombie.game.Bubbles.Sprayer;
 import com.bubblezombie.game.Bubbles.Zombie;
 import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
+
+import com.bubblezombie.game.Physics.CBTypeContactListener;
+import com.bubblezombie.game.Physics.BodyData;
+import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Managers.PopupManager;
 
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 /**
  * Created by artem on 02.12.15.
  */
-public class BubbleMesh extends Actor {
+public class BubbleMesh extends Actor implements GameObject {
 
     private static final String LAST_WAVE = "LAST_WAVE";
     private static final String CAR_EXPLOSION = "CAR_EXPLOSION";
@@ -45,6 +47,7 @@ public class BubbleMesh extends Actor {
     /////////////
 
     private ArrayList<ArrayList<Bubble>> _mesh = new ArrayList<ArrayList<Bubble>>();
+    private ArrayList<Bubble> _bubblesToConnect = new ArrayList<Bubble>(5);
     private ArrayList<Integer> _colors;
     private MeshPattern _meshPattern;
     private int _rowsNum;
@@ -119,7 +122,7 @@ public class BubbleMesh extends Actor {
         // creating mesh
         CreateMesh(_meshPattern.getStartRowsNum());
 
-        _space.setContactListener(new BubbleHDR());
+        ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddContactListener(new BubbleHDR());
 
         //_waveTimer = new Timer(_meshPattern.waveVel);
         //_waveTimer.addEventListener(Timer.TRIGGED, WaveTimerHandler);
@@ -129,23 +132,37 @@ public class BubbleMesh extends Actor {
         //StopAnimations(4);
     }
 
-    // update mesh
+    // Update mesh
+    @Override
     public void Update() {
-        for (int i = 0; i < _rowsNum; i++)
-            for (int j = 0; j < _mesh.get(i).size(); ++j) {
-                Bubble bubble = _mesh.get(i).get(j);
-                if (bubble != null) bubble.Update();
-            }
+        // firstable connect bubbles that was scheduled to connect
+        for (Bubble bubble: _bubblesToConnect) ConnectBubble(bubble);
+        _bubblesToConnect.clear();
 
         ///if (_pauseMeshTimer) _pauseMeshTimer.Update();
         //_waveTimer.Update();
         //_popupManager.Update();
     }
 
+    @Override
+    public void Pause() {
+        _popupManager.onGameStateChanged(true);
+        //if (_textEffectsTween) _textEffectsTween.paused = isPaused;
+        //if (_generalEffectsTween) _generalEffectsTween.paused = isPaused;
+        //if (_movingTween) _movingTween.paused = isPaused;
+    }
+
+    @Override
+    public void Resume() { }
+
+    @Override
+    public void Delete() { }
+
     // determining position in mesh and return row and column
     public Vector2 getMeshPos(Bubble bubble) {
         Vector2 worldPos = bubble.getPosition();
         worldPos = worldPos.sub(_meshOriginBody.getPosition());
+        worldPos.y *= -1;
         int row = MathUtils.ceil(worldPos.y / Bubble.DIAMETR) - 1;
         if (row < 0) { if (!_offset.get(0)) worldPos.x -= Bubble.DIAMETR / 2; }
         else { if (_offset.get(row)) worldPos.x -= Bubble.DIAMETR / 2; }
@@ -258,14 +275,6 @@ public class BubbleMesh extends Actor {
         AddEffect(effect, false);
     }
 
-    // handling game pause/resume
-    public void onGameStateChaged(Boolean isPaused) {
-        _popupManager.onGameStateChanged(isPaused);
-        //if (_textEffectsTween) _textEffectsTween.paused = isPaused;
-        //if (_generalEffectsTween) _generalEffectsTween.paused = isPaused;
-        //if (_movingTween) _movingTween.paused = isPaused;
-    }
-
     // getting the low bound of the mesh
     public float GetDownMeshBound() {
         for (int i = _rowsNum - 1; i >= 0; i--)
@@ -371,82 +380,75 @@ public class BubbleMesh extends Actor {
     */
 
     // collision with mesh handler
-    public class BubbleHDR implements ContactListener {
+    private class BubbleHDR extends CBTypeContactListener {
         @Override
         public void beginContact(Contact contact) {
-            Body bA = contact.getFixtureA().getBody();
-            Body bB = contact.getFixtureB().getBody();
+            if (!CheckForCbTypes(BodyData.CBType.BUBBLE, BodyData.CBType.CONNECTED_BUBBLE, contact)) return;
 
-            // this is callback for BUBBLE and CONNECTED_BUBBLE
-            if ((((BodyData)bA.getUserData()).hasCbtype(CBType.BUBBLE) && !((BodyData)bB.getUserData()).hasCbtype(CBType.CONNECTED_BUBBLE)) &&
-                    (((BodyData)bB.getUserData()).hasCbtype(CBType.BUBBLE) && !((BodyData)bA.getUserData()).hasCbtype(CBType.CONNECTED_BUBBLE)))
-                return;
-            Gdx.app.log("ABC", "collision");
-
-            Bubble bubble;
-            if (((BodyData)bA.getUserData()).hasCbtype(CBType.CONNECTED_BUBBLE)) bubble = (Bubble) ((BodyData) bB.getUserData()).owner;
-            else bubble = (Bubble) ((BodyData) bA.getUserData()).owner;
+            Bubble bubble = (Bubble) getOwnerA();
 
             if (bubble.wasCallbackCalled()) return;
             bubble.setCallbackCalled(true);
 
-            //connect bubble to the mesh
-            Vector2 meshPos = BubbleMesh.this.getMeshPos(bubble); // outer class
-            if (meshPos.x < 0) {
-                bubble.Delete(false);
-                return;
-            }
-            if (meshPos.y < 0) meshPos.y = 0;
-            if (meshPos.y >= _meshPattern.getColumsNum()) meshPos.y = _meshPattern.getColumsNum() - 1;
+            /**
+             *  now we are in world.step() function, hence we can't move bodies,
+             *  change its type etc. Thats why we put bubbles to special list and
+             *  later, right after the step() we connect it to our mesh
+             */
+            _bubblesToConnect.add(bubble);
+        }
+    }
+
+    private void ConnectBubble(Bubble bubble) {
+        //connect bubble to the mesh
+        Vector2 meshPos = getMeshPos(bubble);
+        if (meshPos.x < 0) {
+            ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bubble);
+            return;
+        }
+        if (meshPos.y < 0) meshPos.y = 0;
+        if (meshPos.y >= _meshPattern.getColumsNum()) meshPos.y = _meshPattern.getColumsNum() - 1;
 
 
-            if (at(meshPos.x, meshPos.y) != null) {
-                //throw (new Error("HEEEEEEEY!! Here we have already have bubble!! You're trying to put at " + meshPos + "while " +
-                //"coordinates is " + bubble.position.x + " " + bubble.position.y));
-                //dispatchEvent(new Event(CAR_EXPLOSION));
-                bubble.Delete(false);
-                return;
-            }
-
-
-            //if we need to create new row
-            if (meshPos.x > _mesh.size() - 1) {
-                _rowsNum++;
-                _mesh.add(new ArrayList<Bubble>(_meshPattern.getColumsNum()));
-                _offset.add(!_offset.get(_offset.size() - 1));
-            }
-
-            _mesh.get((int)meshPos.x).set((int)meshPos.y, bubble);
-            if (_isMeshMoving) bubble.setVelocity(new Vector2(0, Bubble.DIAMETR / MESH_MOVING_TIME));
-            else bubble.setVelocity(new Vector2(0, 0));
-
-            _bubbleLayer.addActor(bubble.getView());
-            _bubbleEffectsLayer.addActor(bubble.getEffects());
-
-            if (bubble instanceof SimpleBubble) {
-                int index = ((SimpleBubble) bubble).getBubbleColor().getIndex();
-                _colors.set(index, _colors.get(index) + 1);
-            }
-
-            Vector2 pos = GetWorldPos(meshPos);
-            bubble.setPosition(pos);
-            bubble.onConnected(BubbleMesh.this); // getting instance of the outer class
+        if (at(meshPos.x, meshPos.y) != null) {
+            //throw (new Error("HEEEEEEEY!! Here we have already have bubble!! You're trying to put at " + meshPos + "while " +
+            //"coordinates is " + bubble.position.x + " " + bubble.position.y));
+            //dispatchEvent(new Event(CAR_EXPLOSION));
+            ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bubble);
+            return;
         }
 
-        @Override
-        public void endContact(Contact contact) { }
 
-        @Override
-        public void preSolve(Contact contact, Manifold manifold) { }
+        //if we need to create new row
+        if (meshPos.x > _mesh.size() - 1) {
+            _rowsNum++;
+            ArrayList<Bubble> arr = new ArrayList<Bubble>(_meshPattern.getColumsNum());
+            for (int i = 0; i != _meshPattern.getColumsNum(); i++) arr.add(null);
+            _mesh.add(arr);
+            _offset.add(!_offset.get(_offset.size() - 1));
+        }
 
-        @Override
-        public void postSolve(Contact contact, ContactImpulse impulse) { }
-    };
+        _mesh.get((int)meshPos.x).set((int)meshPos.y, bubble);
+        if (_isMeshMoving) bubble.setVelocity(new Vector2(0, Bubble.DIAMETR / MESH_MOVING_TIME));
+        else bubble.setVelocity(new Vector2(0, 0));
+
+        _bubbleLayer.addActor(bubble.getView());
+        _bubbleEffectsLayer.addActor(bubble.getEffects());
+
+        if (bubble instanceof SimpleBubble) {
+            int index = ((SimpleBubble) bubble).getBubbleColor().getIndex();
+            _colors.set(index, _colors.get(index) + 1);
+        }
+
+        Vector2 pos = GetWorldPos(meshPos);
+        bubble.setPosition(pos);
+        bubble.onConnected(BubbleMesh.this); // getting instance of the outer class
+    }
 
     //determining world position by mesh coord
     private Vector2 GetWorldPos(Vector2 meshPos) {
         Vector2 pos = new Vector2(meshPos.y * (Bubble.DIAMETR + EMPTY_SPACE) + Bubble.DIAMETR / 2 *
-                ((_offset.get((int)meshPos.x) ? 1 : 0) + 1), -(meshPos.x + 1.0f) * Bubble.DIAMETR);
+                ((_offset.get((int)meshPos.x) ? 1 : 0) + 1), -(meshPos.x + 0.5f) * Bubble.DIAMETR);
         pos = pos.add(_meshOriginBody.getPosition());
         return pos;
     }
@@ -480,6 +482,7 @@ public class BubbleMesh extends Actor {
                 for (Bubble bbl: bblRow){
                     if (bbl != null) {
                         bbl.setPosition(bbl.getPosition().sub(new Vector2(0, Bubble.DIAMETR)));
+                        ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).AddGameObject(bbl);
                     }
                 }
             }
