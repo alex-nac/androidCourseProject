@@ -23,6 +23,7 @@ import com.bubblezombie.game.Physics.BodyData;
 import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Managers.PopupManager;
+import com.bubblezombie.game.Util.Units;
 
 import java.util.ArrayList;
 
@@ -57,11 +58,11 @@ public class BubbleMesh extends Actor implements GameObject {
     private World _space;
     private Body _meshOriginBody;
     //private var _waveTimer:Timer;
-    //private var _pauseMeshTimer:Timer;              //timer that preventing mesh from adding next row when it is frozen
+    //private var _pauseMeshTimer:Timer;                // timer that preventing mesh from adding next row when it is frozen
     private Group _view = new Group();
-    private Group _bubbleLayer = new Group(); //layer where all bubbles exist
-    private Group _bubbleEffectsLayer = new Group(); //layer where bubble-specified effects exist (the axe)
-    private Group _generalEffectsLayer = new Group(); //layer where general effects exist
+    private Group _bubbleLayer = new Group();           // layer where all bubbles exist
+    private Group _bubbleEffectsLayer = new Group();    // layer where bubble-specified effects exist (the axe)
+    private Group _generalEffectsLayer = new Group();   // layer where general effects exist
     private Group _textEffectsLayer = new Group();
     private PopupManager _popupManager;
     private Boolean _wasMeshStopped = false;
@@ -70,7 +71,6 @@ public class BubbleMesh extends Actor implements GameObject {
     //private var _movingTween:GTween;   				//while moving mesh we need some timer
     //private var _generalEffectsTween:GTween;
     //private var _textEffectsTween:GTween;
-    private ArrayList<Bubble> _deletedBubbles = new ArrayList<Bubble>(); //dirty code - this container help us with bubble deleter
 
 
     //////////////////
@@ -115,7 +115,8 @@ public class BubbleMesh extends Actor implements GameObject {
 
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.KinematicBody;
-        def.position.set((BubbleZombieGame.width - (Bubble.DIAMETR + EMPTY_SPACE) * _meshPattern.getColumsNum() + EMPTY_SPACE - 1.5f * Bubble.DIAMETR) / 2 + cfg.offset, MESH_Y);
+        def.position.set(Units.P2M((BubbleZombieGame.width - (Bubble.DIAMETR + EMPTY_SPACE) * _meshPattern.getColumsNum() +
+                EMPTY_SPACE - 1.5f * Bubble.DIAMETR) / 2 + cfg.offset), Units.P2M(MESH_Y));
         _meshOriginBody = _space.createBody(def);
         _offset.add(!_meshPattern.isLastRowOffseted());
 
@@ -161,7 +162,7 @@ public class BubbleMesh extends Actor implements GameObject {
     // determining position in mesh and return row and column
     public Vector2 getMeshPos(Bubble bubble) {
         Vector2 worldPos = bubble.getPosition();
-        worldPos = worldPos.sub(_meshOriginBody.getPosition());
+        worldPos = worldPos.sub(Units.M2P(_meshOriginBody.getPosition()));
         worldPos.y *= -1;
         int row = MathUtils.ceil(worldPos.y / Bubble.DIAMETR) - 1;
         if (row < 0) { if (!_offset.get(0)) worldPos.x -= Bubble.DIAMETR / 2; }
@@ -179,16 +180,6 @@ public class BubbleMesh extends Actor implements GameObject {
         int i = (int)bubble.getMeshPosition().x;
         int j = (int)bubble.getMeshPosition().y;
 
-        /*
-        int[] dx = { 0, -1, -1, 0, 1,  1};
-        int[] dy = {-1, -1,  0, 1, 0, -1};
-        for (int k = 0; k < 6; ++k) {
-            int offset = 0;
-            if (dx[k] != 0)
-                offset = _offset.get(i) ? 1 : 0;
-            vec.add(_mesh.get(i + dx[k]).get(j + dy[k] + offset));
-        }
-        */
 
         if (at(i, j - 1) != null) vec.add(_mesh.get(i).get(j - 1)); else vec.add(null);
         if (at(i - 1, j - 1 + (_offset.get(i) ? 1 : 0)) != null) vec.add(_mesh.get(i - 1).get(j - 1 + (_offset.get(i) ? 1 : 0))); else vec.add(null);
@@ -225,13 +216,16 @@ public class BubbleMesh extends Actor implements GameObject {
         return at((int)i, (int)j);
     }
 
-    public void Delete(Bubble bubble) {
-        _deletedBubbles.add(bubble);
-        Vector2 meshPos = bubble.getMeshPosition();
+    public void DisconnectBubble(Bubble bubble) {
+        bubble.setMesh(null);
+        Vector2 meshPos = getMeshPos(bubble);
         _mesh.get((int)meshPos.x).set((int)meshPos.y, null);
 
         if (bubble instanceof Zombie || bubble instanceof Sprayer) _enemiesNum = _enemiesNum - 1;
-//        if (bubble instanceof SimpleBubble) _colors[((SimpleBubble) bubble).getBubbleColor().getIndex()]--;
+        if (bubble instanceof SimpleBubble) {
+            int index = ((SimpleBubble) bubble).getBubbleColor().getIndex();
+            _colors.set(index, _colors.get(index) - 1);
+        }
     }
 
     public void Stop() {
@@ -318,7 +312,7 @@ public class BubbleMesh extends Actor implements GameObject {
         _mesh.add(0, topRow);
         _rowsNum++;
         _wavesNum++;
-        _meshOriginBody.setTransform(_meshOriginBody.getPosition().x, _meshOriginBody.getPosition().y - Bubble.DIAMETR, 0);
+        _meshOriginBody.setTransform(_meshOriginBody.getPosition().x, _meshOriginBody.getPosition().y - Units.P2M(Bubble.DIAMETR), 0);
 
         // moving mesh
         //MoveMesh();
@@ -442,14 +436,14 @@ public class BubbleMesh extends Actor implements GameObject {
 
         Vector2 pos = GetWorldPos(meshPos);
         bubble.setPosition(pos);
-        bubble.onConnected(BubbleMesh.this); // getting instance of the outer class
+        bubble.setMesh(BubbleMesh.this); // getting instance of the outer class
     }
 
     //determining world position by mesh coord
     private Vector2 GetWorldPos(Vector2 meshPos) {
         Vector2 pos = new Vector2(meshPos.y * (Bubble.DIAMETR + EMPTY_SPACE) + Bubble.DIAMETR / 2 *
                 ((_offset.get((int)meshPos.x) ? 1 : 0) + 1), -(meshPos.x + 0.5f) * Bubble.DIAMETR);
-        pos = pos.add(_meshOriginBody.getPosition());
+        pos = pos.add(Units.M2P(_meshOriginBody.getPosition()));
         return pos;
     }
 

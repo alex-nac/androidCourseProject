@@ -94,7 +94,7 @@ public class Bullet extends SimpleBubble {
 
 
     @Override
-    public void onConnected(BubbleMesh mesh) {
+    protected void onConnected(BubbleMesh mesh) {
         super.onConnected(mesh);
 
         //Main.SM.PlaySound(new bomb_touch_snd());
@@ -102,19 +102,17 @@ public class Bullet extends SimpleBubble {
 
         if(deletedBubbles.size() >= 3) {
             deletedBubbles = BFS.getSameColorBubbles(getMeshPosition(), true);
-            for (Bubble bbl: deletedBubbles){
-                bbl.setMesh(null);
-            }
+
+            for (Bubble bbl: deletedBubbles)
+                mesh.DisconnectBubble(bbl);
 
             deletedBubbles.addAll(BFS.getUnrootedBubbles());
-            for (Bubble bbl :deletedBubbles) {
-                bbl.setMesh(null);
-            }
+            for (Bubble bbl :deletedBubbles) mesh.DisconnectBubble(bbl);
 
             try {
                 GameEvent event = new GameEvent(GameEvent.Type.COMBO, deletedBubbles);
-                event.setTarget(_mesh);
-                _mesh.notify(event, false);
+                event.setTarget(mesh);
+                mesh.notify(event, false);
             } catch (IncorrentGameEventDataException e) {
                 e.printStackTrace();
             }
