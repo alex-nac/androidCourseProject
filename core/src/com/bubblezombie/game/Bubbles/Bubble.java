@@ -16,6 +16,7 @@ import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.GameObjects.GameObject;
 import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
+import com.bubblezombie.game.Util.Units;
 
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
@@ -70,9 +71,6 @@ public class Bubble extends Actor implements GameObject {
     public World getSpace() {
         return _body.getWorld();
     }
-    public Vector2 getPosition() {
-        return _body.getPosition().cpy();
-    }
     public BubbleMesh getMesh() {
         return _mesh;
     }
@@ -85,8 +83,11 @@ public class Bubble extends Actor implements GameObject {
     public Group getEffects(){
         return _effects;
     }
-    public float getX() { return _body.getPosition().x; }
-    public float getY() { return _body.getPosition().y; }
+    public float getX() { return Units.M2P(_body.getPosition().x); }
+    public float getY() { return Units.M2P(_body.getPosition().y); }
+    public Vector2 getPosition() {
+        return Units.M2P(_body.getPosition().cpy());
+    }
     public float getScale() {
         return _scale;
     }
@@ -107,7 +108,7 @@ public class Bubble extends Actor implements GameObject {
     public void setIsSensor(boolean value) { _body.getFixtureList().get(0).setSensor(true); }
     public void setIsBullet(Boolean value) { _body.setBullet(value); }
     public void setVelocity(Vector2 vel) {
-        _body.setLinearVelocity(vel);
+        _body.setLinearVelocity(Units.P2M(vel));
     }
 
     // box2d feature - we create body when we set world
@@ -115,13 +116,13 @@ public class Bubble extends Actor implements GameObject {
         // body
         BodyDef bdef = new BodyDef();
         bdef.type = BodyDef.BodyType.DynamicBody;
-        bdef.position.set(_view.getX(), _view.getY());
+        bdef.position.set(Units.P2M(_view.getX()), Units.P2M(_view.getY()));
         _body = space.createBody(bdef);
 
         // fixture
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(DIAMETR / 2);
+        shape.setRadius(Units.P2M(DIAMETR / 2));
         fdef.shape = shape;
         _body.createFixture(fdef);
 
@@ -133,23 +134,23 @@ public class Bubble extends Actor implements GameObject {
 
     public void setIsConnected(boolean value) {
         _isConnected = value;
-        //if (!_isConnected) _body.cbTypes.remove(Bubble.ConnectedBubbleCBType);
+        if (!value && _body != null) ((BodyData)_body.getUserData()).removeCbtype(BodyData.CBType.CONNECTED_BUBBLE);
     }
 
     public void setX(float value) {
-        if (_body != null) _body.setTransform(new Vector2(value, _body.getPosition().y), 0f);
+        if (_body != null) _body.setTransform(new Vector2(Units.P2M(value), _body.getPosition().y), 0f);
         _view.setX(value);
         _effects.setX(value);
     }
 
     public void setY(float value){
-        if (_body != null) _body.setTransform(new Vector2(_body.getPosition().x, value), 0f);
+        if (_body != null) _body.setTransform(new Vector2(_body.getPosition().x, Units.P2M(value)), 0f);
         _view.setY(value);
         _effects.setY(value);
     }
 
     public void setPosition(Vector2 pos) {
-        if (_body != null) _body.setTransform(pos, 0f);
+        if (_body != null) _body.setTransform(Units.P2M(pos), 0f);
         _view.setX(pos.x);
         _view.setY(pos.y);
         _effects.setX(pos.x);
@@ -195,12 +196,9 @@ public class Bubble extends Actor implements GameObject {
     }
 
     public void setMesh(BubbleMesh newMesh) {
-        if (newMesh == null) {
-            if (_isConnected) _mesh.Delete(this);
-            setIsConnected(false);
-        }
-        else
-            onConnected(newMesh);
+        _mesh = newMesh;
+        if (newMesh != null) onConnected(newMesh);
+        else setIsConnected(false);
     }
 
     /////////////
@@ -228,8 +226,8 @@ public class Bubble extends Actor implements GameObject {
     @Override
     public void Update() {
         if (_body != null) {
-            _view.setPosition(_body.getPosition().x, _body.getPosition().y);
-            _effects.setPosition(_body.getPosition().x, _body.getPosition().y);
+            _view.setPosition(Units.M2P(_body.getPosition().x), Units.M2P(_body.getPosition().y));
+            _effects.setPosition(Units.M2P(_body.getPosition().x), Units.M2P(_body.getPosition().y));
         }
     }
 
@@ -277,13 +275,11 @@ public class Bubble extends Actor implements GameObject {
         ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(this);
     }
 
-    public void onConnected(BubbleMesh mesh) {
+    protected void onConnected(BubbleMesh mesh) {
         _isConnected = true;
         _body.setBullet(false);
-        _mesh = mesh;
 
-
-        _body.getFixtureList().get(0).getShape().setRadius(MESH_BUBBLE_DIAMETR / 2);
+        _body.getFixtureList().get(0).getShape().setRadius(Units.P2M(MESH_BUBBLE_DIAMETR / 2));
         ((BodyData) _body.getUserData()).addCbtype(BodyData.CBType.CONNECTED_BUBBLE);
 
         _body.setType(BodyDef.BodyType.KinematicBody);
@@ -311,7 +307,4 @@ public class Bubble extends Actor implements GameObject {
         if (_timesWallTouched == MAX_TIMES_WALL_TOUCHED && _mesh == null)
             ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(this);
     }
-
-
-
 }

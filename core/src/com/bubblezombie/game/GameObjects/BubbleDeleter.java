@@ -14,6 +14,7 @@ import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Physics.CBTypeContactListener;
 import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.TweenAccessors.ShapeAccessor;
+import com.bubblezombie.game.Util.Units;
 
 import java.util.ArrayList;
 
@@ -44,14 +45,14 @@ public class BubbleDeleter implements GameObject {
         // deleting wave
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
-        def.position.set(startPos);
+        def.position.set(Units.P2M(startPos));
         _sensorWave = space.createBody(def);
         _sensorWave.setUserData(new BodyData(this, BodyData.CBType.DELETER));
 
         FixtureDef fdef = new FixtureDef();
         fdef.isSensor = true;
         _sensorShape = new CircleShape();
-        _sensorShape.setRadius(Bubble.DIAMETR / 2);
+        _sensorShape.setRadius(Units.P2M(Bubble.DIAMETR / 2));
         fdef.shape = _sensorShape;
         _sensorWave.createFixture(fdef);
 
@@ -60,11 +61,11 @@ public class BubbleDeleter implements GameObject {
         ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddContactListener(_sensorListener);
 
         // increasing radius
-        _sensorTween = Tween.to(_sensorWave.getFixtureList().get(0).getShape(), ShapeAccessor.RADIUS, MAX_RADIUS / WAVE_VEL).target(MAX_RADIUS);
+        _sensorTween = Tween.to(_sensorWave.getFixtureList().get(0).getShape(), ShapeAccessor.RADIUS, MAX_RADIUS / WAVE_VEL).target(Units.P2M(MAX_RADIUS));
         _sensorTween.setCallback(new TweenCallback() {
             @Override
             public void onEvent(int type, BaseTween<?> source) {
-                // remove this object when tween compeled
+                // remove this object when tween completed
                 ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(BubbleDeleter.this);
                 ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveContactListener(_sensorListener);
             }

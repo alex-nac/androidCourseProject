@@ -3,12 +3,17 @@ package com.bubblezombie.game.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -27,10 +32,12 @@ import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.GameEventListener;
 import com.bubblezombie.game.GameObjects.GameObject;
 import com.bubblezombie.game.GameObjects.Gun;
+import com.bubblezombie.game.Physics.BodyData;
 import com.bubblezombie.game.TweenAccessors.ShapeAccessor;
 import com.bubblezombie.game.Util.BFS;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.Managers.GameObjectsManager;
+import com.bubblezombie.game.Util.Units;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -77,7 +84,8 @@ public class GameScreen extends BaseScreen {
     private Gun _gun;
 
     // physics stuff
-    private Box2DDebugRenderer _debug = new Box2DDebugRenderer();
+    private Box2DDebugRenderer _debug;
+    private OrthographicCamera _physCamera;
     private ArrayList<ContactListener> _contactListeners = new ArrayList<ContactListener>(CONTACT_LISTENERS_START_CAPACITY); // need this in order to have more then one listener
 
     // managers
@@ -146,8 +154,13 @@ public class GameScreen extends BaseScreen {
 
         SimpleBubble.COLORS_AMOUNT = cfg.colors;
 
-        //_debug = new BitmapDebug(640, 480, 333333 ,true);
-        //addChild(_debug.display);
+        // physics debug draw and camera
+        _debug = new Box2DDebugRenderer();
+        _physCamera = new OrthographicCamera();
+        _physCamera.viewportHeight = Units.P2M(Gdx.graphics.getHeight());
+        _physCamera.viewportWidth = Units.P2M(Gdx.graphics.getWidth());
+        _physCamera.position.set(_physCamera.viewportWidth / 2, _physCamera.viewportHeight / 2, 0f);
+        _physCamera.update();
 
         _useDebugView = cfg.useDebugView;
 
@@ -254,7 +267,7 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
         //if (_useDebugView)
-        _debug.render(_space, stage.getCamera().combined);
+        _debug.render(_space, _physCamera.combined);
 
         Update(delta);
     }
@@ -324,7 +337,7 @@ public class GameScreen extends BaseScreen {
     }
 
     public void Update(float delta) {
-        _space.step(1 / 60.0f, 10, 10);
+        _space.step(delta, 6, 4);
         _tweenManager.update(delta);
         _gameObjectsManager.Update();
 
@@ -332,8 +345,6 @@ public class GameScreen extends BaseScreen {
         Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
         float _angle = (float) Math.atan2(loc.y + 34, loc.x - 13);
         _gun.setGunRotation(_angle * 180 / (float) Math.PI);
-
-
 
         //_airplane.Update();
         //_wonTimer.Update();
