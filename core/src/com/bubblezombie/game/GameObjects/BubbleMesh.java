@@ -77,21 +77,30 @@ public class BubbleMesh extends Actor implements GameObject {
     //GETTES/SETTERS//
     //////////////////
 
-    public int getColumnsNum() { return _meshPattern.getColumsNum(); }
-    public int getRowsNum() { return _rowsNum; }
-    public Group getView() { return _view; }
+    public int getColumnsNum() {
+        return _meshPattern.getColumsNum();
+    }
+
+    public int getRowsNum() {
+        return _rowsNum;
+    }
+
+    public Group getView() {
+        return _view;
+    }
+
     public World getSpace() {
         return _space;
     }
 
     public void setAllowMeshMovement(Boolean value) { /*if (!_wasMeshStopped) _waveTimer.isPaused = !value;*/ }
+
     public void setEnemiesNum(int value) {
         _enemiesNum = value;
         if (_enemiesNum == 0) {
             try {
                 notify(new GameEvent(GameEvent.Type.ALL_ENEMIES_KILLED), false);
-            }
-            catch (IncorrentGameEventDataException e) {
+            } catch (IncorrentGameEventDataException e) {
                 Gdx.app.log("Mesh", e.getMessage());
             }
         }
@@ -137,7 +146,7 @@ public class BubbleMesh extends Actor implements GameObject {
     @Override
     public void Update() {
         // firstable connect bubbles that was scheduled to connect
-        for (Bubble bubble: _bubblesToConnect) ConnectBubble(bubble);
+        for (Bubble bubble : _bubblesToConnect) ConnectBubble(bubble);
         _bubblesToConnect.clear();
 
         ///if (_pauseMeshTimer) _pauseMeshTimer.Update();
@@ -154,10 +163,12 @@ public class BubbleMesh extends Actor implements GameObject {
     }
 
     @Override
-    public void Resume() { }
+    public void Resume() {
+    }
 
     @Override
-    public void Delete() { }
+    public void Delete() {
+    }
 
     // determining position in mesh and return row and column
     public Vector2 getMeshPos(Bubble bubble) {
@@ -165,8 +176,11 @@ public class BubbleMesh extends Actor implements GameObject {
         worldPos = worldPos.sub(Units.M2P(_meshOriginBody.getPosition()));
         worldPos.y *= -1;
         int row = MathUtils.ceil(worldPos.y / Bubble.DIAMETR) - 1;
-        if (row < 0) { if (!_offset.get(0)) worldPos.x -= Bubble.DIAMETR / 2; }
-        else { if (_offset.get(row)) worldPos.x -= Bubble.DIAMETR / 2; }
+        if (row < 0) {
+            if (!_offset.get(0)) worldPos.x -= Bubble.DIAMETR / 2;
+        } else {
+            if (_offset.get(row)) worldPos.x -= Bubble.DIAMETR / 2;
+        }
         int col = MathUtils.ceil(worldPos.x / (Bubble.DIAMETR + EMPTY_SPACE)) - 1;
         return new Vector2(row, col);
     }
@@ -177,16 +191,26 @@ public class BubbleMesh extends Actor implements GameObject {
 
         ArrayList<Bubble> vec = new ArrayList<Bubble>();
 
-        int i = (int)bubble.getMeshPosition().x;
-        int j = (int)bubble.getMeshPosition().y;
+        int i = (int) bubble.getMeshPosition().x;
+        int j = (int) bubble.getMeshPosition().y;
 
 
-        if (at(i, j - 1) != null) vec.add(_mesh.get(i).get(j - 1)); else vec.add(null);
-        if (at(i - 1, j - 1 + (_offset.get(i) ? 1 : 0)) != null) vec.add(_mesh.get(i - 1).get(j - 1 + (_offset.get(i) ? 1 : 0))); else vec.add(null);
-        if (at(i - 1, j + (_offset.get(i) ? 1 : 0)) != null) vec.add(_mesh.get(i - 1).get(j + (_offset.get(i) ? 1 : 0))); else vec.add(null);
-        if (at(i, j + 1) != null) vec.add(_mesh.get(i).get(j + 1)); else vec.add(null);
-        if (at(i + 1, j + (_offset.get(i) ? 1 : 0)) != null) vec.add(_mesh.get(i + 1).get(j + (_offset.get(i) ? 1 : 0))); else vec.add(null);
-        if (at(i + 1, j - 1 + (_offset.get(i) ? 1 : 0)) != null) vec.add(_mesh.get(i + 1).get(j - 1 + (_offset.get(i) ? 1 : 0))); else vec.add(null);
+        if (at(i, j - 1) != null) vec.add(_mesh.get(i).get(j - 1));
+        else vec.add(null);
+        if (at(i - 1, j - 1 + (_offset.get(i) ? 1 : 0)) != null)
+            vec.add(_mesh.get(i - 1).get(j - 1 + (_offset.get(i) ? 1 : 0)));
+        else vec.add(null);
+        if (at(i - 1, j + (_offset.get(i) ? 1 : 0)) != null)
+            vec.add(_mesh.get(i - 1).get(j + (_offset.get(i) ? 1 : 0)));
+        else vec.add(null);
+        if (at(i, j + 1) != null) vec.add(_mesh.get(i).get(j + 1));
+        else vec.add(null);
+        if (at(i + 1, j + (_offset.get(i) ? 1 : 0)) != null)
+            vec.add(_mesh.get(i + 1).get(j + (_offset.get(i) ? 1 : 0)));
+        else vec.add(null);
+        if (at(i + 1, j - 1 + (_offset.get(i) ? 1 : 0)) != null)
+            vec.add(_mesh.get(i + 1).get(j - 1 + (_offset.get(i) ? 1 : 0)));
+        else vec.add(null);
 
         // Code HACK - dirty code, previous code in game use non-null return
         // and sprayer need null bubbles, so we add this option
@@ -213,19 +237,18 @@ public class BubbleMesh extends Actor implements GameObject {
     }
 
     public Bubble at(float i, float j) {
-        return at((int)i, (int)j);
+        return at((int) i, (int) j);
     }
 
     public void DisconnectBubble(Bubble bubble) {
+        if (!bubble.isConnected()) return;
+
         bubble.setMesh(null);
         Vector2 meshPos = getMeshPos(bubble);
-        _mesh.get((int)meshPos.x).set((int)meshPos.y, null);
+        _mesh.get((int) meshPos.x).set((int) meshPos.y, null);
 
         if (bubble instanceof Zombie || bubble instanceof Sprayer) _enemiesNum = _enemiesNum - 1;
-        if (bubble instanceof SimpleBubble) {
-            int index = ((SimpleBubble) bubble).getBubbleColor().getIndex();
-            _colors.set(index, _colors.get(index) - 1);
-        }
+        if (bubble instanceof SimpleBubble) MinusColor(((SimpleBubble) bubble).getBubbleColor());
     }
 
     public void Stop() {
@@ -233,8 +256,13 @@ public class BubbleMesh extends Actor implements GameObject {
         //_waveTimer.isPaused = true;
     }
 
-    public void PlusColor(BubbleColor color) { _colors.set(color.getIndex(), _colors.get(color.getIndex()) + 1); }
-    public void MinusColor(BubbleColor color) { _colors.set(color.getIndex(), _colors.get(color.getIndex()) - 1); }
+    public void PlusColor(BubbleColor color) {
+        _colors.set(color.getIndex(), _colors.get(color.getIndex()) + 1);
+    }
+
+    public void MinusColor(BubbleColor color) {
+        _colors.set(color.getIndex(), _colors.get(color.getIndex()) - 1);
+    }
 
     // froze the mesh
     public void Freeze() {
@@ -281,7 +309,9 @@ public class BubbleMesh extends Actor implements GameObject {
         return 0;
     }
 
-    public int GetRemainingBubblesByColor(BubbleColor color) { return _colors.get(color.getIndex()); }
+    public int GetRemainingBubblesByColor(BubbleColor color) {
+        return _colors.get(color.getIndex());
+    }
 
     /////////////////////
     //PRIVATE FUNCTIONS//
@@ -291,16 +321,17 @@ public class BubbleMesh extends Actor implements GameObject {
     private void AddRow() {
         try {
             notify(new GameEvent(GameEvent.Type.NEW_ROW), false);
-        }
-        catch (IncorrentGameEventDataException e) {
+        } catch (IncorrentGameEventDataException e) {
             Gdx.app.log("Mesh", e.getMessage());
         }
 
         // firstable setting bubbles positions for our new row
         ArrayList<Bubble> topRow = _meshPattern.getNextRow();
         for (int j = 0; j < topRow.size(); j++) {
-            if (_offset.get(0)) topRow.get(j).setPosition(GetWorldPos(new Vector2(0, j)).sub(new Vector2(Bubble.DIAMETR / 2, 0)));
-            else topRow.get(j).setPosition(GetWorldPos(new Vector2(0, j)).add(new Vector2(Bubble.DIAMETR / 2, 0)));
+            if (_offset.get(0))
+                topRow.get(j).setPosition(GetWorldPos(new Vector2(0, j)).sub(new Vector2(Bubble.DIAMETR / 2, 0)));
+            else
+                topRow.get(j).setPosition(GetWorldPos(new Vector2(0, j)).add(new Vector2(Bubble.DIAMETR / 2, 0)));
             topRow.get(j).setPosition(topRow.get(j).getPosition().sub(new Vector2(0, Bubble.DIAMETR)));
             topRow.get(j).setSpace(_space);
             topRow.get(j).setMesh(this);
@@ -319,7 +350,7 @@ public class BubbleMesh extends Actor implements GameObject {
 
         // if it is the last wave
         //if (_wavesNum == _meshPattern.rowsNum - _meshPattern.startRowsNum)
-            //dispatchEvent(new Event(LAST_WAVE));
+        //dispatchEvent(new Event(LAST_WAVE));
     }
 
     /*
@@ -377,7 +408,8 @@ public class BubbleMesh extends Actor implements GameObject {
     private class BubbleHDR extends CBTypeContactListener {
         @Override
         public void beginContact(Contact contact) {
-            if (!CheckForCbTypes(BodyData.CBType.BUBBLE, BodyData.CBType.CONNECTED_BUBBLE, contact)) return;
+            if (!CheckForCbTypes(BodyData.CBType.BUBBLE, BodyData.CBType.CONNECTED_BUBBLE, contact))
+                return;
 
             Bubble bubble = (Bubble) getOwnerA();
 
@@ -397,7 +429,7 @@ public class BubbleMesh extends Actor implements GameObject {
         //connect bubble to the mesh
         Vector2 meshPos = getMeshPos(bubble);
         if (meshPos.x < 0) {
-            ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bubble);
+            ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bubble);
             return;
         }
         if (meshPos.y < 0) meshPos.y = 0;
@@ -408,7 +440,7 @@ public class BubbleMesh extends Actor implements GameObject {
             //throw (new Error("HEEEEEEEY!! Here we have already have bubble!! You're trying to put at " + meshPos + "while " +
             //"coordinates is " + bubble.position.x + " " + bubble.position.y));
             //dispatchEvent(new Event(CAR_EXPLOSION));
-            ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bubble);
+            ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bubble);
             return;
         }
 
@@ -422,17 +454,14 @@ public class BubbleMesh extends Actor implements GameObject {
             _offset.add(!_offset.get(_offset.size() - 1));
         }
 
-        _mesh.get((int)meshPos.x).set((int)meshPos.y, bubble);
+        _mesh.get((int) meshPos.x).set((int) meshPos.y, bubble);
         if (_isMeshMoving) bubble.setVelocity(new Vector2(0, Bubble.DIAMETR / MESH_MOVING_TIME));
         else bubble.setVelocity(new Vector2(0, 0));
 
         _bubbleLayer.addActor(bubble.getView());
         _bubbleEffectsLayer.addActor(bubble.getEffects());
 
-        if (bubble instanceof SimpleBubble) {
-            int index = ((SimpleBubble) bubble).getBubbleColor().getIndex();
-            _colors.set(index, _colors.get(index) + 1);
-        }
+        if (bubble instanceof SimpleBubble) PlusColor(((SimpleBubble) bubble).getBubbleColor());
 
         Vector2 pos = GetWorldPos(meshPos);
         bubble.setPosition(pos);
@@ -442,7 +471,7 @@ public class BubbleMesh extends Actor implements GameObject {
     //determining world position by mesh coord
     private Vector2 GetWorldPos(Vector2 meshPos) {
         Vector2 pos = new Vector2(meshPos.y * (Bubble.DIAMETR + EMPTY_SPACE) + Bubble.DIAMETR / 2 *
-                ((_offset.get((int)meshPos.x) ? 1 : 0) + 1), -(meshPos.x + 0.5f) * Bubble.DIAMETR);
+                ((_offset.get((int) meshPos.x) ? 1 : 0) + 1), -(meshPos.x + 0.5f) * Bubble.DIAMETR);
         pos = pos.add(Units.M2P(_meshOriginBody.getPosition()));
         return pos;
     }
@@ -454,7 +483,7 @@ public class BubbleMesh extends Actor implements GameObject {
     }
     */
 
-    //creating mesh at the beggining
+    // creating mesh at the beginning
     private void CreateMesh(int startRowAmount) {
         for (int i = 0; i < startRowAmount; i++) {
 
@@ -463,7 +492,6 @@ public class BubbleMesh extends Actor implements GameObject {
 
             ArrayList<Bubble> topRow = _meshPattern.getNextRow();
             for (int j = 0; j < topRow.size(); j++) {
-                // TODO: ОСТОРОЖНО
                 topRow.get(j).setSpace(_space);
                 topRow.get(j).setPosition(GetWorldPos(new Vector2(0, j)));
 
@@ -472,18 +500,18 @@ public class BubbleMesh extends Actor implements GameObject {
                 _bubbleEffectsLayer.addActor(topRow.get(j).getEffects());
             }
 
-            for (ArrayList<Bubble> bblRow: _mesh) {
-                for (Bubble bbl: bblRow){
+            for (ArrayList<Bubble> bblRow : _mesh) {
+                for (Bubble bbl : bblRow) {
                     if (bbl != null) {
                         bbl.setPosition(bbl.getPosition().sub(new Vector2(0, Bubble.DIAMETR)));
-                        ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).AddGameObject(bbl);
+                        ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddGameObject(bbl);
                     }
                 }
             }
-//            for (var effect:DisplayObject in _bubbleEffectsLayer){
-//                effect.y -= Bubble.DIAMETR;
-//            }
 
+            //for (var effect:DisplayObject in _bubbleEffectsLayer){
+            //  effect.y -= Bubble.DIAMETR;
+            //}
 
             _mesh.add(0, topRow);
 
@@ -491,12 +519,14 @@ public class BubbleMesh extends Actor implements GameObject {
             //if it is the last wave
             if (_wavesNum == _meshPattern.getRowsNum() - _meshPattern.getStartRowsNum()) {
                 try {
-                    notify(new GameEvent(GameEvent.Type.LAST_WAVE), false);
+                    GameEvent event = new GameEvent(GameEvent.Type.LAST_WAVE);
+                    event.setTarget(this);
+                    notify(event, false);
                 } catch (IncorrentGameEventDataException e) {
                     e.printStackTrace();
                     Gdx.app.log("mesh", e.getMessage());
                 }
-                break;
+                //break;
             }
         }
 

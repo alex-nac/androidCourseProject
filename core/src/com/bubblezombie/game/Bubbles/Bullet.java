@@ -1,6 +1,8 @@
 package com.bubblezombie.game.Bubbles;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.bubblezombie.game.Enums.BubbleColor;
 import com.bubblezombie.game.GameObjects.BubbleDeleter;
 import com.bubblezombie.game.GameObjects.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
@@ -30,7 +32,7 @@ public class Bullet extends SimpleBubble {
 
     public Bullet(com.bubblezombie.game.Enums.BubbleColor color) {
         super(color);
-        setColor(color);
+        setColor(_color);
     }
 
     @Override

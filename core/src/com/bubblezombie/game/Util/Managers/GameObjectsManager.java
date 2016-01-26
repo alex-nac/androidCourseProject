@@ -25,10 +25,8 @@ public class GameObjectsManager {
         for (GameObject obj : _gameObjects) obj.Update();
 
         // safely delete object after game update is ended
-        for (GameObject obj: _objectsToDelete) {
-            _gameObjects.remove(obj);
+        for (GameObject obj: _objectsToDelete)
             obj.Delete();
-        }
         _objectsToDelete.clear();
     }
 

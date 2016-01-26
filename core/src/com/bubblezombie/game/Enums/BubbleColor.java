@@ -4,7 +4,7 @@ package com.bubblezombie.game.Enums;
  * Created by artem on 02.12.15.
  */
 public enum BubbleColor {
-    NONE(0), GREEN(1), YELLOW(2), RED(3), BLUE(4), PINK(5), VIOLETT(6), UBER_BLACK(7);
+    NONE(0), GREEN(1), VIOLETT(2), RED(3), BLUE(4), PINK(5), YELLOW(6), UBER_BLACK(7);
 
     private final int num;
     BubbleColor(int from) {

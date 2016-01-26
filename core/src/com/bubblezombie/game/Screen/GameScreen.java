@@ -210,6 +210,13 @@ public class GameScreen extends BaseScreen {
 
         // _mesh
         _mesh = new BubbleMesh(_space, cfg);
+        _mesh.addListener(new GameEventListener() {
+            @Override
+            public void allEnemiesKilled(GameEvent event) {
+                //dispose();
+                //game.setScreen(new LevelCompleteScreen(game));
+            }
+        });
         //_mesh.addEventListener(ComboEvent.COMBO, ComboHandler); //score updating
         //_mesh.addEventListener(BubbleMesh.LAST_WAVE, StartWonTimer);
         //_mesh.addEventListener(BubbleMesh.CAR_EXPLOSION, ExplodeCar);
@@ -262,7 +269,6 @@ public class GameScreen extends BaseScreen {
 
     }
 
-
     @Override
     public void render(float delta) {
         super.render(delta);
@@ -313,6 +319,21 @@ public class GameScreen extends BaseScreen {
         _tweenManager.add(tween);
     }
 
+    public void Update(float delta) {
+        _space.step(delta, 6, 4);
+        _tweenManager.update(delta);
+        _gameObjectsManager.Update();
+
+        // set gun's rotation
+        Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+        float _angle = (float) Math.atan2(loc.y + 34, loc.x - 13);
+        _gun.setGunRotation(_angle * 180 / (float) Math.PI);
+
+        //_airplane.Update();
+        //_wonTimer.Update();
+        //_slidingPanel.Update(_score, _wonTimer.GetRemainingTime());
+    }
+
     private void CreateGameConditionals(GameConfig cfg) {
         /*
         //won conditional
@@ -334,20 +355,5 @@ public class GameScreen extends BaseScreen {
         //bullet exploding cond.
         _space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _wallCBT, Bubble.BubbleCBType, BulletTouchedWall, 1));
         */
-    }
-
-    public void Update(float delta) {
-        _space.step(delta, 6, 4);
-        _tweenManager.update(delta);
-        _gameObjectsManager.Update();
-
-        // set gun's rotation
-        Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
-        float _angle = (float) Math.atan2(loc.y + 34, loc.x - 13);
-        _gun.setGunRotation(_angle * 180 / (float) Math.PI);
-
-        //_airplane.Update();
-        //_wonTimer.Update();
-        //_slidingPanel.Update(_score, _wonTimer.GetRemainingTime());
     }
 }
