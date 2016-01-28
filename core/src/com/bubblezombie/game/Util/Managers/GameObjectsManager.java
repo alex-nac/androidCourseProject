@@ -1,5 +1,6 @@
 package com.bubblezombie.game.Util.Managers;
 
+import com.badlogic.gdx.Gdx;
 import com.bubblezombie.game.GameObjects.GameObject;
 
 import java.util.ArrayList;
@@ -25,8 +26,10 @@ public class GameObjectsManager {
         for (GameObject obj : _gameObjects) obj.Update();
 
         // safely delete object after game update is ended
-        for (GameObject obj: _objectsToDelete)
+        for (GameObject obj: _objectsToDelete) {
+            _gameObjects.remove(obj);
             obj.Delete();
+        }
         _objectsToDelete.clear();
     }
 
@@ -53,7 +56,7 @@ public class GameObjectsManager {
     }
 
     public void RemoveGameObject(GameObject obj) {
-        if (!_objectsToDelete.contains(obj))
+        if (!_objectsToDelete.contains(obj) && _gameObjects.contains(obj))
             _objectsToDelete.add(obj);
     }
 }

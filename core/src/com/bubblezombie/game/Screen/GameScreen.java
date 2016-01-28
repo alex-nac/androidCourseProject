@@ -6,14 +6,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -32,7 +28,6 @@ import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.GameEventListener;
 import com.bubblezombie.game.GameObjects.GameObject;
 import com.bubblezombie.game.GameObjects.Gun;
-import com.bubblezombie.game.Physics.BodyData;
 import com.bubblezombie.game.TweenAccessors.ShapeAccessor;
 import com.bubblezombie.game.Util.BFS;
 import com.bubblezombie.game.Util.GameConfig;
@@ -69,7 +64,7 @@ public class GameScreen extends BaseScreen {
     }
 
     // whether the player losed the game
-    private GameState currWonState = GameState.UNDEF;
+    private GameState _currWonState = GameState.UNDEF;
 
     private Boolean _useDebugView;
 
@@ -213,8 +208,7 @@ public class GameScreen extends BaseScreen {
         _mesh.addListener(new GameEventListener() {
             @Override
             public void allEnemiesKilled(GameEvent event) {
-                //dispose();
-                //game.setScreen(new LevelCompleteScreen(game));
+                _currWonState = GameState.WON;
             }
         });
         //_mesh.addEventListener(ComboEvent.COMBO, ComboHandler); //score updating
@@ -259,7 +253,7 @@ public class GameScreen extends BaseScreen {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.BACK) {
-//                    dispose();
+                    dispose();
                     game.setScreen(new LevelSelectScreen(game));
                 }
                 return false;
@@ -272,8 +266,7 @@ public class GameScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        //if (_useDebugView)
-        _debug.render(_space, _physCamera.combined);
+        if (_useDebugView) _debug.render(_space, _physCamera.combined);
 
         Update(delta);
     }
@@ -320,6 +313,13 @@ public class GameScreen extends BaseScreen {
     }
 
     public void Update(float delta) {
+
+        // if we won the game
+        if (_currWonState == GameState.WON) {
+            dispose();
+            game.setScreen(new LevelCompleteScreen(game));
+        }
+
         _space.step(delta, 6, 4);
         _tweenManager.update(delta);
         _gameObjectsManager.Update();

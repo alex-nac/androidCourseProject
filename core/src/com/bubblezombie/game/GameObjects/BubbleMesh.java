@@ -99,7 +99,9 @@ public class BubbleMesh extends Actor implements GameObject {
         _enemiesNum = value;
         if (_enemiesNum == 0) {
             try {
-                notify(new GameEvent(GameEvent.Type.ALL_ENEMIES_KILLED), false);
+                GameEvent event = new GameEvent(GameEvent.Type.ALL_ENEMIES_KILLED);
+                event.setTarget(this);
+                notify(event, false);
             } catch (IncorrentGameEventDataException e) {
                 Gdx.app.log("Mesh", e.getMessage());
             }
@@ -247,7 +249,7 @@ public class BubbleMesh extends Actor implements GameObject {
         Vector2 meshPos = getMeshPos(bubble);
         _mesh.get((int) meshPos.x).set((int) meshPos.y, null);
 
-        if (bubble instanceof Zombie || bubble instanceof Sprayer) _enemiesNum = _enemiesNum - 1;
+        if (bubble instanceof Zombie || bubble instanceof Sprayer) setEnemiesNum(_enemiesNum - 1);
         if (bubble instanceof SimpleBubble) MinusColor(((SimpleBubble) bubble).getBubbleColor());
     }
 
@@ -498,14 +500,13 @@ public class BubbleMesh extends Actor implements GameObject {
                 topRow.get(j).setMesh(this);
                 _bubbleLayer.addActor(topRow.get(j).getView());
                 _bubbleEffectsLayer.addActor(topRow.get(j).getEffects());
+                ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddGameObject(topRow.get(j));
             }
 
             for (ArrayList<Bubble> bblRow : _mesh) {
                 for (Bubble bbl : bblRow) {
-                    if (bbl != null) {
+                    if (bbl != null)
                         bbl.setPosition(bbl.getPosition().sub(new Vector2(0, Bubble.DIAMETR)));
-                        ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddGameObject(bbl);
-                    }
                 }
             }
 

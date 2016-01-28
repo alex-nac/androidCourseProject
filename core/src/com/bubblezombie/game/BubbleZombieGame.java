@@ -42,8 +42,8 @@ public class BubbleZombieGame extends Game {
 		FontFactory.initialize("fonts/EuropeExt_Bold.ttf", "fonts/EuropeExt_Bold.ttf");
 		ButtonFactory.initialize(this);
 		Box2D.init();
-		setScreen(new GameScreen(this, 1));
+		setScreen(new MainMenuScreen(this));
 		//setScreen(new TestScreen(this));
-		//setScreen(new LevelCompleteScreen(this));
+		//setScreen(new LevelCompleteScreen(this, 1));
 	}
 }

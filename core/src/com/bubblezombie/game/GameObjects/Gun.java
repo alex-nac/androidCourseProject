@@ -27,8 +27,6 @@ import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
 import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
-import com.bubblezombie.game.Util.Units;
-
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
