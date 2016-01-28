@@ -27,8 +27,6 @@ import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
 import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
-import com.bubblezombie.game.Util.Units;
-
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
@@ -82,8 +80,9 @@ public class Gun extends Actor implements GameObject {
 
     public void setCanShoot(Boolean value) {
         _canShoot = value;
-        // TODO: здесь какая-то херня - это нужно чекнуть
-        startCanShootTimer();
+
+        // cancel timer
+        _canShootTimer.clear();
     }
 
     public Gun(GameConfig cfg, World space, Boolean repeateBulletsEnabled, BubbleMesh mesh) {
@@ -151,10 +150,16 @@ public class Gun extends Actor implements GameObject {
     public void Update() {}
 
     @Override
-    public void Pause() { _canShoot = false; }
+    public void Pause() {
+        _canShoot = false;
+        _canShootTimer.stop();
+    }
 
     @Override
-    public void Resume() { _canShoot = true; }
+    public void Resume() {
+        _canShoot = true;
+        _canShootTimer.start();
+    }
 
     @Override
     public void Delete() { clearListeners(); }
@@ -234,6 +239,7 @@ public class Gun extends Actor implements GameObject {
         PutBullet();
 
         //set delay
+        setCanShoot(false);
         startCanShootTimer();
     }
 

@@ -1,5 +1,6 @@
 package com.bubblezombie.game.Bubbles;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -233,12 +234,12 @@ public class Bubble extends Actor implements GameObject {
 
     @Override
     public void Pause() {
-        //_lifeTimer.stop();
+        _lifeTimer.stop();
     }
 
     @Override
     public void Resume() {
-        //_lifeTimer.start();
+        _lifeTimer.start();
     }
 
     @Override
@@ -262,12 +263,9 @@ public class Bubble extends Actor implements GameObject {
             _iceTween.onComplete = null;
             _iceTween = null;
         }
-
-        if (_lifeTimer) {
-            _lifeTimer.stop();
-            _lifeTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onLifeEnd);
-        }
         */
+
+        _lifeTimer.clear();
     }
 
 
@@ -286,10 +284,7 @@ public class Bubble extends Actor implements GameObject {
         _body.setAngularVelocity(0f);
         _body.setLinearVelocity(new Vector2(0, 0));
 
-        if (_lifeTimer != null) {
-            _lifeTimer.stop();
-//            _lifeTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onLifeEnd);
-        }
+        _lifeTimer.clear();
     }
 
     //return bubble's graphics

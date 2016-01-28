@@ -177,7 +177,7 @@ public class LevelSelectScreen extends BaseUIScreen {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.BACK) {
-//                    dispose();
+                    dispose();
                     game.setScreen(new IntroScreen(game));
                 }
                 return false;

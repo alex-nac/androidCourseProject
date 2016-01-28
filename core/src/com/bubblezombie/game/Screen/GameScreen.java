@@ -6,14 +6,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -32,7 +28,6 @@ import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.GameEventListener;
 import com.bubblezombie.game.GameObjects.GameObject;
 import com.bubblezombie.game.GameObjects.Gun;
-import com.bubblezombie.game.Physics.BodyData;
 import com.bubblezombie.game.TweenAccessors.ShapeAccessor;
 import com.bubblezombie.game.Util.BFS;
 import com.bubblezombie.game.Util.GameConfig;
@@ -69,7 +64,7 @@ public class GameScreen extends BaseScreen {
     }
 
     // whether the player losed the game
-    private GameState currWonState = GameState.UNDEF;
+    private GameState _currWonState = GameState.UNDEF;
 
     private Boolean _useDebugView;
 
@@ -210,6 +205,12 @@ public class GameScreen extends BaseScreen {
 
         // _mesh
         _mesh = new BubbleMesh(_space, cfg);
+        _mesh.addListener(new GameEventListener() {
+            @Override
+            public void allEnemiesKilled(GameEvent event) {
+                _currWonState = GameState.WON;
+            }
+        });
         //_mesh.addEventListener(ComboEvent.COMBO, ComboHandler); //score updating
         //_mesh.addEventListener(BubbleMesh.LAST_WAVE, StartWonTimer);
         //_mesh.addEventListener(BubbleMesh.CAR_EXPLOSION, ExplodeCar);
@@ -252,7 +253,7 @@ public class GameScreen extends BaseScreen {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.BACK) {
-//                    dispose();
+                    dispose();
                     game.setScreen(new LevelSelectScreen(game));
                 }
                 return false;
@@ -262,12 +263,10 @@ public class GameScreen extends BaseScreen {
 
     }
 
-
     @Override
     public void render(float delta) {
         super.render(delta);
-        //if (_useDebugView)
-        _debug.render(_space, _physCamera.combined);
+        if (_useDebugView) _debug.render(_space, _physCamera.combined);
 
         Update(delta);
     }
@@ -313,6 +312,28 @@ public class GameScreen extends BaseScreen {
         _tweenManager.add(tween);
     }
 
+    public void Update(float delta) {
+
+        // if we won the game
+        if (_currWonState == GameState.WON) {
+            dispose();
+            game.setScreen(new LevelCompleteScreen(game));
+        }
+
+        _space.step(delta, 6, 4);
+        _tweenManager.update(delta);
+        _gameObjectsManager.Update();
+
+        // set gun's rotation
+        Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+        float _angle = (float) Math.atan2(loc.y + 34, loc.x - 13);
+        _gun.setGunRotation(_angle * 180 / (float) Math.PI);
+
+        //_airplane.Update();
+        //_wonTimer.Update();
+        //_slidingPanel.Update(_score, _wonTimer.GetRemainingTime());
+    }
+
     private void CreateGameConditionals(GameConfig cfg) {
         /*
         //won conditional
@@ -334,20 +355,5 @@ public class GameScreen extends BaseScreen {
         //bullet exploding cond.
         _space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _wallCBT, Bubble.BubbleCBType, BulletTouchedWall, 1));
         */
-    }
-
-    public void Update(float delta) {
-        _space.step(delta, 6, 4);
-        _tweenManager.update(delta);
-        _gameObjectsManager.Update();
-
-        // set gun's rotation
-        Vector2 loc = _gun.getView().screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
-        float _angle = (float) Math.atan2(loc.y + 34, loc.x - 13);
-        _gun.setGunRotation(_angle * 180 / (float) Math.PI);
-
-        //_airplane.Update();
-        //_wonTimer.Update();
-        //_slidingPanel.Update(_score, _wonTimer.GetRemainingTime());
     }
 }

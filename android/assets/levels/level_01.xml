@@ -15,7 +15,7 @@
 	<wave_velocity>5</wave_velocity>
 	<rows_num>4</rows_num>
 	<columns_num>11</columns_num>
-	<rows_showed>3</rows_showed>
+	<rows_showed>4</rows_showed>  <!-- 3 -->
 	<zombie>0</zombie>
 
 	<!-- радиус шара-->

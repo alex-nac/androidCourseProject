@@ -46,7 +46,7 @@ public class MeshPattern {
 
 
     public MeshPattern(GameConfig cfg) {
-        // saving _mesh parametrs
+        // saving _mesh parameters
         _startRowsNum = cfg.rowsShowed;
         _colNum = cfg.columnsNum;
         _rowsNum = cfg.rowsNum;
