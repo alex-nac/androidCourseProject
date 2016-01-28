@@ -208,7 +208,9 @@ public class LevelSelectScreen extends BaseUIScreen {
                             Gdx.app.log("next screen button", "starting level select screen...");
                             dispose();
                             int lvlNum = Integer.parseInt(((TextButton)event.getListenerActor()).getText().toString());
-                            game.setScreen(new GameScreen(game, (lvlNum % 5) + 1));
+                            // TODO: tmp
+                            //game.setScreen(new GameScreen(game, (lvlNum % 5) + 1));
+                            game.setScreen(new GameScreen(game, 1));
                         }
                     });
 
