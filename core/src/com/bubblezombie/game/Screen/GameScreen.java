@@ -266,7 +266,7 @@ public class GameScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        if (_useDebugView) _debug.render(_space, _physCamera.combined);
+        //if (_useDebugView) _debug.render(_space, _physCamera.combined);
 
         Update(delta);
     }
