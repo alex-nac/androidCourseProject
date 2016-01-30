@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class Scene2dSprite extends Group {
     protected Sprite _sprite;
-    private static Sprite dot = new Sprite(new Texture(Gdx.files.internal("background/UI_buttons/btn_background.png")));
-    private static final int dotRadius = 5;
+    //private static Sprite dot = new Sprite(new Texture(Gdx.files.internal("background/UI_buttons/btn_background.png")));
+    //private static final int dotRadius = 5;
 
     // ctor with anchor point at center
     public Scene2dSprite(Texture texture) {
@@ -33,9 +33,9 @@ public class Scene2dSprite extends Group {
         super.draw(batch, parentAlpha);
 
         // DEBUG: we use this to see anchor points
-        dot.setSize(dotRadius * 2, dotRadius * 2);
-        dot.setPosition(getX() - dotRadius, getY() - dotRadius);
-        dot.draw(batch);
+        //dot.setSize(dotRadius * 2, dotRadius * 2);
+        //dot.setPosition(getX() - dotRadius, getY() - dotRadius);
+        //dot.draw(batch);
     }
 
     public void setAlpha(float a) {
