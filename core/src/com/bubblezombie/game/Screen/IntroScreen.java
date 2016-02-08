@@ -63,7 +63,7 @@ public class IntroScreen extends BaseUIScreen {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.BACK) {
-                    dispose();
+                    //dispose();
                     game.setScreen(new MainMenuScreen(game));
                 }
                 return false;
