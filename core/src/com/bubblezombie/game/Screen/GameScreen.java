@@ -253,7 +253,7 @@ public class GameScreen extends BaseScreen {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.BACK) {
-                    dispose();
+                    //dispose();
                     game.setScreen(new LevelSelectScreen(game));
                 }
                 return false;
