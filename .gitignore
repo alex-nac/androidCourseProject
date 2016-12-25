@@ -59,11 +59,8 @@ nbactions.xml
 nb-configuration.xml
 
 ## Gradle
-gradlew
-gradlew.bat
 .gradle
 gradle-app.setting
 build/
-gradle/
 ## OS Specific
 .DS_Store

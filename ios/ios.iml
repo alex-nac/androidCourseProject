@@ -13,7 +13,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/build/classes/main" />
     <output-test url="file://$MODULE_DIR$/build/classes/test" />
     <exclude-output />
@@ -25,7 +25,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
-    <orderEntry type="jdk" jdkName="RoboVM SDK 1.13.0" jdkType="RoboVM SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="core" exported="" />
     <orderEntry type="library" exported="" name="robovm-rt-1.9.0" level="project" />
@@ -35,12 +35,6 @@
     <orderEntry type="library" exported="" name="gdx-box2d-platform-1.7.1-natives-ios" level="project" />
     <orderEntry type="library" exported="" name="gdx-freetype-platform-1.7.1-natives-ios" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.7.1" level="project" />
-    <orderEntry type="library" exported="" name="gdx-box2d-1.7.1" level="project" />
-    <orderEntry type="library" exported="" name="gdx-controllers-1.7.1" level="project" />
-    <orderEntry type="library" exported="" name="gdx-freetype-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="robovm-objc-1.9.0" level="project" />
-    <orderEntry type="library" exported="" name="tween-engine-api-sources" level="project" />
-    <orderEntry type="library" exported="" name="tween-engine-api" level="project" />
-    <orderEntry type="library" exported="" name="ios.ios-1.0" level="project" />
   </component>
 </module>

@@ -13,7 +13,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/build/classes/main" />
     <output-test url="file://$MODULE_DIR$/build/classes/test" />
     <exclude-output />
@@ -36,9 +36,7 @@
     <orderEntry type="library" exported="" name="gdx-tools-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-freetype-platform-1.7.1-natives-desktop" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.7.1" level="project" />
-    <orderEntry type="library" exported="" name="gdx-box2d-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-controllers-1.7.1" level="project" />
-    <orderEntry type="library" exported="" name="gdx-freetype-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-2.9.2" level="project" />
     <orderEntry type="library" exported="" name="lwjgl_util-2.9.2" level="project" />
     <orderEntry type="library" exported="" name="jlayer-1.0.1-gdx" level="project" />
@@ -52,8 +50,5 @@
     <orderEntry type="library" exported="" name="jinput-platform-2.0.5-natives-linux" level="project" />
     <orderEntry type="library" exported="" name="jinput-platform-2.0.5-natives-windows" level="project" />
     <orderEntry type="library" exported="" name="jinput-platform-2.0.5-natives-osx" level="project" />
-    <orderEntry type="library" exported="" name="tween-engine-api-sources" level="project" />
-    <orderEntry type="library" exported="" name="tween-engine-api" level="project" />
-    <orderEntry type="library" exported="" name="desktop.desktop-1.0" level="project" />
   </component>
 </module>
