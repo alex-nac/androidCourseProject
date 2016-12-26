@@ -1,10 +1,8 @@
 ## Java
-
 *.class
 *.war
 *.ear
 hs_err_pid*
-
 gen/
 
 ## GWT
@@ -62,5 +60,6 @@ nb-configuration.xml
 .gradle
 gradle-app.setting
 build/
+
 ## OS Specific
 .DS_Store
