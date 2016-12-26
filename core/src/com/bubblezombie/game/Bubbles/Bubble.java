@@ -24,7 +24,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-public class Bubble extends Actor implements GameObject {
+public class Bubble implements GameObject {
 
     ////////////////////
     //STATIC VARIABLES//

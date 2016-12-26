@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
-public class Scene2dSprite extends Group {
+public class Scene2dSprite extends Actor {
     protected Sprite _sprite;
     //private static Sprite dot = new Sprite(new Texture(Gdx.files.internal("background/UI_buttons/btn_background.png")));
     //private static final int dotRadius = 5;
@@ -76,9 +77,6 @@ public class Scene2dSprite extends Group {
 
     @Override
     public void setSize(float width, float height) {
-        // now we can set size only if there are no children
-        if (hasChildren()) throw new AssertionError();
-
         // because of the new size we need to also scale origin point
         float widthFactor = width / _sprite.getWidth();
         float heightFactor = height / _sprite.getHeight();
@@ -90,18 +88,12 @@ public class Scene2dSprite extends Group {
 
     @Override
     public void setHeight(float height) {
-        // now we can set size only if there are no children
-        if (hasChildren()) throw new AssertionError();
-
         super.setHeight(height);
         setSize(_sprite.getWidth(), height);
     }
 
     @Override
     public void setWidth(float width) {
-        // now we can set size only if there are no children
-        if (hasChildren()) throw new AssertionError();
-
         super.setWidth(width);
         setSize(width, _sprite.getHeight());
     }
