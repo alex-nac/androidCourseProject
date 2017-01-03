@@ -1,8 +1,6 @@
 package com.bubblezombie.game.Bubbles;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.bubblezombie.game.Enums.BubbleColor;
 import com.bubblezombie.game.GameObjects.BubbleDeleter;
 import com.bubblezombie.game.GameObjects.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
@@ -10,7 +8,7 @@ import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
 import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.BFS;
-import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
+import com.bubblezombie.game.Util.CoreClasses.SpriteActor;
 
 import java.util.ArrayList;
 
@@ -42,7 +40,7 @@ public class Bullet extends SimpleBubble {
     }
 
     private void setBulletView() {
-        Scene2dSprite sprite;
+        SpriteActor sprite;
 
         sprite = getBubbleImage();
 
@@ -54,7 +52,7 @@ public class Bullet extends SimpleBubble {
         setView(sprite);
     }
 
-    public Scene2dSprite getBubbleImage() {
+    public SpriteActor getBubbleImage() {
         if (!BubbleZombieGame.INSTANCE.assetManager.isLoaded(pink)) {
             // TODO: this is bad
             BubbleZombieGame.INSTANCE.assetManager.load(blue, Texture.class);
@@ -66,29 +64,29 @@ public class Bullet extends SimpleBubble {
             BubbleZombieGame.INSTANCE.assetManager.finishLoading();
         }
 
-        Scene2dSprite sprite = null;
+        SpriteActor sprite = null;
 
         switch (getBubbleColor()) {
             case PINK:
-                sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(pink, Texture.class));
+                sprite = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(pink, Texture.class));
                 break;
             case YELLOW:
-                sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(yellow, Texture.class));
+                sprite = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(yellow, Texture.class));
                 break;
             case RED:
-                sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(red, Texture.class));
+                sprite = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(red, Texture.class));
                 break;
             case GREEN:
-                sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(green, Texture.class));
+                sprite = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(green, Texture.class));
                 break;
             case BLUE:
-                sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(blue, Texture.class));
+                sprite = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(blue, Texture.class));
                 break;
             case VIOLETT:
-                sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(violett, Texture.class));
+                sprite = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(violett, Texture.class));
                 break;
             case UBER_BLACK:
-                sprite = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(violett, Texture.class));
+                sprite = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(violett, Texture.class));
                 break;
         }
         return sprite;

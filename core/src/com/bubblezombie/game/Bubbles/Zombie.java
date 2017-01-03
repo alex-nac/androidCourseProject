@@ -3,7 +3,7 @@ package com.bubblezombie.game.Bubbles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.BubbleZombieGame;
-import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
+import com.bubblezombie.game.Util.CoreClasses.SpriteActor;
 
 /**
  * Created by artem on 02.12.15.
@@ -29,14 +29,14 @@ public class Zombie extends SimpleBubble {
 
     //private var _tw:GTween; 						//current animation tween
     private int _currentMode = 0;
-    private Scene2dSprite _currAnim;				//current animation playing
+    private SpriteActor _currAnim;				//current animation playing
     private int _repeatCnt = 1;					//sometime we play animation several times, this is how much times elapsed
     private int _infectionState = 0; 			//how much zombie infected by steam machine
     private boolean _animationActive = true;	//if we play animation for this zombie or not
     private Timer _delayTimer;
 //    private var _flickTween:GTween;
 
-    private Scene2dSprite m_MC;
+    private SpriteActor m_MC;
 
     public Zombie(com.bubblezombie.game.Enums.BubbleColor color) {
         super(color);
@@ -83,8 +83,8 @@ public class Zombie extends SimpleBubble {
 
 
     @Override
-    public Scene2dSprite GetBubbleImage() {
-        Scene2dSprite bubbleMC = null;
+    public SpriteActor GetBubbleImage() {
+        SpriteActor bubbleMC = null;
         if (!BubbleZombieGame.INSTANCE.assetManager.isLoaded(pink)) {
             // TODO: this is bad
             BubbleZombieGame.INSTANCE.assetManager.load(pink, Texture.class);
@@ -99,25 +99,25 @@ public class Zombie extends SimpleBubble {
 
         switch(_color) {
             case PINK:
-                bubbleMC = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(pink, Texture.class));
+                bubbleMC = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(pink, Texture.class));
                 break;
             case YELLOW:
-                bubbleMC = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(yellow, Texture.class));
+                bubbleMC = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(yellow, Texture.class));
                 break;
             case RED:
-                bubbleMC = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(red, Texture.class));
+                bubbleMC = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(red, Texture.class));
                 break;
             case GREEN:
-                bubbleMC = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(green, Texture.class));
+                bubbleMC = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(green, Texture.class));
                 break;
             case BLUE:
-                bubbleMC = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(blue, Texture.class));
+                bubbleMC = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(blue, Texture.class));
                 break;
             case VIOLETT:
-                bubbleMC = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(purple, Texture.class));
+                bubbleMC = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(purple, Texture.class));
                 break;
             case UBER_BLACK:
-                bubbleMC = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(black, Texture.class));
+                bubbleMC = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(black, Texture.class));
                 break;
         }
 

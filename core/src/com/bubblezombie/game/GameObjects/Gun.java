@@ -26,7 +26,7 @@ import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
 import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.GameConfig;
-import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
+import com.bubblezombie.game.Util.CoreClasses.SpriteActor;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
@@ -59,7 +59,7 @@ public class Gun extends Actor implements GameObject {
 
 
     private Group _view = new Group();
-    private Scene2dSprite _gun;
+    private Group _gun = new Group();
     private Group _bulletPlace = new Group();
     private Body _gunBody;
     private float _angle = 0;               //angle of gun's rotation
@@ -94,7 +94,8 @@ public class Gun extends Actor implements GameObject {
         _repeatBulletsEnabled = repeateBulletsEnabled;
         _space = space;
 
-        _gun = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(RES_GUN_DOWN, Texture.class), new Vector2(20.0f, 18.0f));
+        SpriteActor downGun = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(RES_GUN_DOWN, Texture.class), new Vector2(20.0f, 18.0f));
+        _gun.addActor(downGun);
         _gun.addActor(_bulletPlace);
         Image topGun = new Image(BubbleZombieGame.INSTANCE.assetManager.get(RES_GUN_TOP, Texture.class));
         topGun.setPosition(TOP_GUN_X, TOP_GUN_Y);
