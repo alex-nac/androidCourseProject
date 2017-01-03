@@ -26,7 +26,7 @@ import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
 import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.GameConfig;
-import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
+import com.bubblezombie.game.Util.CoreClasses.SpriteActor;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
@@ -94,7 +94,7 @@ public class Gun extends Actor implements GameObject {
         _repeatBulletsEnabled = repeateBulletsEnabled;
         _space = space;
 
-        Scene2dSprite downGun = new Scene2dSprite(BubbleZombieGame.INSTANCE.assetManager.get(RES_GUN_DOWN, Texture.class), new Vector2(20.0f, 18.0f));
+        SpriteActor downGun = new SpriteActor(BubbleZombieGame.INSTANCE.assetManager.get(RES_GUN_DOWN, Texture.class), new Vector2(20.0f, 18.0f));
         _gun.addActor(downGun);
         _gun.addActor(_bulletPlace);
         Image topGun = new Image(BubbleZombieGame.INSTANCE.assetManager.get(RES_GUN_TOP, Texture.class));

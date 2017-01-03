@@ -1,6 +1,5 @@
 package com.bubblezombie.game.Bubbles;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -8,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Timer;
 import com.bubblezombie.game.Physics.BodyData;
@@ -16,7 +14,7 @@ import com.bubblezombie.game.GameObjects.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
 import com.bubblezombie.game.GameObjects.GameObject;
 import com.bubblezombie.game.Screen.GameScreen;
-import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
+import com.bubblezombie.game.Util.CoreClasses.SpriteActor;
 import com.bubblezombie.game.Util.Units;
 
 
@@ -45,7 +43,7 @@ public class Bubble implements GameObject {
     protected BubbleMesh _mesh;                      	        // we save ref to the _mesh when connect bubble
     protected Group _effects = new Group();                     // here we place all sprites that need to be on top of zombies
     protected float _scale;				    		 	        // bubble's movieclip _scale
-    protected Scene2dSprite _view;                              // bubble's _view
+    protected SpriteActor _view;                              // bubble's _view
     protected Body _body;                              	        // bubble's body in physics world
     protected com.bubblezombie.game.Enums.BubbleType type;                           	    // bubble's type
     protected Vector2 _meshPosition;
@@ -56,7 +54,7 @@ public class Bubble implements GameObject {
     protected int _timesWallTouched = 0; 				        // how many times we have touched the wall
 
 
-    private Scene2dSprite _frozenMC; //= new ice_01_mc();	    //ice movieclip
+    private SpriteActor _frozenMC; //= new ice_01_mc();	    //ice movieclip
     private boolean _isFrozen = false;			                //if bubble is frozen or not
     //private var _iceTween:GTween;
 
@@ -78,7 +76,7 @@ public class Bubble implements GameObject {
     public Vector2 getMeshPosition() {
         return _mesh.getMeshPos(this);
     }
-    public Scene2dSprite getView() {
+    public SpriteActor getView() {
         return _view;
     }
     public Group getEffects(){
@@ -158,7 +156,7 @@ public class Bubble implements GameObject {
         _effects.setY(pos.y);
     }
 
-    public void setView(Scene2dSprite sprite) {
+    public void setView(SpriteActor sprite) {
         _view = sprite;
         //if (_isFrozen) _effects.addActor(_frozenMC);
     }
@@ -288,7 +286,7 @@ public class Bubble implements GameObject {
     }
 
     //return bubble's graphics
-    public Scene2dSprite GetBubbleImage() {
+    public SpriteActor GetBubbleImage() {
         assert false;
         return null;
     }
