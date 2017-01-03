@@ -13,7 +13,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+w  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/build/classes/main" />
     <output-test url="file://$MODULE_DIR$/build/classes/test" />
     <exclude-output />
@@ -33,6 +33,5 @@
     <orderEntry type="library" exported="" name="gdx-freetype-1.7.1" level="project" />
     <orderEntry type="library" exported="" name="tween-engine-api-sources" level="project" />
     <orderEntry type="library" exported="" name="tween-engine-api" level="project" />
-    <orderEntry type="library" exported="" name="core.core-1.0" level="project" />
   </component>
 </module>
