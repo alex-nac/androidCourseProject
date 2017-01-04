@@ -18,6 +18,7 @@ import com.bubblezombie.game.Bubbles.Zombie;
 import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
 
+import com.bubblezombie.game.GameLogic.BubbleZombieGameLogic;
 import com.bubblezombie.game.Physics.CBTypeContactListener;
 import com.bubblezombie.game.Physics.BodyData;
 import com.bubblezombie.game.Screen.GameScreen;
@@ -134,7 +135,7 @@ public class BubbleMesh extends Actor implements GameObject {
         // creating mesh
         CreateMesh(_meshPattern.getStartRowsNum());
 
-        ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddContactListener(new BubbleHDR());
+        BubbleZombieGameLogic.instance.AddContactListener(new BubbleHDR());
 
         //_waveTimer = new Timer(_meshPattern.waveVel);
         //_waveTimer.addEventListener(Timer.TRIGGED, WaveTimerHandler);
@@ -431,7 +432,7 @@ public class BubbleMesh extends Actor implements GameObject {
         //connect bubble to the mesh
         Vector2 meshPos = getMeshPos(bubble);
         if (meshPos.x < 0) {
-            ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bubble);
+            BubbleZombieGameLogic.instance.RemoveGameObject(bubble);
             return;
         }
         if (meshPos.y < 0) meshPos.y = 0;
@@ -442,7 +443,7 @@ public class BubbleMesh extends Actor implements GameObject {
             //throw (new Error("HEEEEEEEY!! Here we have already have bubble!! You're trying to put at " + meshPos + "while " +
             //"coordinates is " + bubble.position.x + " " + bubble.position.y));
             //dispatchEvent(new Event(CAR_EXPLOSION));
-            ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bubble);
+            BubbleZombieGameLogic.instance.RemoveGameObject(bubble);
             return;
         }
 
@@ -500,7 +501,7 @@ public class BubbleMesh extends Actor implements GameObject {
                 topRow.get(j).setMesh(this);
                 _bubbleLayer.addActor(topRow.get(j).getView());
                 _bubbleEffectsLayer.addActor(topRow.get(j).getEffects());
-                ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddGameObject(topRow.get(j));
+                BubbleZombieGameLogic.instance.AddGameObject(topRow.get(j));
             }
 
             for (ArrayList<Bubble> bblRow : _mesh) {

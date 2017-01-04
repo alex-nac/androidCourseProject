@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Timer;
+import com.bubblezombie.game.GameLogic.BubbleZombieGameLogic;
 import com.bubblezombie.game.Physics.BodyData;
 import com.bubblezombie.game.GameObjects.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
@@ -268,7 +269,7 @@ public class Bubble implements GameObject {
 
 
     private void onLifeEnd(Timer.Task e) {
-        ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(this);
+        BubbleZombieGameLogic.instance.RemoveGameObject(this);
     }
 
     protected void onConnected(BubbleMesh mesh) {
@@ -296,8 +297,8 @@ public class Bubble implements GameObject {
     }
 
     public void WallTouched() {
-        _timesWallTouched++;
         if (_timesWallTouched == MAX_TIMES_WALL_TOUCHED && _mesh == null)
-            ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(this);
+            BubbleZombieGameLogic.instance.RemoveGameObject(this);
+        _timesWallTouched++;
     }
 }

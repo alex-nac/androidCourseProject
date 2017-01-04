@@ -1,6 +1,7 @@
 package com.bubblezombie.game.Bubbles;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.bubblezombie.game.GameLogic.BubbleZombieGameLogic;
 import com.bubblezombie.game.GameObjects.BubbleDeleter;
 import com.bubblezombie.game.GameObjects.BubbleMesh;
 import com.bubblezombie.game.BubbleZombieGame;
@@ -118,7 +119,7 @@ public class Bullet extends SimpleBubble {
             }
 
             // start deleter
-            ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddGameObject(new BubbleDeleter(getPosition(), deletedBubbles, _body.getWorld()));
+            BubbleZombieGameLogic.instance.AddGameObject(new BubbleDeleter(getPosition(), deletedBubbles, _body.getWorld()));
         }
     }
 

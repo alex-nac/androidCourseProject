@@ -24,6 +24,7 @@ import com.bubblezombie.game.Bubbles.FreezeBomb;
 import com.bubblezombie.game.Bubbles.SimpleBubble;
 import com.bubblezombie.game.EventSystem.GameEvent;
 import com.bubblezombie.game.EventSystem.IncorrentGameEventDataException;
+import com.bubblezombie.game.GameLogic.BubbleZombieGameLogic;
 import com.bubblezombie.game.Screen.GameScreen;
 import com.bubblezombie.game.Util.GameConfig;
 import com.bubblezombie.game.Util.CoreClasses.SpriteActor;
@@ -200,7 +201,7 @@ public class Gun extends Actor implements GameObject {
                 new Action() {
                     public boolean act(float delta) {
                         if (CheckForTouchingMesh()) {
-                            ((GameScreen)BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bullet);
+                            BubbleZombieGameLogic.instance.RemoveGameObject(bullet);
                             return true;
                         }
 
