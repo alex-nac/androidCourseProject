@@ -115,7 +115,7 @@ public class LevelSelectScreen extends BaseUIScreen {
     private BitmapFont _europeExtBoldSize15;
     private TextField _totalScore, _bestScore;
 
-    LevelSelectScreen(BubbleZombieGame game) {
+    public LevelSelectScreen(BubbleZombieGame game) {
         super(game);
         _isMoreGamesBtn = true;
         _isLvlMapBtn = true;

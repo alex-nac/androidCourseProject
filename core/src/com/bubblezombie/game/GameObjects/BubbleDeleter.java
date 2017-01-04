@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bubblezombie.game.BubbleZombieGame;
+import com.bubblezombie.game.GameLogic.BubbleZombieGameLogic;
 import com.bubblezombie.game.Physics.BodyData;
 import com.bubblezombie.game.Bubbles.Bubble;
 import com.bubblezombie.game.Physics.CBTypeContactListener;
@@ -58,7 +59,7 @@ public class BubbleDeleter implements GameObject {
 
         // setting interaction
         _sensorListener = new WaveHDR();
-        ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddContactListener(_sensorListener);
+        BubbleZombieGameLogic.instance.AddContactListener(_sensorListener);
 
         // increasing radius
         _sensorTween = Tween.to(_sensorWave.getFixtureList().get(0).getShape(), ShapeAccessor.RADIUS, MAX_RADIUS / WAVE_VEL).target(Units.P2M(MAX_RADIUS));
@@ -66,11 +67,11 @@ public class BubbleDeleter implements GameObject {
             @Override
             public void onEvent(int type, BaseTween<?> source) {
                 // remove this object when tween completed
-                ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(BubbleDeleter.this);
-                ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveContactListener(_sensorListener);
+                BubbleZombieGameLogic.instance.RemoveGameObject(BubbleDeleter.this);
+                BubbleZombieGameLogic.instance.RemoveContactListener(_sensorListener);
             }
         });
-        ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).AddTween(_sensorTween);
+        BubbleZombieGameLogic.instance.AddTween(_sensorTween);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class BubbleDeleter implements GameObject {
     public void Delete() {
         if (_sensorTween != null) _sensorTween.kill();
 
-        ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveContactListener(_sensorListener);
+        BubbleZombieGameLogic.instance.RemoveContactListener(_sensorListener);
         _sensorWave.getWorld().destroyBody(_sensorWave);
     }
 
@@ -100,7 +101,7 @@ public class BubbleDeleter implements GameObject {
             if (!CheckForCbTypes(BodyData.CBType.DELETER, BodyData.CBType.DELETING_BUBBLE, contact)) return;
 
             Bubble bubble = (Bubble) getOwnerB();
-            ((GameScreen) BubbleZombieGame.INSTANCE.getScreen()).RemoveGameObject(bubble);
+            BubbleZombieGameLogic.instance.RemoveGameObject(bubble);
         }
     }
 }
