@@ -3,7 +3,7 @@ package com.bubblezombie.game.EventSystem.Events;
 import com.bubblezombie.game.EventSystem.Event;
 import com.bubblezombie.game.EventSystem.EventType;
 
-public class EntitiesCollisionEvent implements Event {
+public class EntitiesCollisionEvent extends BaseEvent implements Event {
 
     public enum CollisionState {
         BEGIN_CONTACT,
@@ -32,13 +32,10 @@ public class EntitiesCollisionEvent implements Event {
     }
 
     public EntitiesCollisionEvent(int entityAId, int entityBId, CollisionState collisionState) {
+        super(EventType.ENTITIES_COLLISION);
+
         this.entityAId = entityAId;
         this.entityBId = entityBId;
         this.collisionState = collisionState;
-    }
-
-    @Override
-    public EventType getType() {
-        return EventType.ENTITIES_COLLISION;
     }
 }
