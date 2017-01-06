@@ -2,6 +2,9 @@ package com.bubblezombie.game.EventSystem;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.AdditionalAnswers;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 
 import java.util.function.Consumer;
 
@@ -12,114 +15,182 @@ public class EventManagerTests {
 
     @Before
     public void setUp() {
-        eventManager = mock(EventManager.class);
+        eventManager = new EventManagerImpl();
     }
 
     @Test
-    public void eventToSubscribedListener() {
-        Consumer<Event> listenerMock = getConsumerMock();
-        Event eventMock = mock(Event.class);
-        when(eventMock.getType()).thenReturn(EventType.COMBO);
+    public void updateNoEventDuplicates() {
+        Consumer<Event> listenerMock = getListenerMock();
+        Event eventStub = mock(Event.class);
+        when(eventStub.getType()).thenReturn(EventType.COMBO);
 
         eventManager.addListener(listenerMock, EventType.COMBO);
-        eventManager.enqueEvent(eventMock);
+        eventManager.queueEvent(eventStub);
         eventManager.update();
 
-        verify(listenerMock).accept(eventMock);
+        eventManager.update();
+
+        verify(listenerMock, times(1)).accept(eventStub);
     }
 
     @Test
-    public void eventToUninterestedListener() {
-        Consumer<Event> listenerMock = getConsumerMock();
-        Event eventMock = mock(Event.class);
-        when(eventMock.getType()).thenReturn(EventType.ALL_ENEMIES_KILLED);
+    public void addListenerInterestedEvent() {
+        Consumer<Event> listenerMock = getListenerMock();
+        Event eventStub = mock(Event.class);
+        when(eventStub.getType()).thenReturn(EventType.COMBO);
 
         eventManager.addListener(listenerMock, EventType.COMBO);
-        eventManager.enqueEvent(eventMock);
+        eventManager.queueEvent(eventStub);
         eventManager.update();
 
-        verify(listenerMock, never()).accept(any());
+        verify(listenerMock).accept(eventStub);
     }
 
     @Test
-    public void eventToRemovedListener() {
-        Consumer<Event> listenerMock = getConsumerMock();
-        Event eventMock = mock(Event.class);
-        when(eventMock.getType()).thenReturn(EventType.COMBO);
+    public void addListenerUninterestedEvent() {
+        Consumer<Event> listenerMock = getListenerMock();
+        Event eventStub = mock(Event.class);
+        when(eventStub.getType()).thenReturn(EventType.ALL_ENEMIES_KILLED);
+
+        eventManager.addListener(listenerMock, EventType.COMBO);
+        eventManager.queueEvent(eventStub);
+        eventManager.update();
+
+        verify(listenerMock, never()).accept(any(Event.class));
+    }
+
+    @Test
+    public void removeListener() {
+        Consumer<Event> listenerMock = getListenerMock();
+        Event eventStub = mock(Event.class);
+        when(eventStub.getType()).thenReturn(EventType.COMBO);
 
         eventManager.addListener(listenerMock, EventType.COMBO);
         eventManager.removeListener(listenerMock);
-        eventManager.enqueEvent(eventMock);
+        eventManager.queueEvent(eventStub);
         eventManager.update();
 
-        verify(listenerMock, never()).accept(eventMock);
+        verify(listenerMock, never()).accept(any(Event.class));
     }
 
     @Test
-    public void eventToManySubscribedListeners() {
-        Consumer<Event> listenerMock1 = getConsumerMock();
-        Consumer<Event> listenerMock2 = getConsumerMock();
-        Consumer<Event> listenerMock3 = getConsumerMock();
+    public void removeListenerDoesntExistNoException() {
+        Consumer<Event> listenerMock = getListenerMock();
 
-        Event eventMock = mock(Event.class);
-        when(eventMock.getType()).thenReturn(EventType.COMBO);
+        eventManager.removeListener(listenerMock);
+    }
+
+    @Test
+    public void removeAllListeners() {
+        Consumer<Event> listenerMock1 = getListenerMock();
+        Consumer<Event> listenerMock2 = getListenerMock();
+
+        Event eventStub = mock(Event.class);
+        when(eventStub.getType()).thenReturn(EventType.COMBO);
 
         eventManager.addListener(listenerMock1, EventType.COMBO);
         eventManager.addListener(listenerMock2, EventType.COMBO);
-        eventManager.addListener(listenerMock3, EventType.COMBO);
+        eventManager.removeAllListeners();
 
-        eventManager.enqueEvent(eventMock);
+        eventManager.queueEvent(eventStub);
         eventManager.update();
 
-        verify(listenerMock1).accept(eventMock);
-        verify(listenerMock2).accept(eventMock);
-        verify(listenerMock3).accept(eventMock);
+        verify(listenerMock1, never()).accept(any(Event.class));
+        verify(listenerMock2, never()).accept(any(Event.class));
     }
 
     @Test
-    public void manyEventsToOneListener() {
-        Consumer<Event> listenerMock = getConsumerMock();
+    public void queueEventOrder() {
+        Consumer<Event> listenerMock = getListenerMock();
 
-        Event eventMock1 = mock(Event.class);
-        when(eventMock1.getType()).thenReturn(EventType.COMBO);
+        Event eventStub1 = mock(Event.class);
+        when(eventStub1.getType()).thenReturn(EventType.COMBO);
 
-        Event eventMock2 = mock(Event.class);
-        when(eventMock2.getType()).thenReturn(EventType.GUN_ROTATED);
-
-        Event eventMock3 = mock(Event.class);
-        when(eventMock3.getType()).thenReturn(EventType.COMBO);
+        Event eventStub2 = mock(Event.class);
+        when(eventStub2.getType()).thenReturn(EventType.COMBO);
 
         eventManager.addListener(listenerMock, EventType.COMBO);
-        eventManager.enqueEvent(eventMock1);
-        eventManager.enqueEvent(eventMock2);
-        eventManager.enqueEvent(eventMock3);
+        eventManager.queueEvent(eventStub1);
+        eventManager.queueEvent(eventStub2);
         eventManager.update();
 
-        verify(listenerMock).accept(eventMock1);
-        verify(listenerMock, never()).accept(eventMock2);
-        verify(listenerMock).accept(eventMock3);
+        InOrder firstThenSecondEvent = Mockito.inOrder(listenerMock);
+
+        firstThenSecondEvent.verify(listenerMock).accept(eventStub1);
+        firstThenSecondEvent.verify(listenerMock).accept(eventStub2);
     }
 
     @Test
-    public void eventQueueInListenerCallback() {
-        Event eventMock1 = mock(Event.class);
-        when(eventMock1.getType()).thenReturn(EventType.COMBO);
+    public void queueEventMultipleListeners() {
+        Consumer<Event> listenerMock1 = getListenerMock();
+        Consumer<Event> listenerMock2 = getListenerMock();
 
-        Event eventMock2 = mock(Event.class);
-        when(eventMock2.getType()).thenReturn(EventType.COMBO);
+        Event eventStub = mock(Event.class);
+        when(eventStub.getType()).thenReturn(EventType.COMBO);
 
-        Consumer<Event> listener = (e) -> eventManager.enqueEvent(eventMock2);
+        eventManager.addListener(listenerMock1, EventType.COMBO);
+        eventManager.addListener(listenerMock2, EventType.COMBO);
 
-        eventManager.addListener(listener, EventType.COMBO);
+        eventManager.queueEvent(eventStub);
         eventManager.update();
 
-        verify(listener).accept(eventMock1);
-        verify(listener, never()).accept(eventMock2);
+        verify(listenerMock1).accept(eventStub);
+        verify(listenerMock2).accept(eventStub);
+    }
+
+    @Test
+    public void queueEventInListenerCallback() {
+        Event comboEventStub = mock(Event.class);
+        when(comboEventStub.getType()).thenReturn(EventType.COMBO);
+
+        Event enemiesKilledEventStub = mock(Event.class);
+        when(enemiesKilledEventStub.getType()).thenReturn(EventType.ALL_ENEMIES_KILLED);
+
+        Consumer<Event> listenerMock1 = getListenerMock();
+        doAnswer(AdditionalAnswers.answerVoid(
+                (event) -> eventManager.queueEvent(enemiesKilledEventStub)))
+                .when(listenerMock1).accept(any(Event.class));
+
+        Consumer<Event> listenerMock2 = getListenerMock();
+
+        eventManager.addListener(listenerMock1, EventType.COMBO);
+        eventManager.addListener(listenerMock2, EventType.ALL_ENEMIES_KILLED);
+        eventManager.queueEvent(comboEventStub);
+        eventManager.update();
+
+        verify(listenerMock1).accept(comboEventStub);
+        verify(listenerMock2, never()).accept(enemiesKilledEventStub);
+    }
+
+    @Test
+    public void queueEventInListenerCallbackNextUpdate() {
+        Event eventStub1 = mock(Event.class);
+        when(eventStub1.getType()).thenReturn(EventType.COMBO);
+
+        Event eventStub2 = mock(Event.class);
+        when(eventStub2.getType()).thenReturn(EventType.ALL_ENEMIES_KILLED);
+
+        Consumer<Event> listenerMock1 = getListenerMock();
+        doAnswer(AdditionalAnswers.answerVoid(
+                (event) -> eventManager.queueEvent(eventStub2)))
+                .when(listenerMock1).accept(any(Event.class));
+
+        Consumer<Event> listenerMock2 = getListenerMock();
+
+        eventManager.addListener(listenerMock1, EventType.COMBO);
+        eventManager.addListener(listenerMock2, EventType.ALL_ENEMIES_KILLED);
+        eventManager.update();
+
+        verify(listenerMock2, never()).accept(eventStub2);
+
+        eventManager.update();
+
+        verify(listenerMock2, never()).accept(eventStub2);
     }
 
 
     @SuppressWarnings("unchecked")
-    private Consumer<Event> getConsumerMock() {
+    private Consumer<Event> getListenerMock() {
         return mock(Consumer.class);
     }
 }
