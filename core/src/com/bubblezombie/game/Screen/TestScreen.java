@@ -15,20 +15,21 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.bubblezombie.game.Enums.BubbleColor;
-import com.bubblezombie.game.Bubbles.Zombie;
-import com.bubblezombie.game.Util.CoreClasses.Scene2dSprite;
+import com.bubblezombie.game.Physics.Box2dCollisionEventDispatcher;
+import com.bubblezombie.game.Physics.Box2dPhysics;
+import com.bubblezombie.game.Physics.GamePhysics;
 import com.bubblezombie.game.Util.Units;
 
 public class TestScreen implements Screen {
 
     protected Game game;
-    Stage stage;
-    Scene2dSprite testSprite;
-    OrthographicCamera camera;
+    private Stage stage;
+    //OrthographicCamera camera;
 
-    World world = new World(new Vector2(0, 0), true);
-    Box2DDebugRenderer renderer = new Box2DDebugRenderer();
+    //World world = new World(new Vector2(0, 0), true);
+    //Box2DDebugRenderer renderer = new Box2DDebugRenderer();
+
+    private GamePhysics physics = new Box2dPhysics(new Box2dCollisionEventDispatcher());
 
     public TestScreen(Game game) {
         this.game = game;
@@ -40,6 +41,10 @@ public class TestScreen implements Screen {
         Viewport viewport = new FitViewport(640, 480);
         stage = new Stage(viewport);
 
+        physics.AddCircle(1, 50, new Vector2(100, 475));
+        physics.SetLinearVelocity(1, new Vector2(0, 10));
+
+        /*
         // body
         BodyDef bdef = new BodyDef();
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -60,6 +65,7 @@ public class TestScreen implements Screen {
         camera.viewportWidth = Units.P2M(Gdx.graphics.getWidth());
         camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0f);
         camera.update();
+        */
     }
 
     @Override
@@ -67,12 +73,11 @@ public class TestScreen implements Screen {
         Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        world.step(1.0f, 10, 10);
-
-
+        physics.Update(delta);
 
         stage.draw();
-        renderer.render(world, camera.combined);
+        physics.DrawDebugInfo();
+        //renderer.render(world, camera.combined);
     }
 
     @Override

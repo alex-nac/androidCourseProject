@@ -8,7 +8,7 @@ public class EventManagerImpl implements EventManager {
     private class QueuePair<T> {
         private Queue<T> activeQueue, passiveQueue;
 
-        public QueuePair() {
+        QueuePair() {
             activeQueue = new LinkedList<>();
             passiveQueue = new LinkedList<>();
         }
