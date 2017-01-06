@@ -39,7 +39,7 @@ public class Box2dPhysics implements GamePhysics, Disposable {
                 physicsDebugCamera.viewportHeight / 2, 0f);
         physicsDebugCamera.update();
 
-        entityIdToBodyMap = new HashMap<Integer, Body>();
+        entityIdToBodyMap = new HashMap<>();
     }
 
     @Override
